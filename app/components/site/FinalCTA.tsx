@@ -1,0 +1,64 @@
+import { Button } from "@/components/ui/button";
+import { Phone, Sparkles as SparklesIcon } from "lucide-react";
+import Sparkles from "./Sparkles";
+import blobBg from "@/assets/blobs/254596558522.jpg";
+
+
+const WHATSAPP = "https://wa.me/9172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
+
+const FinalCTA = () => {
+  return (
+    <section id="cta" className="py-12 bg-background">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-dark-radial p-10 md:p-16 text-center shadow-elevated">
+          {/* Blob background texture */}
+          <img
+            src={blobBg}
+            alt=""
+            aria-hidden
+            className="absolute inset-0 w-full h-full object-cover opacity-[0.1] pointer-events-none select-none mix-blend-overlay"
+          />
+
+          <div className="absolute inset-0 bg-grid-light opacity-30" aria-hidden />
+          <Sparkles count={20} />
+
+          {/* Big glow orbs */}
+          <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-accent/30 blur-[100px] animate-glow-pulse" aria-hidden />
+          <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-primary-glow/30 blur-[100px] animate-glow-pulse" aria-hidden />
+
+          <div className="relative">
+            <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-bold text-accent uppercase tracking-wider">
+              <SparklesIcon className="h-3.5 w-3.5" /> Available now
+            </div>
+
+            <h2 className="mt-5 font-display text-3xl md:text-5xl lg:text-6xl font-extrabold text-dark-foreground text-balance max-w-3xl mx-auto leading-tight">
+              Looking for a maid in <span className="text-gradient-brand">Hinjewadi</span>?
+            </h2>
+            <p className="mt-5 text-lg md:text-xl text-dark-muted max-w-2xl mx-auto">
+              Get connected instantly with verified maids near you. No waiting, no hassle.
+            </p>
+
+            <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+              <Button variant="hero" size="xl" asChild>
+                <a href={WHATSAPP} target="_blank" rel="noopener noreferrer">
+                  <SparklesIcon className="h-4 w-4" /> Book Now
+                </a>
+              </Button>
+              <Button variant="whatsapp" size="xl" asChild>
+                <a href={WHATSAPP} target="_blank" rel="noopener noreferrer">
+                  <Phone className="h-4 w-4" /> Chat on WhatsApp
+                </a>
+              </Button>
+            </div>
+
+            <p className="mt-6 text-sm text-dark-muted">
+              Reply usually within minutes · Mon–Sun · 8 AM – 9 PM
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default FinalCTA;
