@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Phone, Sparkles as SparklesIcon } from "lucide-react";
 import Sparkles from "./Sparkles";
+import { homeSection } from "@/lib/siteNav";
 
 const blobBg = "/assets/blobs/254596558522.jpg";
 
@@ -43,7 +44,7 @@ const FinalCTA = () => {
 
             <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
               <Button variant="hero" size="xl" asChild>
-                <a href="#enquiry">
+                <a href={homeSection("enquiry")}>
                   <SparklesIcon className="h-4 w-4" /> Send Enquiry
                 </a>
               </Button>

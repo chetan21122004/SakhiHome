@@ -21,6 +21,7 @@ import {
   getWhatsAppHrefWithService,
   services,
 } from "@/lib/services";
+import { homeSection } from "@/lib/siteNav";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -160,7 +161,7 @@ export default async function ServiceDetailPage(props: PageProps) {
                     /
                   </li>
                   <li>
-                    <Link href="/#services" className="hover:text-foreground underline-offset-4 hover:underline">
+                    <Link href={homeSection("services")} className="hover:text-foreground underline-offset-4 hover:underline">
                       Services
                     </Link>
                   </li>
@@ -212,7 +213,7 @@ export default async function ServiceDetailPage(props: PageProps) {
 
             <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Button variant="hero" asChild className="rounded-xl px-8">
-                <a href="/#enquiry">Book an enquiry</a>
+                <a href={homeSection("enquiry")}>Book an enquiry</a>
               </Button>
               <Button variant="outline" asChild className="rounded-xl border-primary/25">
                 <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
@@ -220,7 +221,7 @@ export default async function ServiceDetailPage(props: PageProps) {
                 </a>
               </Button>
               <Button variant="ghost" asChild>
-                <Link href="/#services">All services</Link>
+                <Link href={homeSection("services")}>All services</Link>
               </Button>
             </div>
           </article>

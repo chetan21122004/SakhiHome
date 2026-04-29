@@ -4,6 +4,7 @@ import { Sparkles, ChefHat, Baby, HeartHandshake, Home, Clock, ArrowRight, Wand2
 import { Button } from "@/components/ui/button";
 import type { ServiceIconKey } from "@/lib/services";
 import { services } from "@/lib/services";
+import { homeSection } from "@/lib/siteNav";
 
 const cookingDoodle = "/assets/doodles/Cooking-bro.svg";
 const blobBg = "/assets/blobs/color_grunge_pattern_liquidity_style_background.jpg";
@@ -74,7 +75,7 @@ const MobileServices = () => (
     {/* Mobile CTA strip */}
     <div className="mx-auto mt-6 max-w-[26rem]">
       <Button variant="hero" asChild className="h-12 w-full rounded-xl text-[13px] font-bold tracking-tight">
-        <a href="#enquiry">
+        <a href={homeSection("enquiry")}>
           <Sparkles className="h-4 w-4" />
           Book a Maid
           <ArrowRight className="h-4 w-4" />

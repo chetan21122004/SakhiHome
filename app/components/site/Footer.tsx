@@ -1,16 +1,10 @@
 import { Phone, MessageCircle, MapPin, ArrowUpRight, Mail } from "lucide-react";
+import { services } from "@/lib/services";
+import { homeSection } from "@/lib/siteNav";
+
 const logo = "logo_only.png";
 const logotext = "logo_text.png";
 const blobBg = "blobs/color_grunge_pattern_liquidity_style_background.jpg";
-
-
-const services = [
-  { label: "House Cleaning", href: "#services" },
-  { label: "Cooking", href: "#services" },
-  { label: "Babysitting", href: "#services" },
-  { label: "Elder Care", href: "#services" },
-  { label: "Full / Part Time", href: "#services" },
-];
 
 const areas = [
   "Hinjewadi Phase 1",
@@ -68,7 +62,7 @@ const Footer = () => {
           <div className="lg:col-span-5">
             <div className="relative overflow-hidden rounded-[2rem] border border-white/[0.1] bg-gradient-to-br from-white/[0.08] to-transparent p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_24px_80px_-40px_hsl(var(--primary)/0.35)] md:p-8">
               <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-accent/25 blur-[70px]" aria-hidden />
-              <a href="#top" className="relative inline-flex flex-col gap-4 sm:flex-row sm:items-center">
+              <a href={homeSection("top")} className="relative inline-flex flex-col gap-4 sm:flex-row sm:items-center">
                 <img src={`/assets/${logo}`} alt="" className="h-14 w-14 shrink-0 object-contain drop-shadow-[0_0_20px_hsl(var(--accent)/0.35)]" />
                 <img
                   src={`/assets/${logotext}`}
@@ -99,12 +93,12 @@ const Footer = () => {
               </div>
               <ul className="space-y-1">
                 {services.map((s) => (
-                  <li key={s.label}>
+                  <li key={s.slug}>
                     <a
-                      href={s.href}
+                      href={`/services/${s.slug}`}
                       className="group flex items-center justify-between gap-2 rounded-xl py-2 pl-1 pr-2 text-sm text-dark-muted transition-smooth hover:bg-white/[0.04] hover:text-dark-foreground"
                     >
-                      <span>{s.label}</span>
+                      <span>{s.title}</span>
                       <ArrowUpRight className="h-4 w-4 shrink-0 opacity-0 transition-smooth group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
                     </a>
                   </li>

@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ShieldCheck, Clock, RefreshCw, MapPin, Phone, Sparkles as SparklesIcon, Star, ArrowRight } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
+import { homeSection } from "@/lib/siteNav";
 const logo = "logo_both.png";
 const  bg1 = "assets/bg_vdos/1.mp4";
 const bg2 = "assets/bg_vdos/2.mp4";
@@ -75,7 +76,7 @@ const MobileHero = () => (
           asChild
           className="group h-12 w-full rounded-xl text-[13px] font-bold tracking-tight"
         >
-          <a href="#enquiry">
+          <a href={homeSection("enquiry")}>
             <SparklesIcon className="h-4 w-4" />
             Book Maid
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -254,7 +255,7 @@ const Hero = () => {
             {/* CTAs */}
             <div id="book" className="mt-6 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
               <Button variant="hero" size="xl" asChild className="group">
-                <a href="#enquiry">
+                <a href={homeSection("enquiry")}>
                   <SparklesIcon className="h-4 w-4" /> Book a Maid Now
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </a>

@@ -1,4 +1,5 @@
 import { MapPin } from "lucide-react";
+import { homeSection } from "@/lib/siteNav";
 import Sparkles from "./Sparkles";
 
 const blobBg = "/assets/blobs/063602423687.jpg";
@@ -80,8 +81,8 @@ const Areas = () => {
 
         <p className="mt-14 text-center text-white/50">
           Not sure if we cover your society?{" "}
-          <a href="#cta" className="text-accent font-semibold underline underline-offset-4 hover:text-white transition-colors duration-300">
-            Ask us on WhatsApp
+          <a href={homeSection("cta")} className="text-accent font-semibold underline underline-offset-4 hover:text-white transition-colors duration-300">
+            Get a quick answer
           </a>
         </p>
       </div>

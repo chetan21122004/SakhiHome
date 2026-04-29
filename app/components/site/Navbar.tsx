@@ -1,18 +1,20 @@
-'use client'
+"use client";
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { homeSection } from "@/lib/siteNav";
+
 const logo = "/assets/logo_only.png";
 const logotext = "/assets/logo_text.png";
 
 const links = [
-  { label: "Services", href: "#services" },
-  { label: "How it works", href: "#process" },
-  { label: "Areas", href: "#areas" },
-  { label: "About", href: "#about" },
-  { label: "Enquiry", href: "#enquiry" },
-];
+  { label: "Services", href: homeSection("services") },
+  { label: "How it works", href: homeSection("process") },
+  { label: "Areas", href: homeSection("areas") },
+  { label: "About", href: homeSection("about") },
+  { label: "Enquiry", href: homeSection("enquiry") },
+] as const;
 
 const WHATSAPP = "https://wa.me/919172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
 
@@ -64,7 +66,7 @@ const Navbar = () => {
       <nav className="container relative mx-auto flex flex-wrap items-center gap-x-3 py-1 px-4 md:flex-nowrap md:gap-4 md:px-6 ">
         {/* Logo — both marks visible on mobile; sizes follow content */}
         <a
-          href="#top"
+          href={homeSection("top")}
           aria-label="SakhiHome — home"
           className="flex min-w-0 flex-1 items-center gap-2 sm:gap-2.5 md:flex-initial md:max-w-none"
         >
@@ -111,7 +113,7 @@ const Navbar = () => {
             </a>
           </Button>
           <Button variant="hero" size="sm" className="relative overflow-hidden shadow-glow" asChild>
-            <a href="#enquiry">
+            <a href={homeSection("enquiry")}>
               <span className="pointer-events-none absolute inset-0 animate-shimmer opacity-35" aria-hidden />
               <span className="relative drop-shadow-sm">Book Maid</span>
             </a>
@@ -158,7 +160,7 @@ const Navbar = () => {
               </a>
             </Button>
             <Button variant="hero" className="w-full shadow-glow" asChild>
-              <a href="#enquiry" onClick={() => setOpen(false)}>
+              <a href={homeSection("enquiry")} onClick={() => setOpen(false)}>
                 Book Maid
               </a>
             </Button>
