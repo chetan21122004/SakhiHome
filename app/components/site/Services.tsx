@@ -1,27 +1,20 @@
+import Link from "next/link";
+import type { LucideIcon } from "lucide-react";
 import { Sparkles, ChefHat, Baby, HeartHandshake, Home, Clock, ArrowRight, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { ServiceIconKey } from "@/lib/services";
+import { services } from "@/lib/services";
 
 const cookingDoodle = "/assets/doodles/Cooking-bro.svg";
 const blobBg = "/assets/blobs/color_grunge_pattern_liquidity_style_background.jpg";
 
-const WHATSAPP = "https://wa.me/919172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
-
-const services = [
-  { icon: Sparkles, title: "House Cleaning", tag: "Most Booked", points: ["Sweeping, mopping & dusting", "Kitchen & bathroom cleaning", "Daily or alternate visits"] },
-  { icon: ChefHat, title: "Cooking Services", tag: "Popular", points: ["Daily home-style meals", "Custom menu preferences", "Veg, non-veg, regional cuisines"] },
-  { icon: Baby, title: "Babysitting", points: ["Newborn & infant care", "Daytime supervision", "Trained, gentle caretakers"] },
-  { icon: HeartHandshake, title: "Elder Care", points: ["Daily assistance & mobility help", "Companionship", "Medication reminders"] },
-  { icon: Home, title: "Full-Time Maid", points: ["8–12 hour shifts", "Live-in option available", "All-round household help"] },
-  { icon: Clock, title: "Part-Time Maid", tag: "Flexible", points: ["Flexible 1–3 hr visits", "Choose tasks & timing", "Perfect for working families"] },
-];
-
-const mobileServiceSummary: Record<string, string> = {
-  "House Cleaning": "Sweeping, mopping, kitchen & bathroom cleaning.",
-  "Cooking Services": "Home-style meals, custom menu, any cuisine.",
-  "Babysitting": "Trained caretakers for infants & daytime care.",
-  "Elder Care": "Daily assistance, mobility help & companionship.",
-  "Full-Time Maid": "8–12 hr shifts with live-in option available.",
-  "Part-Time Maid": "Flexible 1–3 hr visits — choose your timing.",
+const iconByKey: Record<ServiceIconKey, LucideIcon> = {
+  sparkles: Sparkles,
+  chefHat: ChefHat,
+  baby: Baby,
+  heartHandshake: HeartHandshake,
+  home: Home,
+  clock: Clock,
 };
 
 const MobileServices = () => (
@@ -45,37 +38,37 @@ const MobileServices = () => (
 
     {/* Mobile service cards — single column */}
     <div className="mx-auto mt-5 grid max-w-[26rem] grid-cols-1 gap-3">
-      {services.map(({ icon: Icon, title, tag }) => (
-        <a
-          key={title}
-          href={WHATSAPP}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group relative flex items-center gap-4 rounded-2xl border border-border bg-card p-4 shadow-sm transition-colors duration-300 active:bg-secondary/40"
-        >
-          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-brand-soft border border-primary/10 text-primary">
-            <Icon className="h-5 w-5" />
-          </div>
-
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <h3 className="font-display text-[15px] font-bold leading-tight text-primary-deep truncate">
-                {title}
-              </h3>
-              {tag && (
-                <span className="shrink-0 rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent">
-                  {tag}
-                </span>
-              )}
+      {services.map(({ iconKey, title, slug, tag, mobileSummary }) => {
+        const Icon = iconByKey[iconKey];
+        const href = `/services/${slug}`;
+        return (
+          <Link
+            key={slug}
+            href={href}
+            className="group relative flex items-center gap-4 rounded-2xl border border-border bg-card p-4 shadow-sm transition-colors duration-300 active:bg-secondary/40"
+          >
+            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-brand-soft border border-primary/10 text-primary">
+              <Icon className="h-5 w-5" />
             </div>
-            <p className="mt-1 text-[12.5px] leading-snug text-foreground/60 line-clamp-2">
-              {mobileServiceSummary[title]}
-            </p>
-          </div>
 
-          <ArrowRight className="h-4 w-4 shrink-0 text-primary/60 transition-transform group-active:translate-x-0.5" aria-hidden />
-        </a>
-      ))}
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2">
+                <h3 className="font-display text-[15px] font-bold leading-tight text-primary-deep truncate">
+                  {title}
+                </h3>
+                {tag && (
+                  <span className="shrink-0 rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent">
+                    {tag}
+                  </span>
+                )}
+              </div>
+              <p className="mt-1 text-[12.5px] leading-snug text-foreground/60 line-clamp-2">{mobileSummary}</p>
+            </div>
+
+            <ArrowRight className="h-4 w-4 shrink-0 text-primary/60 transition-transform group-active:translate-x-0.5" aria-hidden />
+          </Link>
+        );
+      })}
     </div>
 
     {/* Mobile CTA strip */}
@@ -129,9 +122,12 @@ const Services = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map(({ icon: Icon, title, points, tag }, i) => (
+          {services.map(({ iconKey, slug, title, points, tag }, i) => {
+            const Icon = iconByKey[iconKey];
+            const detailHref = `/services/${slug}`;
+            return (
             <div
-              key={title}
+              key={slug}
               className="group relative rounded-[2rem] bg-card border border-border shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden"
             >
               {/* Animated gradient sweep background */}
@@ -193,16 +189,17 @@ const Services = () => {
                     className="w-full bg-background/50 hover:bg-gradient-brand hover:text-white border-primary/20 hover:border-transparent hover:shadow-glow transition-all duration-500 group/btn h-12 text-primary group-hover:border-primary/50" 
                     asChild
                   >
-                    <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 overflow-hidden">
-                      <span className="font-bold tracking-wide">Book Now</span>
+                    <Link href={detailHref} className="flex items-center justify-center gap-2 overflow-hidden">
+                      <span className="font-bold tracking-wide">View details & book</span>
                       <ArrowRight className="h-4 w-4 -translate-x-full opacity-0 group-hover/btn:translate-x-0 group-hover/btn:opacity-100 transition-all duration-500 ease-out" />
-                    </a>
+                    </Link>
                   </Button>
                 </div>
                 
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
         </div>
         {/* /Desktop / tablet layout */}
