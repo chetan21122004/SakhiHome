@@ -5,17 +5,25 @@ interface SparklesProps {
   className?: string;
 }
 
+function pseudoRandom(seed: number) {
+  let x = (seed ^ 0x9e3779b9) >>> 0;
+  x = Math.imul(x ^ (x >>> 16), 0x85ebca6b) >>> 0;
+  x = Math.imul(x ^ (x >>> 13), 0xc2b2ae35) >>> 0;
+  x = (x ^ (x >>> 16)) >>> 0;
+  return x / 4294967296;
+}
+
 /** Subtle glowing particles for dark sections — matches the logo stars ✨ */
 const Sparkles = ({ count = 18, className = "" }: SparklesProps) => {
   const sparkles = useMemo(
     () =>
       Array.from({ length: count }).map((_, i) => ({
         id: i,
-        top: Math.random() * 100,
-        left: Math.random() * 100,
-        size: 4 + Math.random() * 6,
-        delay: Math.random() * 3,
-        duration: 2 + Math.random() * 2.5,
+        top: pseudoRandom(i + count * 11) * 100,
+        left: pseudoRandom(i + count * 22) * 100,
+        size: 4 + pseudoRandom(i + count * 33) * 6,
+        delay: pseudoRandom(i + count * 44) * 3,
+        duration: 2 + pseudoRandom(i + count * 55) * 2.5,
       })),
     [count],
   );

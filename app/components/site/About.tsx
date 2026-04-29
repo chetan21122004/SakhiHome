@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Heart, MapPin, Users, Sparkles, CheckCircle2, ArrowRight } from "lucide-react";
-import cleaningDoodle from "@/assets/doodles/cleaning service-amico.svg";
-import blobBg from "@/assets/blobs/254596558522.jpg";
+const cleaningDoodle = "/assets/doodles/cleaning service-amico.svg";
+const blobBg = "/assets/blobs/254596558522.jpg";
 
-const WHATSAPP = "https://wa.me/9172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
+const WHATSAPP = "https://wa.me/919172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
 
 const stats = [
   { icon: Users, num: "500+", label: "Maids in network" },
@@ -49,7 +49,7 @@ const About = () => {
 
             {/* Promise list */}
             <ul className="mt-8 space-y-4">
-              {promises.map((p, i) => (
+              {promises.map((p) => (
                 <li key={p} className="flex items-start gap-4 group">
                   <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:scale-110 group-hover:shadow-glow">
                     <CheckCircle2 className="h-3.5 w-3.5" />
@@ -81,7 +81,7 @@ const About = () => {
                 <img 
                   src={blobBg} 
                   alt="" 
-                  className="w-full h-full object-cover animate-[spin_40s_linear_infinite] scale-150" 
+                  className="w-full h-full object-cover scale-150" 
                 />
               </div>
             </div>

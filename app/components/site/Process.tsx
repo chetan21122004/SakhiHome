@@ -1,6 +1,6 @@
 import { MessageSquare, UserSearch, CheckCircle2, Headphones } from "lucide-react";
 import Sparkles from "./Sparkles";
-import cleaningDoodle from "@/assets/doodles/cleaning service-amico.svg";
+const cookingDoodle = "/assets/doodles/Cooking-bro.svg";
 
 
 const steps = [
@@ -28,7 +28,7 @@ const Process = () => {
             <p className="mt-4 text-lg text-dark-muted max-w-xl mx-auto md:mx-0">From enquiry to confirmed maid — usually within a day.</p>
           </div>
           <div className="hidden md:flex justify-end">
-            <img src={cleaningDoodle} alt="Fast Cleaning Services" className="w-64 lg:w-80 object-contain drop-shadow-xl animate-float" />
+            <img src={cookingDoodle} alt="Cooking Services" className="w-64 lg:w-80 object-contain drop-shadow-xl animate-float" />
           </div>
         </div>
 

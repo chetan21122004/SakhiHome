@@ -1,7 +1,7 @@
 import { MapPin } from "lucide-react";
 import Sparkles from "./Sparkles";
-import blobBg from "@/assets/blobs/063602423687.jpg";
 
+const blobBg = "/assets/blobs/063602423687.jpg";
 
 const areas = [
   { name: "Phase 1", desc: "Rajiv Gandhi Infotech Park core & adjoining societies" },

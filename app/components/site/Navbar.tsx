@@ -1,17 +1,20 @@
+'use client'
+
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import logo from "@/assets/logo_only.png";
-import logotext from "@/assets/logo_text.png";
+const logo = "/assets/logo_only.png";
+const logotext = "/assets/logo_text.png";
 
 const links = [
   { label: "Services", href: "#services" },
   { label: "How it works", href: "#process" },
   { label: "Areas", href: "#areas" },
   { label: "About", href: "#about" },
+  { label: "Enquiry", href: "#enquiry" },
 ];
 
-const WHATSAPP = "https://wa.me/9172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
+const WHATSAPP = "https://wa.me/919172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -108,7 +111,7 @@ const Navbar = () => {
             </a>
           </Button>
           <Button variant="hero" size="sm" className="relative overflow-hidden shadow-glow" asChild>
-            <a href="#book">
+            <a href="#enquiry">
               <span className="pointer-events-none absolute inset-0 animate-shimmer opacity-35" aria-hidden />
               <span className="relative drop-shadow-sm">Book Maid</span>
             </a>
@@ -155,7 +158,7 @@ const Navbar = () => {
               </a>
             </Button>
             <Button variant="hero" className="w-full shadow-glow" asChild>
-              <a href="#book" onClick={() => setOpen(false)}>
+              <a href="#enquiry" onClick={() => setOpen(false)}>
                 Book Maid
               </a>
             </Button>

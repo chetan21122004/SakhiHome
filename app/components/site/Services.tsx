@@ -1,9 +1,10 @@
 import { Sparkles, ChefHat, Baby, HeartHandshake, Home, Clock, ArrowRight, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import cookingDoodle from "@/assets/doodles/Cooking-bro.svg";
-import blobBg from "@/assets/blobs/color_grunge_pattern_liquidity_style_background.jpg";
 
-const WHATSAPP = "https://wa.me/9172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
+const cookingDoodle = "/assets/doodles/Cooking-bro.svg";
+const blobBg = "/assets/blobs/color_grunge_pattern_liquidity_style_background.jpg";
+
+const WHATSAPP = "https://wa.me/919172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
 
 const services = [
   { icon: Sparkles, title: "House Cleaning", tag: "Most Booked", points: ["Sweeping, mopping & dusting", "Kitchen & bathroom cleaning", "Daily or alternate visits"] },
@@ -13,6 +14,82 @@ const services = [
   { icon: Home, title: "Full-Time Maid", points: ["8–12 hour shifts", "Live-in option available", "All-round household help"] },
   { icon: Clock, title: "Part-Time Maid", tag: "Flexible", points: ["Flexible 1–3 hr visits", "Choose tasks & timing", "Perfect for working families"] },
 ];
+
+const mobileServiceSummary: Record<string, string> = {
+  "House Cleaning": "Sweeping, mopping, kitchen & bathroom cleaning.",
+  "Cooking Services": "Home-style meals, custom menu, any cuisine.",
+  "Babysitting": "Trained caretakers for infants & daytime care.",
+  "Elder Care": "Daily assistance, mobility help & companionship.",
+  "Full-Time Maid": "8–12 hr shifts with live-in option available.",
+  "Part-Time Maid": "Flexible 1–3 hr visits — choose your timing.",
+};
+
+const MobileServices = () => (
+  <div className="md:hidden">
+    {/* Mobile heading */}
+    <div className="mx-auto max-w-[26rem] text-left">
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-gradient-brand-soft px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary-deep">
+        <Wand2 className="h-3 w-3" />
+        Our Services
+      </span>
+      <h2 className="mt-4 font-display text-[1.85rem] font-extrabold leading-[1.05] tracking-[-0.02em] text-primary-deep">
+        Everything your <span className="text-gradient-brand">home</span> needs
+      </h2>
+      <p className="mt-3 text-[13.5px] leading-relaxed text-foreground/65">
+        From a quick clean to a full-time helper — one trusted partner for every corner.
+      </p>
+
+      {/* Hairline */}
+      <div className="mt-6 h-px w-full bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
+    </div>
+
+    {/* Mobile service cards — single column */}
+    <div className="mx-auto mt-5 grid max-w-[26rem] grid-cols-1 gap-3">
+      {services.map(({ icon: Icon, title, tag }) => (
+        <a
+          key={title}
+          href={WHATSAPP}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group relative flex items-center gap-4 rounded-2xl border border-border bg-card p-4 shadow-sm transition-colors duration-300 active:bg-secondary/40"
+        >
+          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-brand-soft border border-primary/10 text-primary">
+            <Icon className="h-5 w-5" />
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <h3 className="font-display text-[15px] font-bold leading-tight text-primary-deep truncate">
+                {title}
+              </h3>
+              {tag && (
+                <span className="shrink-0 rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent">
+                  {tag}
+                </span>
+              )}
+            </div>
+            <p className="mt-1 text-[12.5px] leading-snug text-foreground/60 line-clamp-2">
+              {mobileServiceSummary[title]}
+            </p>
+          </div>
+
+          <ArrowRight className="h-4 w-4 shrink-0 text-primary/60 transition-transform group-active:translate-x-0.5" aria-hidden />
+        </a>
+      ))}
+    </div>
+
+    {/* Mobile CTA strip */}
+    <div className="mx-auto mt-6 max-w-[26rem]">
+      <Button variant="hero" asChild className="h-12 w-full rounded-xl text-[13px] font-bold tracking-tight">
+        <a href="#enquiry">
+          <Sparkles className="h-4 w-4" />
+          Book a Maid
+          <ArrowRight className="h-4 w-4" />
+        </a>
+      </Button>
+    </div>
+  </div>
+);
 
 const Services = () => {
   return (
@@ -31,6 +108,8 @@ const Services = () => {
 
 
       <div className="container relative mx-auto px-4 md:px-6">
+        {/* Desktop / tablet layout (md+) — preserved exactly */}
+        <div className="hidden md:block">
         <div className="grid md:grid-cols-[1fr_auto] gap-8 items-center mb-16 max-w-5xl mx-auto text-center md:text-left">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-gradient-brand-soft border border-primary/20 px-4 py-1.5 text-xs font-bold text-primary-deep uppercase tracking-wider">
@@ -125,6 +204,12 @@ const Services = () => {
             </div>
           ))}
         </div>
+        </div>
+        {/* /Desktop / tablet layout */}
+
+        {/* Mobile layout (<md) — minimal premium */}
+        <MobileServices />
+        {/* /Mobile layout */}
       </div>
     </section>
   );

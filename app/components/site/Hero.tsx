@@ -1,14 +1,126 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { ShieldCheck, Clock, RefreshCw, MapPin, Phone, Sparkles as SparklesIcon, Star, ArrowRight } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
-import logo from "@/assets/logo_both.png";
-import bg1 from "@/assets/bg_vdos/1.mp4";
-import bg2 from "@/assets/bg_vdos/2.mp4";
-import bg3 from "@/assets/bg_vdos/3.mp4";
-import blobBg from "@/assets/blobs/color_grunge_pattern_liquidity_style_background.jpg";
+const logo = "logo_both.png";
+const  bg1 = "assets/bg_vdos/1.mp4";
+const bg2 = "assets/bg_vdos/2.mp4";
+const bg3 = "assets/bg_vdos/3.mp4";
+const blobBg = "blobs/color_grunge_pattern_liquidity_style_background.jpg";
 
-const WHATSAPP = "https://wa.me/9172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
+const WHATSAPP = "https://wa.me/919172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
 const VIDEOS = [bg1, bg2, bg3];
+const MobileHero = () => (
+  <div className="md:hidden animate-fade-up">
+    <div className="mx-auto max-w-[26rem]">
+      {/* Eyebrow — locality + rating */}
+      <div className="flex items-center justify-center gap-2">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.05] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/75">
+          <MapPin className="h-3 w-3 text-accent" />
+          Hinjewadi · Pune
+        </span>
+        <span className="inline-flex items-center gap-1 rounded-full border border-accent/35 bg-accent/10 px-2.5 py-1 text-[10px] font-bold text-accent">
+          <Star className="h-3 w-3 fill-accent" /> 4.9
+        </span>
+      </div>
+
+      {/* Logo + headline row */}
+      <div className="mt-7 flex items-center gap-3">
+        <div className="relative shrink-0 self-center">
+          <span
+            className="absolute -inset-3 rounded-full bg-accent/20 blur-3xl"
+            aria-hidden
+          />
+          <span
+            className="absolute inset-0 rounded-full ring-1 ring-white/12"
+            aria-hidden
+          />
+          <img
+            src={`/assets/${logo}`}
+            alt="SakhiHome — Trusted Maid Services in Hinjewadi"
+            className="relative h-48 w-48 object-contain drop-shadow-[0_14px_34px_rgba(0,0,0,0.55)]"
+          />
+        </div>
+
+        <h1 className="min-w-0 flex-1 text-left font-display text-white">
+          <span className="block text-[9px] font-bold uppercase tracking-[0.2em] text-white/55">
+            Trusted Maids for
+          </span>
+          <span className="mt-1.5 block text-[1.62rem] font-extrabold leading-[0.95] tracking-[-0.02em]">
+            <span className="bg-gradient-to-r from-accent via-accent-deep to-primary-glow bg-clip-text text-transparent">
+              Hinjewadi
+            </span>
+          </span>
+          <span className="mt-1 block text-[0.95rem] font-medium tracking-tight text-white/80">
+            families
+          </span>
+        </h1>
+      </div>
+
+      {/* Hairline */}
+      <div className="mt-7 h-px w-full bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+
+      {/* Subcopy */}
+      <p className="mt-5 text-[13.5px] leading-relaxed text-white/70">
+        A network of{" "}
+        <span className="font-semibold text-white">500+ background-verified maids</span>
+        {" "}— matched to your home in hours.
+      </p>
+
+      {/* CTA row — side-by-side */}
+      <div className="mt-6 grid grid-cols-2 gap-3">
+        <Button
+          variant="hero"
+          asChild
+          className="group h-12 w-full rounded-xl text-[13px] font-bold tracking-tight"
+        >
+          <a href="#enquiry">
+            <SparklesIcon className="h-4 w-4" />
+            Book Maid
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </a>
+        </Button>
+        <Button
+          variant="outline"
+          asChild
+          className="h-12 w-full rounded-xl border-white/20 bg-white/[0.04] text-[13px] font-semibold text-white backdrop-blur-md hover:border-white/35 hover:bg-white/[0.08] hover:text-white"
+        >
+          <a href={WHATSAPP} target="_blank" rel="noopener noreferrer">
+            <Phone className="h-4 w-4" />
+            WhatsApp
+          </a>
+        </Button>
+      </div>
+
+      {/* Meta strip — minimal hairline row */}
+      <div className="mt-7 grid grid-cols-3 divide-x divide-white/10 rounded-2xl border border-white/10 bg-white/[0.03] py-3 text-center">
+        {[
+          { icon: ShieldCheck, label: "Verified" },
+          { icon: Clock, label: "Fast Match" },
+          { icon: RefreshCw, label: "Replacement" },
+        ].map(({ icon: Icon, label }) => (
+          <div
+            key={label}
+            className="flex flex-col items-center gap-1 px-2"
+          >
+            <Icon className="h-4 w-4 text-accent" aria-hidden />
+            <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/70">
+              {label}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Areas note */}
+      <p className="mt-5 text-center text-[11px] font-medium tracking-wide text-white/45">
+        <span className="text-white/70">Areas</span>
+        <span className="mx-2 text-white/25">·</span>
+        Wakad · Baner · Marunji · Phase 1–3 · Megapolis
+      </p>
+    </div>
+  </div>
+);
 
 const Hero = () => {
   const [active, setActive] = useState(0);
@@ -51,7 +163,7 @@ const Hero = () => {
   return (
     <section
       id="top"
-      className="relative isolate overflow-hidden min-h-[100svh] flex items-center pt-8 pb-12 md:pt-32 md:pb-14"
+      className="relative isolate overflow-hidden min-h-[100svh] flex items-center pt-24 pb-12 md:pt-32 md:pb-14"
     >
       {/* Background layer */}
       <div className="absolute inset-0 z-0">
@@ -104,6 +216,8 @@ const Hero = () => {
       <div className="absolute bottom-1/4 -right-20 h-80 w-80 rounded-full bg-primary-glow/30 blur-[120px] animate-glow-pulse pointer-events-none" aria-hidden style={{ animationDelay: "1.5s" }} />
 
       <div className="container relative z-10 mx-auto px-4 md:px-6">
+        {/* Desktop / tablet layout (md+) — preserved exactly */}
+        <div className="hidden md:block">
         <div className="grid lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-16 items-center">
           {/* Left — content */}
           <div className="text-center lg:text-left animate-fade-up">
@@ -140,7 +254,7 @@ const Hero = () => {
             {/* CTAs */}
             <div id="book" className="mt-6 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
               <Button variant="hero" size="xl" asChild className="group">
-                <a href={WHATSAPP} target="_blank" rel="noopener noreferrer">
+                <a href="#enquiry">
                   <SparklesIcon className="h-4 w-4" /> Book a Maid Now
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </a>
@@ -187,8 +301,8 @@ const Hero = () => {
               <div className="absolute inset-0 rounded-full border border-white/10 scale-110" aria-hidden />
 
               <img
-                src={logo}
-                alt="HomeSakhi — Trusted Maid Services in Hinjewadi"
+                src={`/assets/${logo}`}
+                alt="SakhiHome — Trusted Maid Services in Hinjewadi"
                 className="relative w-full max-w-md lg:max-w-lg mx-auto animate-float drop-shadow-2xl"
               />
 
@@ -215,8 +329,12 @@ const Hero = () => {
             </div>
           </div>
         </div>
+        </div>
+        {/* /Desktop / tablet layout */}
 
-       
+        {/* Mobile layout (<md) — minimal, clean, professional */}
+        <MobileHero />
+        {/* /Mobile layout */}
       </div>
 
       </section>

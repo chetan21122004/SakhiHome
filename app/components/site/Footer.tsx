@@ -1,7 +1,7 @@
 import { Phone, MessageCircle, MapPin, ArrowUpRight, Mail } from "lucide-react";
-import logo from "@/assets/logo_only.png";
-import logotext from "@/assets/logo_text.png";
-import blobBg from "@/assets/blobs/color_grunge_pattern_liquidity_style_background.jpg";
+const logo = "logo_only.png";
+const logotext = "logo_text.png";
+const blobBg = "blobs/color_grunge_pattern_liquidity_style_background.jpg";
 
 
 const services = [
@@ -28,7 +28,7 @@ const Footer = () => {
     <footer className="relative overflow-hidden bg-dark text-dark-foreground">
       {/* Blob background texture */}
       <img
-        src={blobBg}
+        src={`/assets/${blobBg}`}
         alt=""
         aria-hidden
         className="absolute inset-0 w-full h-full object-cover opacity-[0.05] pointer-events-none select-none mix-blend-overlay"
@@ -69,11 +69,11 @@ const Footer = () => {
             <div className="relative overflow-hidden rounded-[2rem] border border-white/[0.1] bg-gradient-to-br from-white/[0.08] to-transparent p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_24px_80px_-40px_hsl(var(--primary)/0.35)] md:p-8">
               <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-accent/25 blur-[70px]" aria-hidden />
               <a href="#top" className="relative inline-flex flex-col gap-4 sm:flex-row sm:items-center">
-                <img src={logo} alt="" className="h-28 shrink-0 object-contain drop-shadow-[0_0_20px_hsl(var(--accent)/0.35)]" />
+                <img src={`/assets/${logo}`} alt="" className="h-14 w-14 shrink-0 object-contain drop-shadow-[0_0_20px_hsl(var(--accent)/0.35)]" />
                 <img
-                  src={logotext}
+                  src={`/assets/${logotext}`}
                   alt="SakhiHome Services"
-                  className="h-auto max-h-20 w-full max-w-[280px] object-contain object-left sm:max-w-none"
+                  className="h-auto max-h-14 w-full max-w-[280px] object-contain object-left sm:max-w-none"
                 />
               </a>
               <p className="relative mt-6 max-w-md text-sm leading-relaxed text-dark-muted">
@@ -144,8 +144,8 @@ const Footer = () => {
                     </span>
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-wider text-dark-muted">Call</p>
-                      <a href="tel:+9172475977" className="font-semibold hover:text-accent transition-smooth">
-                        +91 72475 977
+                      <a href="tel:+919172475977" className="font-semibold hover:text-accent transition-smooth">
+                        +91 91724 75977
                       </a>
                     </div>
                   </li>
@@ -156,7 +156,7 @@ const Footer = () => {
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-wider text-dark-muted">WhatsApp</p>
                       <a
-                        href="https://wa.me/9172475977"
+                        href="https://wa.me/919172475977"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="font-semibold hover:text-accent transition-smooth"

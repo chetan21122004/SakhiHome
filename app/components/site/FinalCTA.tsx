@@ -1,10 +1,13 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Phone, Sparkles as SparklesIcon } from "lucide-react";
 import Sparkles from "./Sparkles";
-import blobBg from "@/assets/blobs/254596558522.jpg";
+
+const blobBg = "/assets/blobs/254596558522.jpg";
 
 
-const WHATSAPP = "https://wa.me/9172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
+const WHATSAPP = "https://wa.me/919172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
 
 const FinalCTA = () => {
   return (
@@ -40,8 +43,8 @@ const FinalCTA = () => {
 
             <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
               <Button variant="hero" size="xl" asChild>
-                <a href={WHATSAPP} target="_blank" rel="noopener noreferrer">
-                  <SparklesIcon className="h-4 w-4" /> Book Now
+                <a href="#enquiry">
+                  <SparklesIcon className="h-4 w-4" /> Send Enquiry
                 </a>
               </Button>
               <Button variant="whatsapp" size="xl" asChild>

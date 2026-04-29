@@ -1,6 +1,6 @@
 import { Quote, Star } from "lucide-react";
-import laundryDoodle from "@/assets/doodles/Laundry and dry cleaning-bro.svg";
-import blobBg from "@/assets/blobs/254596558522.jpg";
+const laundryDoodle = "/assets/doodles/Laundry and dry cleaning-bro.svg";
+const blobBg = "/assets/blobs/254596558522.jpg";
 
 
 
@@ -62,7 +62,9 @@ const Testimonials = () => {
                   <Star key={i} className="h-4 w-4 fill-accent text-accent" />
                 ))}
               </div>
-              <p className="mt-4 text-foreground/75 leading-relaxed">"{t.text}"</p>
+              <p className="mt-4 text-foreground/75 leading-relaxed">
+                {`\u201C${t.text}\u201D`}
+              </p>
               <div className="mt-6 pt-5 border-t border-border flex items-center gap-3">
                 <div className="grid h-11 w-11 place-items-center rounded-full bg-gradient-brand text-white font-bold">
                   {t.name[0]}
