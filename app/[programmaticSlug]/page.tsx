@@ -80,6 +80,52 @@ const trustHighlights = [
   },
 ];
 
+const genericAreaFaq: LocalProgrammaticTemplateData["faqItems"] = [
+  {
+    question: "How quickly can I get a maid in this area?",
+    answer:
+      "Most enquiries receive matching options within hours, depending on schedule and service requirements.",
+  },
+  {
+    question: "Are maids background verified?",
+    answer:
+      "Yes. We prioritize verified profiles and local matching to support reliability and continuity.",
+  },
+  {
+    question: "Do you offer replacement support?",
+    answer:
+      "Yes. If availability changes, our team assists with replacement options as quickly as possible.",
+  },
+  {
+    question: "Which services are available in this area?",
+    answer:
+      "House cleaning, cooking, babysitting, elder support, and full-time or part-time domestic help are available based on local availability.",
+  },
+];
+
+const genericSocietyFaq: LocalProgrammaticTemplateData["faqItems"] = [
+  {
+    question: "Can I book a maid specifically for this society?",
+    answer:
+      "Yes. We can prioritize options suitable for households in this society and nearby localities.",
+  },
+  {
+    question: "Do you provide part-time and full-time options?",
+    answer:
+      "Yes. Both part-time and full-time options can be discussed based on your routine and household needs.",
+  },
+  {
+    question: "How do I start the booking process?",
+    answer:
+      "Share your requirements through enquiry or WhatsApp and our team will suggest suitable profiles.",
+  },
+  {
+    question: "What if my timing requirements change later?",
+    answer:
+      "Our team helps with schedule adjustments and replacement coordination whenever feasible.",
+  },
+];
+
 function resolveProgrammaticSlug(slug: string): ResolvedRoute | null {
   const maidPrefix = "maid-service-in-";
   if (slug.startsWith(maidPrefix)) {
@@ -250,7 +296,7 @@ export default async function ProgrammaticPage(props: PageProps) {
     schemaDescription = area.metaDescription;
     breadcrumbItems = [
       { name: "Home", item: homeUrl },
-      { name: "Areas", item: canonical },
+      { name: "Areas", item: homeUrl },
       { name: area.name, item: canonical },
     ];
 
@@ -277,7 +323,7 @@ export default async function ProgrammaticPage(props: PageProps) {
       trustHeading: `Why households in ${area.name} trust ${BRAND_NAME}`,
       trustHighlights,
       faqHeading: "Frequently asked questions",
-      faqItems: services[0].faq,
+      faqItems: genericAreaFaq,
       sideCtaTag: `Area hub: ${area.shortName}`,
       sideCtaTitle: `Get a maid match in ${area.name}`,
       sideCtaDescription: `Tell us your schedule and requirements. Our team will shortlist suitable options for ${area.name}.`,
@@ -329,7 +375,7 @@ export default async function ProgrammaticPage(props: PageProps) {
       trustHeading: `Why families in ${society.name} choose ${BRAND_NAME}`,
       trustHighlights,
       faqHeading: "Frequently asked questions",
-      faqItems: services[1].faq,
+      faqItems: genericSocietyFaq,
       sideCtaTag: "Society support",
       sideCtaTitle: `Need help in ${society.name}?`,
       sideCtaDescription: `Our team can recommend cleaning, cooking, childcare, and elder support options near ${society.name}.`,
