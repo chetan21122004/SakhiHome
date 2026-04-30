@@ -37,9 +37,21 @@ export function getWhatsAppHrefWithService(topic: string) {
 }
 
 export function getAbsoluteSiteUrl(path = "") {
-  const base =
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  const runtimeHost = process.env.VERCEL_URL?.trim();
+
+  const ensureProtocol = (value: string) =>
+    value.startsWith("http://") || value.startsWith("https://") ? value : `https://${value}`;
+
+  const base = configured
+    ? ensureProtocol(configured)
+    : productionHost
+      ? ensureProtocol(productionHost)
+      : runtimeHost
+        ? ensureProtocol(runtimeHost)
+        : "http://localhost:3000";
+
   const trimmed = base.replace(/\/$/, "");
   const p = path.startsWith("/") ? path : path ? `/${path}` : "";
   return `${trimmed}${p}`;
