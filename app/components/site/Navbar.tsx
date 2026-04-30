@@ -38,7 +38,7 @@ const Navbar = () => {
 
   return (
     <header className="fixed inset-x-0 top-0 z-40 overflow-visible">
-      {/* Readable backdrop — grows with navbar content */}
+      {/* Readable backdrop -grows with navbar content */}
       <div
         className={`pointer-events-none absolute inset-0 transition-all duration-500 ease-out ${
           scrolled ? "bg-dark/[0.92] backdrop-blur-xl" : "bg-gradient-to-b from-dark/95 via-dark/75 to-dark/35 backdrop-blur-md"
@@ -64,10 +64,10 @@ const Navbar = () => {
       />
 
       <nav className="container relative mx-auto flex flex-wrap items-center gap-x-3 py-1 px-4 md:flex-nowrap md:gap-4 md:px-6 ">
-        {/* Logo — both marks visible on mobile; sizes follow content */}
+        {/* Logo -both marks visible on mobile; sizes follow content */}
         <a
           href={homeSection("top")}
-          aria-label="SakhiHome — home"
+          aria-label="SakhiHome -home"
           className="flex min-w-0 flex-1 items-center gap-2 sm:gap-2.5 md:flex-initial md:max-w-none"
         >
           <img
@@ -82,7 +82,7 @@ const Navbar = () => {
           />
         </a>
 
-        {/* Center rail — high-contrast glass */}
+        {/* Center rail -high-contrast glass */}
         <ul className="order-last hidden min-w-0 flex-[100%] justify-center md:order-none md:flex md:flex-1 md:justify-center">
           <li className="flex max-w-full rounded-full border border-white/25 bg-dark/50 px-0.5 py-0.5 shadow-[0_8px_32px_-12px_rgba(0,0,0,0.65),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-xl">
             {links.map((l) => (

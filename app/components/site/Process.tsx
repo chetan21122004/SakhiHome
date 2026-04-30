@@ -63,7 +63,7 @@ const Process = () => {
             <h2 className="mt-4 font-display text-3xl md:text-5xl font-extrabold text-dark-foreground text-balance">
               Simple & <span className="text-gradient-brand">quick</span> process
             </h2>
-            <p className="mt-4 text-lg text-dark-muted max-w-xl mx-auto md:mx-0">From enquiry to confirmed maid — usually within a day.</p>
+            <p className="mt-4 text-lg text-dark-muted max-w-xl mx-auto md:mx-0">From enquiry to confirmed maid -usually within a day.</p>
           </div>
           <div className="hidden md:flex justify-end">
             <img src={cookingDoodle} alt="Illustration of at-home cooking support for Pune families" className="w-64 lg:w-80 object-contain drop-shadow-xl animate-float" />

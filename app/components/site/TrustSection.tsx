@@ -31,14 +31,14 @@ const MobileTrust = () => (
         <span className="block">run with care</span>
       </p>
       <p className="mt-3 text-[13.5px] leading-relaxed text-white/65">
-        Not a faceless app — your local maid partner in Hinjewadi.
+        Not a faceless app -your local maid partner in Hinjewadi.
       </p>
 
       {/* Hairline */}
       <div className="mt-7 h-px w-full bg-gradient-to-r from-transparent via-white/15 to-transparent" />
     </div>
 
-    {/* Trust cards — single column stack */}
+    {/* Trust cards -single column stack */}
     <div className="mx-auto mt-6 grid max-w-[26rem] grid-cols-1 gap-3">
       {items.map(({ icon: Icon, num, title }) => (
         <div
@@ -86,7 +86,7 @@ const TrustSection = () => {
       <div className="absolute inset-0 bg-grid-light opacity-[0.06] pointer-events-none" aria-hidden />
 
       <div className="container relative mx-auto px-4 md:px-6">
-        {/* Desktop / tablet layout (md+) — preserved exactly */}
+        {/* Desktop / tablet layout (md+) -preserved exactly */}
         <div className="hidden md:block">
           <div className="grid md:grid-cols-[auto_1fr] gap-8 items-center mb-16 max-w-5xl mx-auto text-center md:text-left">
             <div className="hidden md:flex justify-start">
@@ -132,7 +132,7 @@ const TrustSection = () => {
         </div>
         {/* /Desktop / tablet layout */}
 
-        {/* Mobile layout (<md) — minimal premium */}
+        {/* Mobile layout (<md) -minimal premium */}
         <MobileTrust />
         {/* /Mobile layout */}
       </div>

@@ -156,12 +156,12 @@ const EnquirySection = () => {
             Tell us what your <span className="text-gradient-brand">home needs</span>
           </h2>
           <p className="mt-3 md:mt-5 text-sm sm:text-base md:text-lg text-foreground/70 leading-relaxed">
-            Share a few details and our team will match you with the right maid — usually within hours.
+            Share a few details and our team will match you with the right maid -usually within hours.
           </p>
         </div>
 
         <div className="grid lg:grid-cols-[1fr_1.4fr] gap-5 md:gap-8 items-stretch max-w-6xl mx-auto">
-          {/* Left — trust panel */}
+          {/* Left -trust panel */}
           <aside className="order-2 lg:order-1 relative overflow-hidden rounded-3xl md:rounded-[2rem] bg-gradient-dark-radial p-5 sm:p-6 md:p-10 text-dark-foreground shadow-elevated">
             <div className="absolute inset-0 bg-grid-light opacity-20" aria-hidden />
             <div
@@ -228,7 +228,7 @@ const EnquirySection = () => {
             </div>
           </aside>
 
-          {/* Right — form card */}
+          {/* Right -form card */}
           <div className="order-1 lg:order-2 relative rounded-3xl md:rounded-[2rem] bg-card border border-border shadow-card p-4 sm:p-5 md:p-10">
             {submitted ? (
               <div className="flex flex-col items-center text-center py-8 md:py-10">
@@ -376,7 +376,7 @@ const EnquirySection = () => {
                   <div>
                     <p className="text-sm font-medium text-primary-deep">When do you need the maid?</p>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      Daily window you need help at home — approximate times are fine.
+                      Daily window you need help at home -approximate times are fine.
                     </p>
                   </div>
                   <div className="grid sm:grid-cols-2 gap-3.5 md:gap-4">

@@ -23,7 +23,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 195 50% 8%;
 
-    /* Brand teal — anchored at #2A9D8F */
+    /* Brand teal -anchored at #2A9D8F */
     --primary: 173 58% 39%;
     --primary-foreground: 36 40% 97%;
     --primary-glow: 173 58% 50%;
@@ -153,7 +153,7 @@
   .bg-gradient-light { background: var(--gradient-light); }
   .bg-gradient-soft { background: var(--gradient-soft); }
 
-  /* Gradient text — the brand magic */
+  /* Gradient text -the brand magic */
   .text-gradient-brand {
     background: var(--gradient-brand);
     -webkit-background-clip: text;

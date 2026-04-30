@@ -15,7 +15,7 @@ const VIDEOS = [bg1, bg2, bg3];
 const MobileHero = () => (
   <div className="md:hidden animate-fade-up">
     <div className="mx-auto max-w-[26rem]">
-      {/* Eyebrow — locality + rating */}
+      {/* Eyebrow -locality + rating */}
       <div className="flex items-center justify-center gap-2">
         <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.05] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/75">
           <MapPin className="h-3 w-3 text-accent" />
@@ -39,7 +39,7 @@ const MobileHero = () => (
           />
           <img
             src={`/assets/${logo}`}
-            alt="SakhiHome — Trusted Maid Services in Hinjewadi"
+            alt="SakhiHome -Trusted Maid Services in Hinjewadi"
             className="relative h-48 w-48 object-contain drop-shadow-[0_14px_34px_rgba(0,0,0,0.55)]"
           />
         </div>
@@ -66,10 +66,10 @@ const MobileHero = () => (
       <p className="mt-5 text-[13.5px] leading-relaxed text-white/70">
         A network of{" "}
         <span className="font-semibold text-white">500+ background-verified maids</span>
-        {" "}— matched to your home in hours.
+        {" "}-matched to your home in hours.
       </p>
 
-      {/* CTA row — side-by-side */}
+      {/* CTA row -side-by-side */}
       <div className="mt-6 grid grid-cols-2 gap-3">
         <Button
           variant="hero"
@@ -94,7 +94,7 @@ const MobileHero = () => (
         </Button>
       </div>
 
-      {/* Meta strip — minimal hairline row */}
+      {/* Meta strip -minimal hairline row */}
       <div className="mt-7 grid grid-cols-3 divide-x divide-white/10 rounded-2xl border border-white/10 bg-white/[0.03] py-3 text-center">
         {[
           { icon: ShieldCheck, label: "Verified" },
@@ -220,10 +220,10 @@ const Hero = () => {
         <h1 className="sr-only">
           Trusted maids in Hinjewadi, Pune for cleaning, cooking, babysitting, elder care, and full-time domestic help
         </h1>
-        {/* Desktop / tablet layout (md+) — preserved exactly */}
+        {/* Desktop / tablet layout (md+) -preserved exactly */}
         <div className="hidden md:block">
         <div className="grid lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-16 items-center">
-          {/* Left — content */}
+          {/* Left -content */}
           <div className="text-center lg:text-left animate-fade-up">
             {/* Status pill */}
             <div className="inline-flex items-center gap-2 rounded-full glass-strong px-4 py-2 text-xs font-semibold text-white border border-white/15 shadow-elevated">
@@ -252,7 +252,7 @@ const Hero = () => {
             <p className="mt-5 text-base md:text-lg text-white/80 max-w-xl mx-auto lg:mx-0 leading-relaxed">
               Tap into a network of{" "}
               <span className="font-bold text-accent">500+ background-verified maids</span>{" "}
-              for cleaning, cooking, babysitting and full-time domestic help — matched to your home in hours, not days.
+              for cleaning, cooking, babysitting and full-time domestic help -matched to your home in hours, not days.
             </p>
 
             {/* CTAs */}
@@ -296,7 +296,7 @@ const Hero = () => {
             </p>
           </div>
 
-          {/* Right — big logo */}
+          {/* Right -big logo */}
           <div className="relative flex justify-center lg:justify-end">
             <div className="relative">
               {/* Halo rings */}
@@ -306,7 +306,7 @@ const Hero = () => {
 
               <img
                 src={`/assets/${logo}`}
-                alt="SakhiHome — Trusted Maid Services in Hinjewadi"
+                alt="SakhiHome -Trusted Maid Services in Hinjewadi"
                 className="relative w-full max-w-md lg:max-w-lg mx-auto animate-float drop-shadow-2xl"
               />
 
@@ -336,7 +336,7 @@ const Hero = () => {
         </div>
         {/* /Desktop / tablet layout */}
 
-        {/* Mobile layout (<md) — minimal, clean, professional */}
+        {/* Mobile layout (<md) -minimal, clean, professional */}
         <MobileHero />
         {/* /Mobile layout */}
       </div>

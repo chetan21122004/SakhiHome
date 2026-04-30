@@ -30,14 +30,14 @@ const MobileServices = () => (
         Everything your <span className="text-gradient-brand">home</span> needs
       </p>
       <p className="mt-3 text-[13.5px] leading-relaxed text-foreground/65">
-        From a quick clean to a full-time helper — one trusted partner for every corner.
+        From a quick clean to a full-time helper -one trusted partner for every corner.
       </p>
 
       {/* Hairline */}
       <div className="mt-6 h-px w-full bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
     </div>
 
-    {/* Mobile service cards — single column */}
+    {/* Mobile service cards -single column */}
     <div className="mx-auto mt-5 grid max-w-[26rem] grid-cols-1 gap-3">
       {services.map(({ iconKey, title, slug, tag, mobileSummary }) => {
         const Icon = iconByKey[iconKey];
@@ -102,7 +102,7 @@ const Services = () => {
 
 
       <div className="container relative mx-auto px-4 md:px-6">
-        {/* Desktop / tablet layout (md+) — preserved exactly */}
+        {/* Desktop / tablet layout (md+) -preserved exactly */}
         <div className="hidden md:block">
         <div className="grid md:grid-cols-[1fr_auto] gap-8 items-center mb-16 max-w-5xl mx-auto text-center md:text-left">
           <div>
@@ -205,7 +205,7 @@ const Services = () => {
         </div>
         {/* /Desktop / tablet layout */}
 
-        {/* Mobile layout (<md) — minimal premium */}
+        {/* Mobile layout (<md) -minimal premium */}
         <MobileServices />
         {/* /Mobile layout */}
       </div>

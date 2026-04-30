@@ -13,7 +13,7 @@ function pseudoRandom(seed: number) {
   return x / 4294967296;
 }
 
-/** Subtle glowing particles for dark sections — matches the logo stars ✨ */
+/** Subtle glowing particles for dark sections -matches the logo stars ✨ */
 const Sparkles = ({ count = 18, className = "" }: SparklesProps) => {
   const sparkles = useMemo(
     () =>

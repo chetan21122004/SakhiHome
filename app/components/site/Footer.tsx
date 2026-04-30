@@ -72,7 +72,7 @@ const Footer = () => {
               </a>
               <p className="relative mt-6 max-w-md text-sm leading-relaxed text-dark-muted">
                 Trusted maid services across <span className="font-semibold text-dark-foreground/90">Hinjewadi IT Park</span>{" "}
-                and Pune west — fast matching, verified help, human support.
+                and Pune west -fast matching, verified help, human support.
               </p>
               <div className="relative mt-6 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-accent">
                 <span className="relative flex h-2 w-2">

@@ -8,7 +8,7 @@ const items = [
   {
     name: "Priya S.",
     location: "Megapolis, Hinjewadi Phase 3",
-    text: "Found a wonderful cooking maid through SakhiHome within 2 days. She's been with us for months now — reliable and warm.",
+    text: "Found a wonderful cooking maid through SakhiHome within 2 days. She's been with us for months now -reliable and warm.",
   },
   {
     name: "Rahul M.",

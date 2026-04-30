@@ -34,7 +34,7 @@ export const AREAS: readonly AreaRecord[] = [
     slug: "hinjewadi-phase-1",
     shortName: "Phase 1",
     description:
-      "Rajiv Gandhi Infotech Park core area and adjoining residential societies — the beating heart of Pune's IT corridor.",
+      "Rajiv Gandhi Infotech Park core area and adjoining residential societies -the beating heart of Pune's IT corridor.",
     landmark: "Rajiv Gandhi Infotech Park Gate 1",
     pincode: "411057",
     nearbyMicroLocalities: ["Nande", "Hinjewadi Village", "Kate Wasti", "Kemse Vasti"],
@@ -60,7 +60,7 @@ export const AREAS: readonly AreaRecord[] = [
     slug: "hinjewadi-phase-2",
     shortName: "Phase 2",
     description:
-      "Home to Infosys, Wipro and large IT campuses with dense residential society clusters — thousands of working families nearby.",
+      "Home to Infosys, Wipro and large IT campuses with dense residential society clusters -thousands of working families nearby.",
     landmark: "Infosys Pune Development Centre",
     pincode: "411057",
     nearbyMicroLocalities: ["Maan", "Mahalunge", "Hinjewadi Phase 2 Hill"],
@@ -83,13 +83,13 @@ export const AREAS: readonly AreaRecord[] = [
     slug: "hinjewadi-phase-3",
     shortName: "Phase 3",
     description:
-      "Blue Ridge Township, Life Republic and an expanding residential belt — one of the largest IT-adjacent communities in Pune west.",
+      "Blue Ridge Township, Life Republic and an expanding residential belt -one of the largest IT-adjacent communities in Pune west.",
     landmark: "Blue Ridge Township",
     pincode: "411057",
     nearbyMicroLocalities: ["Sus", "Marunji Road", "Hinjewadi Maan Phase 3"],
     seoTitle: "Maid Service in Hinjewadi Phase 3 | Blue Ridge & Life Republic - SakhiHome",
     metaDescription:
-      "Trusted maid services in Hinjewadi Phase 3 — Blue Ridge, Life Republic & nearby societies. 500+ verified maids matched within hours. SakhiHome.",
+      "Trusted maid services in Hinjewadi Phase 3 -Blue Ridge, Life Republic & nearby societies. 500+ verified maids matched within hours. SakhiHome.",
     searchVolumeTier: "high",
     societies: [
       { name: "Blue Ridge Township", slug: "blue-ridge-township-hinjewadi" },
@@ -107,7 +107,7 @@ export const AREAS: readonly AreaRecord[] = [
     slug: "megapolis-hinjewadi",
     shortName: "Megapolis",
     description:
-      "Megapolis Splendour, Sparklet and the surrounding township — one of Pune's most densely populated IT-adjacent residential clusters.",
+      "Megapolis Splendour, Sparklet and the surrounding township -one of Pune's most densely populated IT-adjacent residential clusters.",
     landmark: "Megapolis Splendour Tower",
     pincode: "411057",
     nearbyMicroLocalities: ["Godambewadi", "Hinjewadi Phase 3 corridor"],
@@ -128,7 +128,7 @@ export const AREAS: readonly AreaRecord[] = [
     slug: "wakad",
     shortName: "Wakad",
     description:
-      "Highway belt and residential hubs with fast IT Park access — one of Pune west's fastest-growing localities for working professionals.",
+      "Highway belt and residential hubs with fast IT Park access -one of Pune west's fastest-growing localities for working professionals.",
     landmark: "Wakad Chowk",
     pincode: "411057",
     nearbyMicroLocalities: ["Tathawade", "Dange Chowk", "Pimple Saudagar"],
@@ -152,7 +152,7 @@ export const AREAS: readonly AreaRecord[] = [
     slug: "bhumkar-chowk",
     shortName: "Bhumkar Chowk",
     description:
-      "Junction area linking Wakad to Hinjewadi with rapidly growing residential societies — a key transit point for IT Park commuters.",
+      "Junction area linking Wakad to Hinjewadi with rapidly growing residential societies -a key transit point for IT Park commuters.",
     landmark: "Bhumkar Chowk Junction",
     pincode: "411033",
     nearbyMicroLocalities: ["Bhumkar Nagar", "Wakadkar Wasti", "Hinjewadi Road"],
@@ -174,7 +174,7 @@ export const AREAS: readonly AreaRecord[] = [
     slug: "baner",
     shortName: "Baner",
     description:
-      "Established residential neighbourhood a short drive from Hinjewadi IT Park — popular with senior IT professionals and families.",
+      "Established residential neighbourhood a short drive from Hinjewadi IT Park -popular with senior IT professionals and families.",
     landmark: "Baner Road",
     pincode: "411045",
     nearbyMicroLocalities: ["Balewadi", "Aundh", "Pashan", "Sus Road"],
@@ -198,7 +198,7 @@ export const AREAS: readonly AreaRecord[] = [
     slug: "marunji",
     shortName: "Marunji",
     description:
-      "Fast-growing locality near Sus and Hinjewadi corridors — increasing residential density as IT Park families move outward.",
+      "Fast-growing locality near Sus and Hinjewadi corridors -increasing residential density as IT Park families move outward.",
     landmark: "Marunji Village Road",
     pincode: "412115",
     nearbyMicroLocalities: ["Sus", "Kasarsai Road", "Hinjewadi Phase 3 border"],

@@ -83,9 +83,9 @@ export const services: readonly ServiceRecord[] = [
     headline: "Professional House Cleaning in Hinjewadi, Pune",
     metaTitle: "House Cleaning Service in Hinjewadi, Pune | SakhiHome",
     metaDescription:
-      "Trusted house cleaning maids in Hinjewadi and Pune west — sweeping, mopping, kitchens & baths. Daily or alternate schedules with SakhiHome.",
+      "Trusted house cleaning maids in Hinjewadi and Pune west -sweeping, mopping, kitchens & baths. Daily or alternate schedules with SakhiHome.",
     longDescription:
-      "Keep floors, surfaces, kitchens, and bathrooms fresh without the daily grind. Our house cleaning bookings match you with reliable maids suited to your Pune home routine — whether you need sweeping, deep mopping, or regular upkeep on a cadence that works for your family.",
+      "Keep floors, surfaces, kitchens, and bathrooms fresh without the daily grind. Our house cleaning bookings match you with reliable maids suited to your Pune home routine -whether you need sweeping, deep mopping, or regular upkeep on a cadence that works for your family.",
     faq: [
       {
         question: "How often can I book house cleaning?",
@@ -95,7 +95,7 @@ export const services: readonly ServiceRecord[] = [
       {
         question: "What areas do you clean?",
         answer:
-          "Typically living areas, kitchens, bathrooms, balconies, and common surfaces — we align scope during booking based on home size and your priorities.",
+          "Typically living areas, kitchens, bathrooms, balconies, and common surfaces -we align scope during booking based on home size and your priorities.",
       },
       {
         question: "Do you supply cleaning materials?",
@@ -105,7 +105,7 @@ export const services: readonly ServiceRecord[] = [
       {
         question: "Are cleaners verified?",
         answer:
-          "Yes — SakhiHome focuses on vetted placements and continuity so you speak to the same household context every time.",
+          "Yes -SakhiHome focuses on vetted placements and continuity so you speak to the same household context every time.",
       },
     ],
   },
@@ -123,19 +123,19 @@ export const services: readonly ServiceRecord[] = [
     headline: "Home-Cooked Meals & Cooking Help in Hinjewadi, Pune",
     metaTitle: "Cook Maid & Home Meals in Hinjewadi, Pune | SakhiHome",
     metaDescription:
-      "Hire skilled cooking maids in Hinjewadi and Pune west for daily meals — veg/non-veg, regional menus, allergies and preferences matched.",
+      "Hire skilled cooking maids in Hinjewadi and Pune west for daily meals -veg/non-veg, regional menus, allergies and preferences matched.",
     longDescription:
-      "Nutritious, home-style food should match your family's preferences. We help you find cooking support in Pune for daily lunches and dinners — from Maharashtra classics to veg, non-veg, and speciality diets.",
+      "Nutritious, home-style food should match your family's preferences. We help you find cooking support in Pune for daily lunches and dinners -from Maharashtra classics to veg, non-veg, and speciality diets.",
     faq: [
       {
         question: "Can the cook adapt to allergies or Jain meals?",
         answer:
-          "Yes — dietary notes and regional preferences can be documented up front when you send an enquiry.",
+          "Yes -dietary notes and regional preferences can be documented up front when you send an enquiry.",
       },
       {
         question: "Is grocery shopping included?",
         answer:
-          "Scope varies — some placements include errands; we confirm errands, timings, and kitchen workflow during onboarding.",
+          "Scope varies -some placements include errands; we confirm errands, timings, and kitchen workflow during onboarding.",
       },
       {
         question: "Breakfast, lunch, and dinner?",
@@ -158,14 +158,14 @@ export const services: readonly ServiceRecord[] = [
     headline: "Babysitting & Child Care at Home in Hinjewadi, Pune",
     metaTitle: "Babysitting & Infant Care in Hinjewadi, Pune | SakhiHome",
     metaDescription:
-      "Trusted babysitting help for infants and toddlers in Hinjewadi and Pune west — daytime care, newborn routines, supervised play, and gentle handovers.",
+      "Trusted babysitting help for infants and toddlers in Hinjewadi and Pune west -daytime care, newborn routines, supervised play, and gentle handovers.",
     longDescription:
       "Peace of mind matters when juggling work-school routines. SakhiHome connects Pune families with trained babysitters for supervised care, newborn-friendly routines, and calm transitions while you're at meetings or errands.",
     faq: [
       {
         question: "What ages do you cover?",
         answer:
-          "Newborns through school-age childcare — timelines and duties are matched when you enquire (feeding support, diapering naps, play).",
+          "Newborns through school-age childcare -timelines and duties are matched when you enquire (feeding support, diapering naps, play).",
       },
       {
         question: "Night vs daytime sits?",
@@ -180,7 +180,7 @@ export const services: readonly ServiceRecord[] = [
       {
         question: "Trial half-days?",
         answer:
-          "Yes — short trial windows help align routines before committing weekly.",
+          "Yes -short trial windows help align routines before committing weekly.",
       },
     ],
   },
@@ -193,9 +193,9 @@ export const services: readonly ServiceRecord[] = [
     headline: "Elder Care Assistants & Companions in Hinjewadi, Pune",
     metaTitle: "Elder Care Help at Home in Hinjewadi, Pune | SakhiHome",
     metaDescription:
-      "Compassionate elder care helpers in Hinjewadi and Pune west — mobility support, daily routines, reminders, and companionship.",
+      "Compassionate elder care helpers in Hinjewadi and Pune west -mobility support, daily routines, reminders, and companionship.",
     longDescription:
-      "Supporting parents or elders at home blends patience with practicality. Elder care placements emphasise respectful assistance — mobility cues, housekeeping around medical routines, hydration nudges, and friendly companionship that keeps spirits high.",
+      "Supporting parents or elders at home blends patience with practicality. Elder care placements emphasise respectful assistance -mobility cues, housekeeping around medical routines, hydration nudges, and friendly companionship that keeps spirits high.",
     faq: [
       {
         question: "Clinical tasks vs housekeeping?",
@@ -205,12 +205,12 @@ export const services: readonly ServiceRecord[] = [
       {
         question: "Can someone live-in?",
         answer:
-          "Live-in rotations can be explored where families need nighttime presence — schedule details clarified at enquiry.",
+          "Live-in rotations can be explored where families need nighttime presence -schedule details clarified at enquiry.",
       },
       {
         question: "How do carers handle medications?",
         answer:
-          "We recommend pill organisers and carers offer reminder prompts — dosing decisions remain medical/family-directed.",
+          "We recommend pill organisers and carers offer reminder prompts -dosing decisions remain medical/family-directed.",
       },
       {
         question: "Emergency protocols?",
@@ -228,9 +228,9 @@ export const services: readonly ServiceRecord[] = [
     headline: "Full-Time Maid Services in Hinjewadi, Pune Households",
     metaTitle: "Full-Time Maid Service in Hinjewadi, Pune | SakhiHome",
     metaDescription:
-      "Hire full-time domestic help in Hinjewadi and Pune west — 8–12 hour shifts or live-in, cleaning, errands, and multitask support.",
+      "Hire full-time domestic help in Hinjewadi and Pune west -8–12 hour shifts or live-in, cleaning, errands, and multitask support.",
     longDescription:
-      "Heavy weeks call for dependable full-time maid coverage — cleaning rotations, ironing, errands, groceries, vendor coordination — whatever keeps your Pune floor running smoother. Discuss shift length vs live-in with our team upfront.",
+      "Heavy weeks call for dependable full-time maid coverage -cleaning rotations, ironing, errands, groceries, vendor coordination -whatever keeps your Pune floor running smoother. Discuss shift length vs live-in with our team upfront.",
     faq: [
       {
         question: "What hours count as full-time?",
@@ -250,7 +250,7 @@ export const services: readonly ServiceRecord[] = [
       {
         question: "Can tasks rotate weekly?",
         answer:
-          "Yes — create a rolling chore slate so Mondays focus on wardrobes, Tuesdays on balcony scrubs — whatever matters.",
+          "Yes -create a rolling chore slate so Mondays focus on wardrobes, Tuesdays on balcony scrubs -whatever matters.",
       },
     ],
   },
@@ -264,23 +264,23 @@ export const services: readonly ServiceRecord[] = [
       "Choose tasks & timing",
       "Perfect for working families",
     ],
-    mobileSummary: "Flexible 1–3 hr visits — choose your timing.",
+    mobileSummary: "Flexible 1–3 hr visits -choose your timing.",
     headline: "Part-Time Maid Help for Busy Hinjewadi, Pune Families",
     metaTitle: "Part-Time Maid Service in Hinjewadi, Pune | SakhiHome",
     metaDescription:
-      "Flexible 1–3 hour maid visits in Hinjewadi and Pune west — weekday slots and focused tasks for working professionals.",
+      "Flexible 1–3 hour maid visits in Hinjewadi and Pune west -weekday slots and focused tasks for working professionals.",
     longDescription:
-      "Not every chore needs eight hours — sometimes you simply need ninety focused minutes folding laundry before the school bus returns. SakhiHome lines up part-time maids tuned to weekday windows.",
+      "Not every chore needs eight hours -sometimes you simply need ninety focused minutes folding laundry before the school bus returns. SakhiHome lines up part-time maids tuned to weekday windows.",
     faq: [
       {
         question: "Minimum visit length?",
         answer:
-          "Most micro visits run 90–180 minutes depending on locality and scope — enquire for micro-slots.",
+          "Most micro visits run 90–180 minutes depending on locality and scope -enquire for micro-slots.",
       },
       {
         question: "Can I stack multiple micro tasks?",
         answer:
-          "Yes — ironing + kitchen wipe-down + organising dry balcony plants in one swoop.",
+          "Yes -ironing + kitchen wipe-down + organising dry balcony plants in one swoop.",
       },
       {
         question: "Work-from-home friendly timing?",
@@ -290,7 +290,7 @@ export const services: readonly ServiceRecord[] = [
       {
         question: "Holiday coverage?",
         answer:
-          "Festivals may affect availability — enquire early near Diwali/long weekends.",
+          "Festivals may affect availability -enquire early near Diwali/long weekends.",
       },
     ],
   },

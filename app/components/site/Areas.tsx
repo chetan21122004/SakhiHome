@@ -41,7 +41,7 @@ const Areas = () => {
             Serving <span className="text-gradient-brand">Hinjewadi</span> & nearby areas
           </h2>
           <p className="mt-4 md:mt-5 text-base sm:text-lg md:text-xl text-white/60 leading-relaxed">
-            Hinjewadi IT Park plus Wakad, Baner, Marunji & Bhumkar Chowk — local coverage keeps service fast & reliable.
+            Hinjewadi IT Park plus Wakad, Baner, Marunji & Bhumkar Chowk -local coverage keeps service fast & reliable.
           </p>
         </div>
 

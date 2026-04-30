@@ -4,6 +4,7 @@ import "./globals.css";
 import { getAbsoluteSiteUrl } from "@/lib/services";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
+import BottomNav from "@/app/components/site/BottomNav";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     template: `%s | SakhiHome`,
   },
   description:
-    "Verified maids & home help in Pune: house cleaning, cooking, babysitting, elder care & full‑ or part‑time placements. SakhiHome — book trusted helpers today.",
+    "Verified maids & home help in Pune: house cleaning, cooking, babysitting, elder care & full‑ or part‑time placements. SakhiHome -book trusted helpers today.",
   openGraph: {
     type: "website",
     locale: "en_IN",
@@ -47,8 +48,9 @@ export default function RootLayout({
       lang="en"
       className={cn("h-full", "antialiased", "font-sans", inter.variable)}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col pb-[calc(env(safe-area-inset-bottom)+4.5rem)] md:pb-0">
         {children}
+        <BottomNav />
         <Toaster richColors position="top-center" />
       </body>
     </html>
