@@ -98,7 +98,7 @@ const Footer = () => {
                       href={`/services/${s.slug}`}
                       className="group flex items-center justify-between gap-2 rounded-xl py-2 pl-1 pr-2 text-sm text-dark-muted transition-smooth hover:bg-white/[0.04] hover:text-dark-foreground"
                     >
-                      <span>{s.title}</span>
+                      <span>{s.title} in Pune</span>
                       <ArrowUpRight className="h-4 w-4 shrink-0 opacity-0 transition-smooth group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
                     </a>
                   </li>

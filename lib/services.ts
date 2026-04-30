@@ -29,6 +29,7 @@ export const WHATSAPP =
 
 export const BRAND_NAME = "SakhiHome";
 export const AREA_SERVED_CITY = "Pune";
+export const AREA_SERVED_LOCALITY = "Hinjewadi IT Park";
 
 export function getWhatsAppHrefWithService(topic: string) {
   const q = encodeURIComponent(`Hi SakhiHome, I'm interested in ${topic}.`);
@@ -67,10 +68,10 @@ export const services: readonly ServiceRecord[] = [
       "Daily or alternate visits",
     ],
     mobileSummary: "Sweeping, mopping, kitchen & bathroom cleaning.",
-    headline: "Professional House Cleaning in Pune",
-    metaTitle: "House Cleaning Service Pune | SakhiHome",
+    headline: "Professional House Cleaning in Hinjewadi, Pune",
+    metaTitle: "House Cleaning Service in Hinjewadi, Pune | SakhiHome",
     metaDescription:
-      "Trusted house cleaning maids in Pune — sweeping, mopping, kitchens & baths. Daily or alternate schedules. Book verified help with SakhiHome.",
+      "Trusted house cleaning maids in Hinjewadi and Pune west — sweeping, mopping, kitchens & baths. Daily or alternate schedules with SakhiHome.",
     longDescription:
       "Keep floors, surfaces, kitchens, and bathrooms fresh without the daily grind. Our house cleaning bookings match you with reliable maids suited to your Pune home routine — whether you need sweeping, deep mopping, or regular upkeep on a cadence that works for your family.",
     faq: [
@@ -107,10 +108,10 @@ export const services: readonly ServiceRecord[] = [
       "Veg, non-veg, regional cuisines",
     ],
     mobileSummary: "Home-style meals, custom menu, any cuisine.",
-    headline: "Home-Cooked Meals & Cooking Help in Pune",
-    metaTitle: "Cook Maid & Home Meals Pune | SakhiHome",
+    headline: "Home-Cooked Meals & Cooking Help in Hinjewadi, Pune",
+    metaTitle: "Cook Maid & Home Meals in Hinjewadi, Pune | SakhiHome",
     metaDescription:
-      "Hire skilled cooking maids in Pune for daily meals — veg/non-veg, regional menus, allergies & preferences matched. Enquire via SakhiHome.",
+      "Hire skilled cooking maids in Hinjewadi and Pune west for daily meals — veg/non-veg, regional menus, allergies and preferences matched.",
     longDescription:
       "Nutritious, home-style food should match your family's preferences. We help you find cooking support in Pune for daily lunches and dinners — from Maharashtra classics to veg, non-veg, and speciality diets.",
     faq: [
@@ -142,10 +143,10 @@ export const services: readonly ServiceRecord[] = [
     title: "Babysitting",
     points: ["Newborn & infant care", "Daytime supervision", "Trained, gentle caretakers"],
     mobileSummary: "Trained caretakers for infants & daytime care.",
-    headline: "Babysitting & Child Care at Home in Pune",
-    metaTitle: "Babysitting & Infant Care Pune | SakhiHome",
+    headline: "Babysitting & Child Care at Home in Hinjewadi, Pune",
+    metaTitle: "Babysitting & Infant Care in Hinjewadi, Pune | SakhiHome",
     metaDescription:
-      "Trusted babysitting help for infants and toddlers in Pune — daytime care, newborn routines, supervised play & gentle handovers.",
+      "Trusted babysitting help for infants and toddlers in Hinjewadi and Pune west — daytime care, newborn routines, supervised play, and gentle handovers.",
     longDescription:
       "Peace of mind matters when juggling work-school routines. SakhiHome connects Pune families with trained babysitters for supervised care, newborn-friendly routines, and calm transitions while you're at meetings or errands.",
     faq: [
@@ -177,10 +178,10 @@ export const services: readonly ServiceRecord[] = [
     title: "Elder Care",
     points: ["Daily assistance & mobility help", "Companionship", "Medication reminders"],
     mobileSummary: "Daily assistance, mobility help & companionship.",
-    headline: "Elder Care Assistants & Companions in Pune",
-    metaTitle: "Elder Care Help at Home Pune | SakhiHome",
+    headline: "Elder Care Assistants & Companions in Hinjewadi, Pune",
+    metaTitle: "Elder Care Help at Home in Hinjewadi, Pune | SakhiHome",
     metaDescription:
-      "Compassionate elder care helpers in Pune — mobility support, daily routines, reminders, companionship. Book discreet home assistance.",
+      "Compassionate elder care helpers in Hinjewadi and Pune west — mobility support, daily routines, reminders, and companionship.",
     longDescription:
       "Supporting parents or elders at home blends patience with practicality. Elder care placements emphasise respectful assistance — mobility cues, housekeeping around medical routines, hydration nudges, and friendly companionship that keeps spirits high.",
     faq: [
@@ -212,10 +213,10 @@ export const services: readonly ServiceRecord[] = [
     title: "Full-Time Maid",
     points: ["8–12 hour shifts", "Live-in option available", "All-round household help"],
     mobileSummary: "8–12 hr shifts with live-in option available.",
-    headline: "Full-Time Maid Services in Pune Households",
-    metaTitle: "Full-Time Maid Service Pune | SakhiHome",
+    headline: "Full-Time Maid Services in Hinjewadi, Pune Households",
+    metaTitle: "Full-Time Maid Service in Hinjewadi, Pune | SakhiHome",
     metaDescription:
-      "Hire full-time domestic help in Pune — 8–12 hour shifts or live-in, cleaning, errands, multitask support. Transparent SakhiHome enquiries.",
+      "Hire full-time domestic help in Hinjewadi and Pune west — 8–12 hour shifts or live-in, cleaning, errands, and multitask support.",
     longDescription:
       "Heavy weeks call for dependable full-time maid coverage — cleaning rotations, ironing, errands, groceries, vendor coordination — whatever keeps your Pune floor running smoother. Discuss shift length vs live-in with our team upfront.",
     faq: [
@@ -252,10 +253,10 @@ export const services: readonly ServiceRecord[] = [
       "Perfect for working families",
     ],
     mobileSummary: "Flexible 1–3 hr visits — choose your timing.",
-    headline: "Part-Time Maid Help for Busy Pune Families",
-    metaTitle: "Part-Time Maid Service Pune | SakhiHome",
+    headline: "Part-Time Maid Help for Busy Hinjewadi, Pune Families",
+    metaTitle: "Part-Time Maid Service in Hinjewadi, Pune | SakhiHome",
     metaDescription:
-      "Flexible 1–3 hour maid visits in Pune — weekday slots, focussed tasks, swipe-right convenience for working professionals.",
+      "Flexible 1–3 hour maid visits in Hinjewadi and Pune west — weekday slots and focused tasks for working professionals.",
     longDescription:
       "Not every chore needs eight hours — sometimes you simply need ninety focused minutes folding laundry before the school bus returns. SakhiHome lines up part-time maids tuned to weekday windows.",
     faq: [

@@ -20,7 +20,7 @@ const promises = [
 
 const About = () => {
   return (
-    <section id="about" className="relative py-24 md:py-32 bg-background overflow-hidden">
+    <section id="about" className="relative py-12 bg-background overflow-hidden">
       
       {/* Subtle brand orbs */}
       <div className="absolute top-1/3 -left-32 h-[500px] w-[500px] rounded-full bg-primary/5 blur-[150px] pointer-events-none" aria-hidden />
@@ -89,7 +89,7 @@ const About = () => {
             {/* The Main Character Doodle */}
             <img 
               src={cleaningDoodle} 
-              alt="Maid Service" 
+              alt="Illustration of a home cleaning professional for Hinjewadi and Pune households" 
               className="relative z-20 w-[280px] md:w-[450px] drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)] animate-float pointer-events-none" 
               style={{ animationDuration: '5s', animationDelay: '0.5s' }}
             />

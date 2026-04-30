@@ -26,9 +26,9 @@ const MobileServices = () => (
         <Wand2 className="h-3 w-3" />
         Our Services
       </span>
-      <h2 className="mt-4 font-display text-[1.85rem] font-extrabold leading-[1.05] tracking-[-0.02em] text-primary-deep">
+      <p className="mt-4 font-display text-[1.85rem] font-extrabold leading-[1.05] tracking-[-0.02em] text-primary-deep">
         Everything your <span className="text-gradient-brand">home</span> needs
-      </h2>
+      </p>
       <p className="mt-3 text-[13.5px] leading-relaxed text-foreground/65">
         From a quick clean to a full-time helper — one trusted partner for every corner.
       </p>
@@ -54,9 +54,9 @@ const MobileServices = () => (
 
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
-                <h3 className="font-display text-[15px] font-bold leading-tight text-primary-deep truncate">
+                <p className="font-display text-[15px] font-bold leading-tight text-primary-deep truncate">
                   {title}
-                </h3>
+                </p>
                 {tag && (
                   <span className="shrink-0 rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent">
                     {tag}
@@ -77,7 +77,7 @@ const MobileServices = () => (
       <Button variant="hero" asChild className="h-12 w-full rounded-xl text-[13px] font-bold tracking-tight">
         <a href={homeSection("enquiry")}>
           <Sparkles className="h-4 w-4" />
-          Book a Maid
+          Get Maid Match
           <ArrowRight className="h-4 w-4" />
         </a>
       </Button>
@@ -118,7 +118,7 @@ const Services = () => {
             </p>
           </div>
           <div className="hidden md:flex justify-end">
-            <img src={cookingDoodle} alt="Cooking and Maid Services" className="w-64 lg:w-80 object-contain drop-shadow-xl animate-float" />
+            <img src={cookingDoodle} alt="Illustration of home cooking and domestic support services in Pune" className="w-64 lg:w-80 object-contain drop-shadow-xl animate-float" />
           </div>
         </div>
 

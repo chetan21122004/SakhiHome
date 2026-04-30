@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Phone, Sparkles as SparklesIcon } from "lucide-react";
 import Sparkles from "./Sparkles";
 import { homeSection } from "@/lib/siteNav";
+import { services } from "@/lib/services";
 
 const blobBg = "/assets/blobs/254596558522.jpg";
 
@@ -45,7 +46,7 @@ const FinalCTA = () => {
             <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
               <Button variant="hero" size="xl" asChild>
                 <a href={homeSection("enquiry")}>
-                  <SparklesIcon className="h-4 w-4" /> Send Enquiry
+                  <SparklesIcon className="h-4 w-4" /> Send Maid Enquiry
                 </a>
               </Button>
               <Button variant="whatsapp" size="xl" asChild>
@@ -53,6 +54,21 @@ const FinalCTA = () => {
                   <Phone className="h-4 w-4" /> Chat on WhatsApp
                 </a>
               </Button>
+            </div>
+
+            <div className="mt-7">
+              <p className="text-sm text-dark-muted">Popular services in Hinjewadi, Pune:</p>
+              <div className="mt-3 flex flex-wrap justify-center gap-2">
+                {services.slice(0, 4).map((service) => (
+                  <a
+                    key={service.slug}
+                    href={`/services/${service.slug}`}
+                    className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-dark-foreground/90 transition-smooth hover:border-accent/50 hover:text-accent"
+                  >
+                    {service.title} in Pune
+                  </a>
+                ))}
+              </div>
             </div>
 
             <p className="mt-6 text-sm text-dark-muted">

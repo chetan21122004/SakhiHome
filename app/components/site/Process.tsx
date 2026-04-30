@@ -10,6 +10,44 @@ const steps = [
   { icon: Headphones, title: "Ongoing Support", desc: "We're here for replacements & assistance anytime." },
 ];
 
+const MobileProcess = () => (
+  <div className="md:hidden">
+    <div className="mx-auto max-w-[26rem] text-left">
+      <span className="inline-flex rounded-full border border-white/20 bg-white/5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-accent">
+        How it works
+      </span>
+      <p className="mt-4 font-display text-[1.9rem] font-extrabold leading-[1.05] tracking-[-0.02em] text-dark-foreground">
+        Simple, <span className="text-gradient-brand">refined</span> process
+      </p>
+      <p className="mt-3 text-[13.5px] leading-relaxed text-dark-muted">
+        From enquiry to confirmed maid, each step is clear and professionally managed.
+      </p>
+    </div>
+
+    <ol className="mx-auto mt-6 max-w-[26rem] space-y-3">
+      {steps.map(({ icon: Icon, title, desc }, i) => (
+        <li key={title} className="relative rounded-2xl border border-white/12 bg-white/[0.04] p-4 backdrop-blur-md">
+          {i < steps.length - 1 && (
+            <span className="pointer-events-none absolute left-8 top-[3.2rem] h-8 w-px bg-gradient-to-b from-accent/60 to-transparent" aria-hidden />
+          )}
+          <div className="flex items-start gap-3">
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-brand text-white shadow-pop">
+              <Icon className="h-4.5 w-4.5" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between gap-2">
+                <p className="font-display text-[15px] font-bold leading-tight text-dark-foreground">{title}</p>
+                <span className="text-[11px] font-bold tabular-nums text-accent/90">0{i + 1}</span>
+              </div>
+              <p className="mt-1.5 text-[12.5px] leading-relaxed text-dark-muted">{desc}</p>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+);
+
 const Process = () => {
   return (
     <section id="process" className="relative overflow-hidden py-12 bg-gradient-dark-radial">
@@ -17,7 +55,7 @@ const Process = () => {
       <Sparkles count={14} />
 
       <div className="container mx-auto px-4 md:px-6 relative">
-        <div className="grid md:grid-cols-[1fr_auto] gap-8 items-center mb-14 max-w-5xl mx-auto text-center md:text-left">
+        <div className="hidden md:grid md:grid-cols-[1fr_auto] gap-8 items-center mb-14 max-w-5xl mx-auto text-center md:text-left">
           <div>
             <span className="inline-block rounded-full glass px-4 py-1 text-xs font-bold text-accent uppercase tracking-wider">
               How it works
@@ -28,11 +66,11 @@ const Process = () => {
             <p className="mt-4 text-lg text-dark-muted max-w-xl mx-auto md:mx-0">From enquiry to confirmed maid — usually within a day.</p>
           </div>
           <div className="hidden md:flex justify-end">
-            <img src={cookingDoodle} alt="Cooking Services" className="w-64 lg:w-80 object-contain drop-shadow-xl animate-float" />
+            <img src={cookingDoodle} alt="Illustration of at-home cooking support for Pune families" className="w-64 lg:w-80 object-contain drop-shadow-xl animate-float" />
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
           {steps.map(({ icon: Icon, title, desc }, i) => (
             <div key={title} className="relative group">
               <div className="rounded-3xl glass p-7 hover:shadow-glow-teal transition-smooth h-full hover:-translate-y-1">
@@ -55,6 +93,8 @@ const Process = () => {
             </div>
           ))}
         </div>
+
+        <MobileProcess />
       </div>
     </section>
   );

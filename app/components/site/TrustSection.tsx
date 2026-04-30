@@ -26,10 +26,10 @@ const MobileTrust = () => (
         <ShieldCheck className="h-3 w-3 text-accent" />
         Why SakhiHome
       </span>
-      <h2 className="mt-4 font-display text-[1.85rem] font-extrabold leading-[1.05] tracking-[-0.02em] text-white">
+      <p className="mt-4 font-display text-[1.85rem] font-extrabold leading-[1.05] tracking-[-0.02em] text-white">
         Built on <span className="text-gradient-brand">trust</span>,
         <span className="block">run with care</span>
-      </h2>
+      </p>
       <p className="mt-3 text-[13.5px] leading-relaxed text-white/65">
         Not a faceless app — your local maid partner in Hinjewadi.
       </p>
@@ -51,9 +51,9 @@ const MobileTrust = () => (
 
           <div className="min-w-0 flex-1">
             <div className="flex items-center justify-between gap-3">
-              <h3 className="font-display text-[15px] font-bold leading-tight text-white">
+              <p className="font-display text-[15px] font-bold leading-tight text-white">
                 {title}
-              </h3>
+              </p>
               <span className="shrink-0 rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[10px] font-bold text-accent">
                 {num}
               </span>
@@ -90,7 +90,7 @@ const TrustSection = () => {
         <div className="hidden md:block">
           <div className="grid md:grid-cols-[auto_1fr] gap-8 items-center mb-16 max-w-5xl mx-auto text-center md:text-left">
             <div className="hidden md:flex justify-start">
-              <img src={dementiaDoodle} alt="Trust and Care" className="w-64 lg:w-80 object-contain drop-shadow-xl animate-float" />
+              <img src={dementiaDoodle} alt="Illustration representing dependable maid care and family support in Hinjewadi" className="w-64 lg:w-80 object-contain drop-shadow-xl animate-float" />
             </div>
             <div>
               <span className="inline-flex items-center gap-2 rounded-full glass-strong border border-white/15 px-4 py-1.5 text-xs font-bold text-white uppercase tracking-wider">

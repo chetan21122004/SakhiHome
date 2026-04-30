@@ -115,7 +115,7 @@ const Navbar = () => {
           <Button variant="hero" size="sm" className="relative overflow-hidden shadow-glow" asChild>
             <a href={homeSection("enquiry")}>
               <span className="pointer-events-none absolute inset-0 animate-shimmer opacity-35" aria-hidden />
-              <span className="relative drop-shadow-sm">Book Maid</span>
+              <span className="relative drop-shadow-sm">Start Enquiry</span>
             </a>
           </Button>
         </div>
@@ -161,7 +161,7 @@ const Navbar = () => {
             </Button>
             <Button variant="hero" className="w-full shadow-glow" asChild>
               <a href={homeSection("enquiry")} onClick={() => setOpen(false)}>
-                Book Maid
+                Find a Maid
               </a>
             </Button>
           </div>

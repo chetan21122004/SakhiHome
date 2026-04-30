@@ -1,29 +1,41 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Clock3, MapPin, ShieldCheck } from "lucide-react";
 
 import Navbar from "@/app/components/site/Navbar";
 import Footer from "@/app/components/site/Footer";
 import StickyWhatsApp from "@/app/components/site/StickyWhatsApp";
-import { Button } from "@/components/ui/button";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import LocalProgrammaticTemplate from "@/app/components/site/LocalProgrammaticTemplate";
 
 import {
   AREA_SERVED_CITY,
+  AREA_SERVED_LOCALITY,
   BRAND_NAME,
   getAbsoluteSiteUrl,
   getServiceBySlug,
   getWhatsAppHrefWithService,
   services,
 } from "@/lib/services";
-import { homeSection } from "@/lib/siteNav";
 
 type PageProps = { params: Promise<{ slug: string }> };
+
+const doodleBySlug: Record<string, string> = {
+  "house-cleaning": "/assets/doodles/cleaning service-amico.svg",
+  "cooking-services": "/assets/doodles/Cooking-bro.svg",
+  babysitting: "/assets/doodles/cleaning service-amico.svg",
+  "elder-care": "/assets/doodles/Dementia-amico.svg",
+  "full-time-maid": "/assets/doodles/Cooking-bro.svg",
+  "part-time-maid": "/assets/doodles/cleaning service-amico.svg",
+};
+
+const blobBySlug: Record<string, string> = {
+  "house-cleaning": "/assets/blobs/color_grunge_pattern_liquidity_style_background.jpg",
+  "cooking-services": "/assets/blobs/254596558522.jpg",
+  babysitting: "/assets/blobs/063602423687.jpg",
+  "elder-care": "/assets/blobs/063602423687.jpg",
+  "full-time-maid": "/assets/blobs/254596558522.jpg",
+  "part-time-maid": "/assets/blobs/color_grunge_pattern_liquidity_style_background.jpg",
+};
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -71,6 +83,29 @@ export default async function ServiceDetailPage(props: PageProps) {
   const homeUrl = getAbsoluteSiteUrl("/");
   const whatsappHref = getWhatsAppHrefWithService(service.title);
   const businessId = `${canonical}#localbusiness`;
+  const doodleAsset = doodleBySlug[service.slug] ?? "/assets/doodles/Cooking-bro.svg";
+  const blobAsset = blobBySlug[service.slug] ?? "/assets/blobs/254596558522.jpg";
+
+  const trustHighlights = [
+    {
+      icon: ShieldCheck,
+      title: "Verified professionals",
+      description:
+        "Background-verified candidates shortlisted for your household preferences.",
+    },
+    {
+      icon: Clock3,
+      title: "Fast matching support",
+      description:
+        "Most families get relevant options quickly with a guided matching process.",
+    },
+    {
+      icon: MapPin,
+      title: `Local to ${AREA_SERVED_LOCALITY}`,
+      description:
+        "Location-aware matching helps with reliability, timing, and continuity.",
+    },
+  ];
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -91,6 +126,10 @@ export default async function ServiceDetailPage(props: PageProps) {
           "@type": "City",
           name: AREA_SERVED_CITY,
         },
+        serviceArea: {
+          "@type": "Place",
+          name: `${AREA_SERVED_LOCALITY}, ${AREA_SERVED_CITY}`,
+        },
       },
       {
         "@type": "Service",
@@ -102,6 +141,10 @@ export default async function ServiceDetailPage(props: PageProps) {
         areaServed: {
           "@type": "City",
           name: AREA_SERVED_CITY,
+        },
+        serviceArea: {
+          "@type": "Place",
+          name: `${AREA_SERVED_LOCALITY}, ${AREA_SERVED_CITY}`,
         },
         url: canonical,
       },
@@ -144,87 +187,47 @@ export default async function ServiceDetailPage(props: PageProps) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="min-h-screen bg-background flex flex-col">
         <Navbar />
         <main className="flex-1">
-          <div className="border-b bg-muted/30">
-            <div className="container mx-auto px-4 py-3 md:px-6">
-              <nav className="text-sm text-muted-foreground" aria-label="Breadcrumb">
-                <ol className="flex flex-wrap items-center gap-1">
-                  <li>
-                    <Link href="/" className="hover:text-foreground underline-offset-4 hover:underline">
-                      Home
-                    </Link>
-                  </li>
-                  <li aria-hidden className="px-1">
-                    /
-                  </li>
-                  <li>
-                    <Link href={homeSection("services")} className="hover:text-foreground underline-offset-4 hover:underline">
-                      Services
-                    </Link>
-                  </li>
-                  <li aria-hidden className="px-1">
-                    /
-                  </li>
-                  <li className="font-medium text-foreground">{service.title}</li>
-                </ol>
-              </nav>
-            </div>
-          </div>
-
-          <article className="container mx-auto max-w-3xl px-4 py-10 md:px-6 md:py-14">
-            <header className="space-y-3">
-              <p className="text-xs font-bold uppercase tracking-widest text-primary">{AREA_SERVED_CITY}</p>
-              <h1 className="font-display text-3xl font-extrabold tracking-tight text-primary-deep md:text-4xl">
-                {service.headline}
-              </h1>
-              <p className="text-lg text-foreground/75">{service.longDescription}</p>
-            </header>
-
-            <section className="mt-10" aria-labelledby="features-heading">
-              <h2 id="features-heading" className="sr-only">
-                What&apos;s included
-              </h2>
-              <ul className="space-y-3">
-                {service.points.map((p) => (
-                  <li key={p} className="flex gap-3 text-foreground/85">
-                    <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-primary" aria-hidden />
-                    <span>{p}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-
-            <section className="mt-12" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="font-display text-2xl font-bold text-primary-deep">
-                Frequently asked questions
-              </h2>
-              <Accordion type="single" collapsible className="mt-4 w-full">
-                {service.faq.map((item, i) => (
-                  <AccordionItem key={item.question} value={`faq-${i}`}>
-                    <AccordionTrigger className="text-left">{item.question}</AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground">{item.answer}</AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </section>
-
-            <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Button variant="hero" asChild className="rounded-xl px-8">
-                <a href={homeSection("enquiry")}>Book an enquiry</a>
-              </Button>
-              <Button variant="outline" asChild className="rounded-xl border-primary/25">
-                <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
-                  Chat on WhatsApp
-                </a>
-              </Button>
-              <Button variant="ghost" asChild>
-                <Link href={homeSection("services")}>All services</Link>
-              </Button>
-            </div>
-          </article>
+          <LocalProgrammaticTemplate
+            data={{
+              breadcrumb: [
+                { label: "Home", href: "/" },
+                { label: "Services", href: "/#services" },
+                { label: service.title },
+              ],
+              localityLabel: `${AREA_SERVED_LOCALITY}, ${AREA_SERVED_CITY}`,
+              h1: service.headline,
+              intro: service.longDescription,
+              highlights: service.points,
+              blobAsset,
+              doodleAsset,
+              doodleAlt: `${service.title} support illustration`,
+              visualTitle: "Professional matching support",
+              visualDescription:
+                "Share your preferred timings and household needs. Our team aligns suitable profiles from nearby localities.",
+              trustHeading: `Why families choose ${BRAND_NAME}`,
+              trustHighlights,
+              faqHeading: "Frequently asked questions",
+              faqItems: service.faq,
+              sideCtaTag: "Need help choosing?",
+              sideCtaTitle: "Talk to our local matching team",
+              sideCtaDescription: `Get recommendations based on family size, timing, and priorities in ${AREA_SERVED_LOCALITY} and nearby Pune areas.`,
+              primaryCtaLabel: `Book ${service.title}`,
+              primaryCtaHref: "/#enquiry",
+              secondaryCtaLabel: "WhatsApp for quick match",
+              secondaryCtaHref: whatsappHref,
+              relatedHeading: "Related services",
+              relatedLinks: services
+                .filter((s) => s.slug !== service.slug)
+                .map((s) => ({ href: `/services/${s.slug}`, label: s.title })),
+            }}
+          />
         </main>
         <Footer />
         <StickyWhatsApp />

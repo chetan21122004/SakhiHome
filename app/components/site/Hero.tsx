@@ -44,7 +44,7 @@ const MobileHero = () => (
           />
         </div>
 
-        <h1 className="min-w-0 flex-1 text-left font-display text-white">
+        <p className="min-w-0 flex-1 text-left font-display text-white">
           <span className="block text-[9px] font-bold uppercase tracking-[0.2em] text-white/55">
             Trusted Maids for
           </span>
@@ -56,7 +56,7 @@ const MobileHero = () => (
           <span className="mt-1 block text-[0.95rem] font-medium tracking-tight text-white/80">
             families
           </span>
-        </h1>
+        </p>
       </div>
 
       {/* Hairline */}
@@ -78,7 +78,7 @@ const MobileHero = () => (
         >
           <a href={homeSection("enquiry")}>
             <SparklesIcon className="h-4 w-4" />
-            Book Maid
+            Get Instant Match
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </a>
         </Button>
@@ -217,6 +217,9 @@ const Hero = () => {
       <div className="absolute bottom-1/4 -right-20 h-80 w-80 rounded-full bg-primary-glow/30 blur-[120px] animate-glow-pulse pointer-events-none" aria-hidden style={{ animationDelay: "1.5s" }} />
 
       <div className="container relative z-10 mx-auto px-4 md:px-6">
+        <h1 className="sr-only">
+          Trusted maids in Hinjewadi, Pune for cleaning, cooking, babysitting, elder care, and full-time domestic help
+        </h1>
         {/* Desktop / tablet layout (md+) — preserved exactly */}
         <div className="hidden md:block">
         <div className="grid lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-16 items-center">
@@ -237,14 +240,14 @@ const Hero = () => {
             </div>
 
             {/* Headline */}
-            <h1 className="mx-auto mt-6 max-w-[18ch] font-display text-3xl font-semibold leading-[1.08] tracking-[-0.015em] text-white sm:text-4xl lg:mx-0 lg:text-[3.2rem]">
+            <p className="mx-auto mt-6 max-w-[18ch] font-display text-3xl font-semibold leading-[1.08] tracking-[-0.015em] text-white sm:text-4xl lg:mx-0 lg:text-[3.2rem]">
               <span className="block text-white/85">Trusted Maids for</span>
               <span className="mt-1 block font-extrabold text-white">
                 <span className="bg-gradient-to-r from-accent via-accent-deep to-primary-glow bg-clip-text text-transparent">
                   Hinjewadi families
                 </span>
               </span>
-            </h1>
+            </p>
 
             <p className="mt-5 text-base md:text-lg text-white/80 max-w-xl mx-auto lg:mx-0 leading-relaxed">
               Tap into a network of{" "}
@@ -256,13 +259,13 @@ const Hero = () => {
             <div id="book" className="mt-6 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
               <Button variant="hero" size="xl" asChild className="group">
                 <a href={homeSection("enquiry")}>
-                  <SparklesIcon className="h-4 w-4" /> Book a Maid Now
+                  <SparklesIcon className="h-4 w-4" /> Book Maid in Hinjewadi
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </a>
               </Button>
               <Button variant="glass" size="xl" asChild>
                 <a href={WHATSAPP} target="_blank" rel="noopener noreferrer">
-                  <Phone className="h-4 w-4" /> WhatsApp Us
+                  <Phone className="h-4 w-4" /> Chat on WhatsApp
                 </a>
               </Button>
             </div>
