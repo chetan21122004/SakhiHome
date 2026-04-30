@@ -62,7 +62,7 @@ function SocietySchema({
   societySlug,
 }: {
   societyName: string;
-  area: ReturnType<typeof getSocietyBySlug>["area"];
+  area: NonNullable<ReturnType<typeof getSocietyBySlug>>["area"];
   societySlug: string;
 }) {
   const schema = {

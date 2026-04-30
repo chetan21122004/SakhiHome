@@ -154,7 +154,7 @@ export default function ServiceAreaPage({
           <span className="text-orange-500">{area.name}</span>
         </h1>
         <p className="mt-5 text-lg text-gray-600 max-w-2xl mx-auto">
-          {service.tagline ?? service.mobileSummary}. Background-verified maids
+          {service.mobileSummary}. Background-verified maids
           near {area.landmark} — matched within hours.
         </p>
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
