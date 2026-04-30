@@ -207,6 +207,15 @@
       linear-gradient(90deg, hsl(0 0% 100% / 0.04) 1px, transparent 1px);
     background-size: 50px 50px;
   }
+
+  @media (max-width: 767px) {
+    .areas-grid-overlay {
+      left: 0 !important;
+      top: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+    }
+  }
 }
 
 /* Animations */
