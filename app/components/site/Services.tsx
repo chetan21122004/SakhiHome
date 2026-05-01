@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { Sparkles, ChefHat, Baby, HeartHandshake, Home, Clock, ArrowRight, Wand2 } from "lucide-react";
+import { Sparkles, ChefHat, Baby, HeartHandshake, Home, Clock, Heart, ArrowRight, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { ServiceIconKey } from "@/lib/services";
 import { services } from "@/lib/services";
@@ -16,6 +16,7 @@ const iconByKey: Record<ServiceIconKey, LucideIcon> = {
   heartHandshake: HeartHandshake,
   home: Home,
   clock: Clock,
+  heart: Heart,
 };
 
 const MobileServices = () => (
