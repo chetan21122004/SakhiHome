@@ -45,6 +45,10 @@ const serviceVisuals: Record<string, { blob: string; doodle: string }> = {
     blob: "/assets/blobs/063602423687.jpg",
     doodle: "/assets/doodles/cleaning service-amico.svg",
   },
+  "japa-maid": {
+    blob: "/assets/blobs/063602423687.jpg",
+    doodle: "/assets/doodles/cleaning service-amico.svg",
+  },
   "elder-care": {
     blob: "/assets/blobs/063602423687.jpg",
     doodle: "/assets/doodles/Dementia-amico.svg",
@@ -184,6 +188,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
     return {
       title,
       description,
+      keywords: [...service.keywords, ...service.marathiKeywords],
       alternates: { canonical },
       openGraph: { title, description, url: canonical, siteName: BRAND_NAME, type: "website", locale: "en_IN" },
     };
@@ -232,6 +237,7 @@ export default async function ProgrammaticPage(props: PageProps) {
   let schemaDescription = "";
   let breadcrumbItems: BreadcrumbItem[] = [];
   let templateData: LocalProgrammaticTemplateData;
+  let serviceExtras: Record<string, unknown> = {};
 
   if (resolved.kind === "service-area") {
     const service = getServiceBySlug(resolved.serviceSlug);
@@ -243,6 +249,16 @@ export default async function ProgrammaticPage(props: PageProps) {
 
     schemaName = `${service.title} in ${area.name}`;
     schemaDescription = `Trusted ${service.title.toLowerCase()} support in ${area.name}, Pune.`;
+    serviceExtras = {
+      keywords: service.keywords.join(", "),
+      offers: {
+        "@type": "AggregateOffer",
+        priceCurrency: "INR",
+        priceRange: service.priceRange,
+        availability: "https://schema.org/InStock",
+        url: canonical,
+      },
+    };
     breadcrumbItems = [
       { name: "Home", item: homeUrl },
       { name: "Areas", item: getAbsoluteSiteUrl(`/maid-service-in-${area.slug}`) },
@@ -412,6 +428,7 @@ export default async function ProgrammaticPage(props: PageProps) {
         "@id": `${canonical}#service`,
         name: schemaName,
         description: schemaDescription,
+        ...serviceExtras,
         provider: { "@id": businessId },
         areaServed: {
           "@type": "City",

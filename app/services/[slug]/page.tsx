@@ -11,6 +11,7 @@ import {
   AREA_SERVED_CITY,
   AREA_SERVED_LOCALITY,
   BRAND_NAME,
+  findServiceSlugByLabel,
   getAbsoluteSiteUrl,
   getServiceBySlug,
   getWhatsAppHrefWithService,
@@ -23,6 +24,7 @@ const doodleBySlug: Record<string, string> = {
   "house-cleaning": "/assets/doodles/cleaning service-amico.svg",
   "cooking-services": "/assets/doodles/Cooking-bro.svg",
   babysitting: "/assets/doodles/cleaning service-amico.svg",
+  "japa-maid": "/assets/doodles/cleaning service-amico.svg",
   "elder-care": "/assets/doodles/Dementia-amico.svg",
   "full-time-maid": "/assets/doodles/Cooking-bro.svg",
   "part-time-maid": "/assets/doodles/cleaning service-amico.svg",
@@ -32,6 +34,7 @@ const blobBySlug: Record<string, string> = {
   "house-cleaning": "/assets/blobs/color_grunge_pattern_liquidity_style_background.jpg",
   "cooking-services": "/assets/blobs/254596558522.jpg",
   babysitting: "/assets/blobs/063602423687.jpg",
+  "japa-maid": "/assets/blobs/063602423687.jpg",
   "elder-care": "/assets/blobs/063602423687.jpg",
   "full-time-maid": "/assets/blobs/254596558522.jpg",
   "part-time-maid": "/assets/blobs/color_grunge_pattern_liquidity_style_background.jpg",
@@ -55,6 +58,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
       absolute: service.metaTitle,
     },
     description: service.metaDescription,
+    keywords: [...service.keywords, ...service.marathiKeywords],
     alternates: { canonical: url },
     openGraph: {
       type: "website",
@@ -85,6 +89,21 @@ export default async function ServiceDetailPage(props: PageProps) {
   const businessId = `${canonical}#localbusiness`;
   const doodleAsset = doodleBySlug[service.slug] ?? "/assets/doodles/Cooking-bro.svg";
   const blobAsset = blobBySlug[service.slug] ?? "/assets/blobs/254596558522.jpg";
+
+  const relatedFromSearches = service.relatedSearches
+    .map((label) => {
+      const matchedSlug = findServiceSlugByLabel(label);
+      if (!matchedSlug || matchedSlug === service.slug) return null;
+      return { href: `/services/${matchedSlug}`, label };
+    })
+    .filter((item): item is { href: string; label: string } => item !== null);
+
+  const relatedLinks =
+    relatedFromSearches.length > 0
+      ? relatedFromSearches
+      : services
+          .filter((s) => s.slug !== service.slug)
+          .map((s) => ({ href: `/services/${s.slug}`, label: s.title }));
 
   const trustHighlights = [
     {
@@ -137,6 +156,14 @@ export default async function ServiceDetailPage(props: PageProps) {
         name: service.title,
         serviceType: service.title,
         description: service.metaDescription,
+        keywords: service.keywords.join(", "),
+        offers: {
+          "@type": "AggregateOffer",
+          priceCurrency: "INR",
+          priceRange: service.priceRange,
+          availability: "https://schema.org/InStock",
+          url: canonical,
+        },
         provider: { "@id": businessId },
         areaServed: {
           "@type": "City",
@@ -217,15 +244,13 @@ export default async function ServiceDetailPage(props: PageProps) {
               faqItems: service.faq,
               sideCtaTag: "Need help choosing?",
               sideCtaTitle: "Talk to our local matching team",
-              sideCtaDescription: `Get recommendations based on family size, timing, and priorities in ${AREA_SERVED_LOCALITY} and nearby Pune areas.`,
+              sideCtaDescription: `Get recommendations based on family size, timing, and priorities in ${AREA_SERVED_LOCALITY} and nearby Pune areas. Indicative pricing: ${service.priceRange}.`,
               primaryCtaLabel: `Book ${service.title}`,
               primaryCtaHref: "/#enquiry",
               secondaryCtaLabel: "WhatsApp for quick match",
               secondaryCtaHref: whatsappHref,
               relatedHeading: "Related services",
-              relatedLinks: services
-                .filter((s) => s.slug !== service.slug)
-                .map((s) => ({ href: `/services/${s.slug}`, label: s.title })),
+              relatedLinks,
             }}
           />
         </main>

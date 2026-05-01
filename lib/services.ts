@@ -638,3 +638,10 @@ export function getServiceBySlug(slug: string): ServiceRecord | undefined {
 export function getAllServiceSlugs(): string[] {
   return services.map((s) => s.slug);
 }
+
+export function findServiceSlugByLabel(label: string): string | undefined {
+  const l = label.toLowerCase();
+  return services.find(
+    (s) => l.includes(s.slug) || l.includes(s.title.toLowerCase())
+  )?.slug;
+}
