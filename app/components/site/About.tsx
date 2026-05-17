@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Heart, MapPin, Users, Sparkles, CheckCircle2, ArrowRight } from "lucide-react";
+import { WHATSAPP } from "@/lib/contact";
+
 const cleaningDoodle = "/assets/doodles/cleaning service-amico.svg";
 const blobBg = "/assets/blobs/254596558522.jpg";
-
-const WHATSAPP = "https://wa.me/919172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
 
 const stats = [
   { icon: Users, num: "500+", label: "Maids in network" },

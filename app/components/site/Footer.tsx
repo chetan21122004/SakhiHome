@@ -1,4 +1,9 @@
 import { Phone, MessageCircle, MapPin, ArrowUpRight, Mail } from "lucide-react";
+import {
+  CONTACT_PHONE_DISPLAY_IN,
+  CONTACT_PHONE_E164,
+  WHATSAPP,
+} from "@/lib/contact";
 import { services } from "@/lib/services";
 import { homeSection } from "@/lib/siteNav";
 
@@ -78,14 +83,14 @@ const Footer = () => {
 
             <div className="grid grid-cols-2 gap-3">
               <a
-                href="tel:+919172475977"
+                href={`tel:${CONTACT_PHONE_E164}`}
                 className="flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/[0.06] px-3 py-3 text-sm font-semibold text-dark-foreground transition-smooth hover:border-accent/40 hover:text-accent"
               >
                 <Phone className="h-4 w-4" />
                 Call Now
               </a>
               <a
-                href="https://wa.me/919172475977"
+                href={WHATSAPP}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 rounded-2xl border border-primary/25 bg-primary/15 px-3 py-3 text-sm font-semibold text-dark-foreground transition-smooth hover:border-accent/40 hover:text-accent"
@@ -153,8 +158,8 @@ const Footer = () => {
                   <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white/[0.06] ring-1 ring-white/10">
                     <Phone className="h-4 w-4 text-accent" />
                   </span>
-                  <a href="tel:+919172475977" className="font-semibold hover:text-accent transition-smooth">
-                    +91 91724 75977
+                  <a href={`tel:${CONTACT_PHONE_E164}`} className="font-semibold hover:text-accent transition-smooth">
+                    {CONTACT_PHONE_DISPLAY_IN}
                   </a>
                 </li>
                 <li className="flex items-start gap-3">
@@ -195,7 +200,7 @@ const Footer = () => {
             <div className="relative overflow-hidden rounded-[2rem] border border-white/[0.1] bg-gradient-to-br from-white/[0.08] to-transparent p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_24px_80px_-40px_hsl(var(--primary)/0.35)] md:p-8">
               <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-accent/25 blur-[70px]" aria-hidden />
               <a href={homeSection("top")} className="relative inline-flex flex-col gap-4 sm:flex-row sm:items-center">
-                <img src={`/assets/${logo}`} alt="" className="h-14 w-14 shrink-0 object-contain drop-shadow-[0_0_20px_hsl(var(--accent)/0.35)]" />
+                <img src={`/assets/${logo}`} alt="" className="h-24  shrink-0 object-contain drop-shadow-[0_0_20px_hsl(var(--accent)/0.35)]" />
                 <img
                   src={`/assets/${logotext}`}
                   alt="SakhiHome Services"
@@ -270,8 +275,8 @@ const Footer = () => {
                     </span>
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-wider text-dark-muted">Call</p>
-                      <a href="tel:+919172475977" className="font-semibold hover:text-accent transition-smooth">
-                        +91 91724 75977
+                      <a href={`tel:${CONTACT_PHONE_E164}`} className="font-semibold hover:text-accent transition-smooth">
+                        {CONTACT_PHONE_DISPLAY_IN}
                       </a>
                     </div>
                   </li>
@@ -282,7 +287,7 @@ const Footer = () => {
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-wider text-dark-muted">WhatsApp</p>
                       <a
-                        href="https://wa.me/919172475977"
+                        href={WHATSAPP}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="font-semibold hover:text-accent transition-smooth"

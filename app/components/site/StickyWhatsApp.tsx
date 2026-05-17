@@ -1,4 +1,4 @@
-const WHATSAPP = "https://wa.me/919172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
+import { WHATSAPP } from "@/lib/contact";
 
 const StickyWhatsApp = () => {
   return (

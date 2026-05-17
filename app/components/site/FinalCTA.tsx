@@ -5,11 +5,10 @@ import { Phone, Sparkles as SparklesIcon } from "lucide-react";
 import Sparkles from "./Sparkles";
 import { homeSection } from "@/lib/siteNav";
 import { services } from "@/lib/services";
+import { WHATSAPP } from "@/lib/contact";
 
 const blobBg = "/assets/blobs/254596558522.jpg";
 
-
-const WHATSAPP = "https://wa.me/919172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
 
 const FinalCTA = () => {
   return (

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { homeSection } from "@/lib/siteNav";
+import { WHATSAPP } from "@/lib/contact";
 
 const logo = "/assets/logo_only.png";
 const logotext = "/assets/logo_text.png";
@@ -15,8 +16,6 @@ const links = [
   { label: "About", href: homeSection("about") },
   { label: "Enquiry", href: homeSection("enquiry") },
 ] as const;
-
-const WHATSAPP = "https://wa.me/919172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);

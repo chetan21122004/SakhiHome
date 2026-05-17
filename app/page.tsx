@@ -15,6 +15,7 @@ import {
   AREA_SERVED_CITY,
   AREA_SERVED_LOCALITY,
   BRAND_NAME,
+  CONTACT_PHONE_E164,
   getAbsoluteSiteUrl,
 } from "@/lib/services";
 
@@ -35,6 +36,7 @@ export default function Home() {
         "@id": `${canonical}#organization`,
         name: BRAND_NAME,
         url: canonical,
+        telephone: CONTACT_PHONE_E164,
       },
       {
         "@type": "WebSite",
@@ -48,6 +50,7 @@ export default function Home() {
         "@id": `${canonical}#localbusiness`,
         name: BRAND_NAME,
         url: canonical,
+        telephone: CONTACT_PHONE_E164,
         address: {
           "@type": "PostalAddress",
           addressLocality: AREA_SERVED_CITY,

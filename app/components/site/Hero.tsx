@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { ShieldCheck, Clock, RefreshCw, MapPin, Phone, Sparkles as SparklesIcon, Star, ArrowRight } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { homeSection } from "@/lib/siteNav";
+import { WHATSAPP } from "@/lib/contact";
 const logo = "logo_both.png";
 const  bg1 = "assets/bg_vdos/1.mp4";
 const bg2 = "assets/bg_vdos/2.mp4";
 const bg3 = "assets/bg_vdos/3.mp4";
 const blobBg = "blobs/color_grunge_pattern_liquidity_style_background.jpg";
 
-const WHATSAPP = "https://wa.me/919172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
 const VIDEOS = [bg1, bg2, bg3];
 const MobileHero = () => (
   <div className="md:hidden animate-fade-up">

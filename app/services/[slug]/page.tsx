@@ -11,6 +11,7 @@ import {
   AREA_SERVED_CITY,
   AREA_SERVED_LOCALITY,
   BRAND_NAME,
+  CONTACT_PHONE_E164,
   findServiceSlugByLabel,
   getAbsoluteSiteUrl,
   getServiceBySlug,
@@ -134,6 +135,7 @@ export default async function ServiceDetailPage(props: PageProps) {
         "@id": businessId,
         name: BRAND_NAME,
         url: homeUrl,
+        telephone: CONTACT_PHONE_E164,
         description: `${BRAND_NAME} connects Pune households with vetted maid, cleaning, childcare, elder support, and cooking help.`,
         address: {
           "@type": "PostalAddress",

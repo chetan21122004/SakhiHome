@@ -51,17 +51,16 @@ export type ServiceRecord = {
   faq: ServiceFaq[];
 };
 
-export const WHATSAPP =
-  "https://wa.me/919172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
+export {
+  CONTACT_PHONE_DISPLAY_IN,
+  CONTACT_PHONE_E164,
+  WHATSAPP,
+  getWhatsAppHrefWithService,
+} from "./contact";
 
 export const BRAND_NAME = "SakhiHome";
 export const AREA_SERVED_CITY = "Pune";
 export const AREA_SERVED_LOCALITY = "Hinjewadi IT Park";
-
-export function getWhatsAppHrefWithService(topic: string) {
-  const q = encodeURIComponent(`Hi SakhiHome, I'm interested in ${topic}.`);
-  return `https://wa.me/919172475977?text=${q}`;
-}
 
 /**
  * Absolute URL for canonicals, sitemaps, JSON-LD, and Open Graph metadata.
@@ -270,36 +269,58 @@ export const services: readonly ServiceRecord[] = [
       "Trained, gentle caretakers",
     ],
     mobileSummary: "Trained caretakers for infants & daytime care.",
-    headline: "Babysitter & Child Care at Home in Hinjewadi, Pune",
+    headline: "Nanny & Babysitter for Child Care at Home in Hinjewadi, Pune",
     metaTitle:
-      "Babysitter in Hinjewadi Pune | Infant & Child Care Maid | SakhiHome",
+      "Nanny & Babysitter in Hinjewadi Pune | Infant & Toddler Care Maid | SakhiHome",
     metaDescription:
-      "Trusted babysitters for infants & toddlers in Hinjewadi, Wakad & Baner, Pune. Daytime care, newborn routines, supervised play. Background-verified, gentle caretakers. SakhiHome.",
+      "Hire a trusted nanny or babysitter in Hinjewadi, Wakad & Baner, Pune — daytime visits or longer placements, infant & toddler care, ayah/aaya-style home help, after-school supervision. Background-verified caretakers. SakhiHome.",
     longDescription:
-      "Peace of mind matters most when you're juggling WFH meetings and your infant's schedule at the same time. SakhiHome connects Hinjewadi, Wakad, and Baner families with trained babysitters for supervised daytime care, newborn-friendly routines, and calm transitions while you're in office or on calls. Every babysitter in our network is background-verified and matched based on your child's age — newborn through school age.",
+      "Peace of mind matters most when you're juggling WFH meetings and your little one's routine. SakhiHome connects Hinjewadi, Wakad, and Baner families with trained babysitters and home nannies for supervised daytime care, calm handovers when you're at the IT Park, and dependable coverage for toddlers and school-age kids when schedules slip. We match for newborn-friendly routines through preschool and after-school windows — feeding support, naps, diapering, supervised play, and gentle structure while parents work.\n\nMany families want visiting help a few hours a day; others prefer a longer daytime shift or a live-in nanny arrangement when continuity matters. Every profile we shortlist is background-verified, and you can start with a short trial so chemistry, hours, and duties (including light feeding prep or tidy-up around the child) are clear before you commit.",
     keywords: [
       "babysitter Hinjewadi",
       "babysitter Wakad",
       "babysitter Baner",
       "babysitter Pune",
+      "nanny Hinjewadi",
+      "nanny Wakad",
+      "nanny Baner",
+      "nanny Pune",
+      "nanny near me Pune",
+      "live-in nanny Pune",
+      "full-time nanny Hinjewadi",
+      "part-time nanny Pune",
+      "daytime nanny Wakad",
       "baby care maid Pune",
       "infant care maid Hinjewadi",
       "child maid Hinjewadi",
-      "nanny Hinjewadi",
       "newborn care maid Pune",
       "daytime babysitter Wakad",
       "child caretaker Hinjewadi",
       "baby sitter near me Pune",
+      "ayah for baby Pune",
+      "aaya for baby Hinjewadi",
+      "toddler care at home Pune",
+      "after school babysitter Pune",
+      "childcare maid Pune",
+      "domestic help with childcare Pune",
     ],
     marathiKeywords: [
       "bal sangopan bai Pune",
       "baby sambhal wali bai Hinjewadi",
       "lahan mulanche care Pune",
+      "aaya bai Pune",
+      "aayi bai Hinjewadi",
+      "bal palak bai Pune",
+      "mulanche pahara Wakad",
+      "bal tyanche palak Pune",
     ],
     relatedSearches: [
       "Japa maid in Hinjewadi",
-      "infant care in Wakad",
-      "babysitter in Baner",
+      "Full-time maid in Hinjewadi",
+      "Part-time maid in Wakad",
+      "Elder care in Baner",
+      "Cooking services in Pune",
+      "House cleaning in Hinjewadi",
     ],
     priceRange: "₹6,000 – ₹12,000/month",
     searchIntent: "mixed",

@@ -9,6 +9,7 @@ import LocalProgrammaticTemplate, {
 import Navbar from "@/app/components/site/Navbar";
 import StickyWhatsApp from "@/app/components/site/StickyWhatsApp";
 import { AREAS, getAreaBySlug, getAllSocietySlugs, getSocietyBySlug } from "@/lib/areas";
+import { CONTACT_PHONE_E164 } from "@/lib/contact";
 import {
   AREA_SERVED_CITY,
   AREA_SERVED_LOCALITY,
@@ -415,7 +416,7 @@ export default async function ProgrammaticPage(props: PageProps) {
         "@id": businessId,
         name: BRAND_NAME,
         url: homeUrl,
-        telephone: "+919172475977",
+        telephone: CONTACT_PHONE_E164,
         address: {
           "@type": "PostalAddress",
           addressLocality: AREA_SERVED_CITY,

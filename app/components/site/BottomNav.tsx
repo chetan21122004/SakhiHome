@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Home, Layers, MapPin, Phone, Send } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { homeSection } from "@/lib/siteNav";
+import { CONTACT_PHONE_E164 } from "@/lib/contact";
 
 type NavItem = {
   label: string;
@@ -17,7 +18,7 @@ const items: NavItem[] = [
   { label: "Services", href: homeSection("services"), icon: Layers, hash: "services" },
   { label: "Areas", href: homeSection("areas"), icon: MapPin, hash: "areas" },
   { label: "Enquiry", href: homeSection("enquiry"), icon: Send, hash: "enquiry" },
-  { label: "Call", href: "tel:+919172475977", icon: Phone },
+  { label: "Call", href: `tel:${CONTACT_PHONE_E164}`, icon: Phone },
 ];
 
 const BottomNav = () => {

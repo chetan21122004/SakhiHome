@@ -20,12 +20,15 @@ import {
   Wand2,
 } from "lucide-react";
 import { toast } from "sonner";
+import {
+  CONTACT_PHONE_DISPLAY_IN,
+  CONTACT_PHONE_E164,
+  WHATSAPP,
+} from "@/lib/contact";
 
 const blobBg = "/assets/blobs/color_grunge_pattern_liquidity_style_background.jpg";
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xbdqpevg";
-const WHATSAPP =
-  "https://wa.me/919172475977?text=Hi%20SakhiHome%2C%20I%27d%20like%20to%20book%20a%20maid";
 
 const SERVICES = [
   "House Cleaning",
@@ -211,14 +214,14 @@ const EnquirySection = () => {
                   <span className="text-xs sm:text-sm font-semibold">Chat instantly</span>
                 </a>
                 <a
-                  href="tel:+919172475977"
+                  href={`tel:${CONTACT_PHONE_E164}`}
                   className="flex flex-col gap-1 rounded-xl md:rounded-2xl glass border border-white/10 px-3 md:px-4 py-3 transition-smooth hover:border-accent/40"
                 >
                   <span className="flex items-center gap-1.5 md:gap-2 text-[10px] font-bold uppercase tracking-[0.16em] md:tracking-wider text-accent">
                     <Phone className="h-3.5 w-3.5" />
                     Call us
                   </span>
-                  <span className="text-xs sm:text-sm font-semibold">+91 91724 75977</span>
+                  <span className="text-xs sm:text-sm font-semibold">{CONTACT_PHONE_DISPLAY_IN}</span>
                 </a>
               </div>
 
