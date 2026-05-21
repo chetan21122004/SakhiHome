@@ -270,25 +270,27 @@ const Hero = () => {
               </Button>
             </div>
 
-            {/* Trust strip */}
-            <div className="mt-10 grid grid-cols-3 gap-3 max-w-xl mx-auto lg:mx-0">
+            {/* Trust highlights — clearer scan on desktop/tablet */}
+            <ul className="mt-10 mx-auto lg:mx-0 max-w-xl lg:max-w-2xl space-y-3 sm:flex sm:flex-row sm:items-stretch sm:gap-3 sm:space-y-0 list-none">
               {[
-                { icon: ShieldCheck, label: "Verified", sub: "ID & address" },
-                { icon: Clock, label: "Fast Match", sub: "Within hours" },
-                { icon: RefreshCw, label: "Replacement", sub: "24-48 hrs" },
-              ].map(({ icon: Icon, label, sub }) => (
-                <div
-                  key={label}
-                  className="group flex flex-col items-center lg:items-start gap-1 rounded-2xl glass border border-white/10 px-3 py-3 transition-all duration-300 hover:border-accent/40 hover:-translate-y-0.5"
+                { icon: ShieldCheck, title: "Verified", detail: "ID & address screened" },
+                { icon: Clock, title: "Fast match", detail: "Often same day · local network" },
+                { icon: RefreshCw, title: "Replacement", detail: "24–48 hrs if needed" },
+              ].map(({ icon: Icon, title, detail }) => (
+                <li
+                  key={title}
+                  className="relative flex flex-1 min-w-0 flex-row items-center gap-3.5 rounded-2xl glass border border-white/12 px-4 py-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] ring-1 ring-white/[0.04] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-[0_12px_36px_-20px_rgba(0,0,0,0.6)] md:rounded-[1.25rem]"
                 >
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/15 text-accent">
-                    <Icon className="h-4 w-4" />
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent/20 text-accent">
+                    <Icon className="h-5 w-5" aria-hidden />
                   </div>
-                  <div className="text-sm font-bold text-white leading-tight">{label}</div>
-                  <div className="text-[11px] text-white/55 leading-tight">{sub}</div>
-                </div>
+                  <div className="min-w-0 text-left">
+                    <p className="text-sm font-extrabold tracking-tight text-white leading-snug">{title}</p>
+                    <p className="mt-0.5 text-[11px] sm:text-xs text-white/58 leading-snug">{detail}</p>
+                  </div>
+                </li>
               ))}
-            </div>
+            </ul>
 
             {/* Areas served */}
             <p className="mt-6 text-xs font-medium text-white/50 tracking-wide">
