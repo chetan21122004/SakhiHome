@@ -29,7 +29,7 @@ import {
 
 const blobBg = "/assets/blobs/color_grunge_pattern_liquidity_style_background.jpg";
 
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/xbdqpevg";
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xpqnengk";
 
 const SERVICES = [
   "House Cleaning",
