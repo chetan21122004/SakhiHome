@@ -7,17 +7,17 @@ const blobBg = "/assets/blobs/254596558522.jpg";
 const items = [
   {
     name: "Priya S.",
-    location: "Megapolis, Hinjewadi Phase 3",
-    text: "Found a wonderful cooking maid through SakhiHome within 2 days. She's been with us for months now -reliable and warm.",
+    location: "Crawford Market",
+    text: "Found a wonderful cooking maid through SakhiHome within 2 days. She's been with us for months now — reliable and warm.",
   },
   {
     name: "Rahul M.",
-    location: "Blue Ridge, Phase 1",
+    location: "Mohammad Ali Road",
     text: "When our previous maid left suddenly, SakhiHome arranged a replacement in under 48 hours. Lifesaver for a working couple.",
   },
   {
     name: "Anjali K.",
-    location: "Hinjewadi Phase 2",
+    location: "Nagdevi",
     text: "Loved the personal touch. They actually listen to what we need and don't just send anyone. Truly local and trustworthy.",
   },
 ];
@@ -44,10 +44,10 @@ const Testimonials = () => {
               Real Stories
             </span>
             <h2 className="mt-3 md:mt-4 font-display text-[1.9rem] leading-tight sm:text-4xl md:text-5xl md:leading-tight font-extrabold text-primary-deep text-balance">
-              What <span className="text-gradient-brand">Hinjewadi families</span> say
+              What <span className="text-gradient-brand">South Mumbai families</span> say
             </h2>
             <p className="mt-3 text-sm sm:text-base text-muted-foreground md:hidden">
-              Trusted experiences from families across Phase 1, Phase 2, and nearby communities.
+              Trusted experiences from families across Mohammad Ali, Nagdevi, Crawford, and nearby communities.
             </p>
           </div>
         </div>

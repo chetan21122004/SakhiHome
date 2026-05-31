@@ -131,7 +131,7 @@ const Services = () => {
             </p>
           </div>
           <div className="hidden md:flex justify-end">
-            <img src={cookingDoodle} alt="Illustration of home cooking and domestic support services in Pune" className="w-64 lg:w-80 object-contain drop-shadow-xl animate-float" />
+            <img src={cookingDoodle} alt="Illustration of home cooking and domestic support services in South Mumbai" className="w-64 lg:w-80 object-contain drop-shadow-xl animate-float" />
           </div>
         </div>
 

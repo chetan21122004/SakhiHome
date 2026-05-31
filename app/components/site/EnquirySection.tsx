@@ -42,14 +42,11 @@ const SERVICES = [
 ];
 
 const AREAS = [
-  "Hinjewadi Phase 1",
-  "Hinjewadi Phase 2",
-  "Hinjewadi Phase 3",
-  "Megapolis",
-  "Wakad",
-  "Bhumkar Chowk",
-  "Baner",
-  "Marunji",
+  "Mohammad Ali",
+  "Nagdevi",
+  "Chakala",
+  "Mazgaon",
+  "Crawford",
   "Other",
 ];
 

@@ -19,7 +19,7 @@ const MobileHero = () => (
       <div className="flex items-center justify-center gap-2">
         <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.05] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/75">
           <MapPin className="h-3 w-3 text-accent" />
-          Hinjewadi · Pune
+          South Mumbai
         </span>
         <span className="inline-flex items-center gap-1 rounded-full border border-accent/35 bg-accent/10 px-2.5 py-1 text-[10px] font-bold text-accent">
           <Star className="h-3 w-3 fill-accent" /> 4.9
@@ -39,7 +39,7 @@ const MobileHero = () => (
           />
           <img
             src={`/assets/${logo}`}
-            alt="SakhiHome -Trusted Maid Services in Hinjewadi"
+            alt="SakhiHome - Trusted Maid Services in South Mumbai"
             className="relative h-48 w-48 object-contain drop-shadow-[0_14px_34px_rgba(0,0,0,0.55)]"
           />
         </div>
@@ -50,7 +50,7 @@ const MobileHero = () => (
           </span>
           <span className="mt-1.5 block text-[1.62rem] font-extrabold leading-[0.95] tracking-[-0.02em]">
             <span className="bg-gradient-to-r from-accent via-accent-deep to-primary-glow bg-clip-text text-transparent">
-              Hinjewadi
+              South Mumbai
             </span>
           </span>
           <span className="mt-1 block text-[0.95rem] font-medium tracking-tight text-white/80">
@@ -117,7 +117,7 @@ const MobileHero = () => (
       <p className="mt-5 text-center text-[11px] font-medium tracking-wide text-white/45">
         <span className="text-white/70">Areas</span>
         <span className="mx-2 text-white/25">·</span>
-        Wakad · Baner · Marunji · Phase 1-3 · Megapolis
+        Mohammad Ali · Nagdevi · Chakala · Mazgaon · Crawford
       </p>
     </div>
   </div>
@@ -218,7 +218,7 @@ const Hero = () => {
 
       <div className="container relative z-10 mx-auto px-4 md:px-6">
         <h1 className="sr-only">
-          Trusted maids in Hinjewadi, Pune for cleaning, cooking, babysitting, elder care, and full-time domestic help
+          Trusted maids in South Mumbai for cleaning, cooking, babysitting, elder care, and full-time domestic help
         </h1>
         {/* Desktop / tablet layout (md+) -preserved exactly */}
         <div className="hidden md:block">
@@ -232,7 +232,7 @@ const Hero = () => {
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
               </span>
               <MapPin className="h-3.5 w-3.5 text-accent" />
-              <span>Serving Hinjewadi IT Park, Pune</span>
+              <span>Serving South Mumbai</span>
               <span className="mx-1 h-3 w-px bg-white/20" />
               <span className="flex items-center gap-1 text-accent">
                 <Star className="h-3 w-3 fill-accent" /> 4.9
@@ -244,7 +244,7 @@ const Hero = () => {
               <span className="block text-white/85">Trusted Maids for</span>
               <span className="mt-1 block font-extrabold text-white">
                 <span className="bg-gradient-to-r from-accent via-accent-deep to-primary-glow bg-clip-text text-transparent">
-                  Hinjewadi families
+                  South Mumbai families
                 </span>
               </span>
             </p>
@@ -259,7 +259,7 @@ const Hero = () => {
             <div id="book" className="mt-6 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
               <Button variant="hero" size="xl" asChild className="group">
                 <a href={homeSection("enquiry")}>
-                  <SparklesIcon className="h-4 w-4" /> Book Maid in Hinjewadi
+                  <SparklesIcon className="h-4 w-4" /> Book Maid in South Mumbai
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </a>
               </Button>
@@ -294,7 +294,7 @@ const Hero = () => {
 
             {/* Areas served */}
             <p className="mt-6 text-xs font-medium text-white/50 tracking-wide">
-              <span className="text-white/70">Areas:</span> Wakad · Bhumkar Chowk · Baner · Marunji · Phase 1-3 · Megapolis
+              <span className="text-white/70">Areas:</span> Mohammad Ali · Nagdevi · Chakala · Mazgaon · Crawford
             </p>
           </div>
 
@@ -308,7 +308,7 @@ const Hero = () => {
 
               <img
                 src={`/assets/${logo}`}
-                alt="SakhiHome -Trusted Maid Services in Hinjewadi"
+                alt="SakhiHome - Trusted Maid Services in South Mumbai"
                 className="relative w-full max-w-md lg:max-w-lg mx-auto animate-float drop-shadow-2xl"
               />
 

@@ -189,8 +189,8 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
     const service = getServiceBySlug(resolved.serviceSlug);
     const area = getAreaBySlug(resolved.areaSlug);
     if (!service || !area) return {};
-    const title = `${service.title} in ${area.name}, Pune | ${BRAND_NAME}`;
-    const description = `Hire trusted ${service.title.toLowerCase()} support in ${area.name}, Pune. ${service.mobileSummary} Background-verified and locally matched by ${BRAND_NAME}.`;
+    const title = `${service.title} in ${area.name}, Mumbai | ${BRAND_NAME}`;
+    const description = `Hire trusted ${service.title.toLowerCase()} support in ${area.name}, South Mumbai. ${service.mobileSummary} Background-verified and locally matched by ${BRAND_NAME}.`;
     return {
       title,
       description,
@@ -221,7 +221,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const society = getSocietyBySlug(resolved.societySlug);
   if (!society) return {};
   const title = `Maid Service in ${society.name}, ${society.area.name} | ${BRAND_NAME}`;
-  const description = `Book verified maid services near ${society.name}, ${society.area.name}, Pune for cleaning, cooking, childcare, and elder support.`;
+  const description = `Book verified maid services near ${society.name}, ${society.area.name}, South Mumbai for cleaning, cooking, childcare, and elder support.`;
   return {
     title,
     description,
@@ -254,7 +254,7 @@ export default async function ProgrammaticPage(props: PageProps) {
     const waHref = getWhatsAppHrefWithService(`${service.title} in ${area.name}`);
 
     schemaName = `${service.title} in ${area.name}`;
-    schemaDescription = `Trusted ${service.title.toLowerCase()} support in ${area.name}, Pune.`;
+    schemaDescription = `Trusted ${service.title.toLowerCase()} support in ${area.name}, South Mumbai.`;
     serviceExtras = {
       keywords: service.keywords.join(", "),
       offers: {
@@ -277,7 +277,7 @@ export default async function ProgrammaticPage(props: PageProps) {
         { label: area.name, href: `/maid-service-in-${area.slug}` },
         { label: service.title },
       ],
-      localityLabel: `${area.name}, Pune`,
+      localityLabel: `${area.name}, South Mumbai`,
       h1: `${service.title} in ${area.name}`,
       intro: `${service.mobileSummary} Locally matched support near ${area.landmark}.`,
       highlights: service.points,
@@ -292,7 +292,7 @@ export default async function ProgrammaticPage(props: PageProps) {
       faqItems: service.faq,
       sideCtaTag: `Serving ${area.shortName}`,
       sideCtaTitle: `Book ${service.title} in ${area.name}`,
-      sideCtaDescription: `Get recommendations based on household size, timing, and preferences for ${area.name} and nearby Pune localities.`,
+      sideCtaDescription: `Get recommendations based on household size, timing, and preferences for ${area.name} and nearby South Mumbai localities.`,
       primaryCtaLabel: `Book ${service.title}`,
       primaryCtaHref: "/#enquiry",
       secondaryCtaLabel: "WhatsApp for quick match",
@@ -328,7 +328,7 @@ export default async function ProgrammaticPage(props: PageProps) {
         { label: "Areas" },
         { label: area.name },
       ],
-      localityLabel: `${area.name}, Pune`,
+      localityLabel: `${area.name}, South Mumbai`,
       h1: `Maid Service in ${area.name}`,
       intro: area.description,
       highlights: [
@@ -367,7 +367,7 @@ export default async function ProgrammaticPage(props: PageProps) {
     const waHref = getWhatsAppHrefWithService(`maid services in ${society.name}`);
 
     schemaName = `Maid Service in ${society.name}`;
-    schemaDescription = `Verified and locally matched domestic help for families in ${society.name}, ${society.area.name}, Pune.`;
+    schemaDescription = `Verified and locally matched domestic help for families in ${society.name}, ${society.area.name}, South Mumbai.`;
     breadcrumbItems = [
       { name: "Home", item: homeUrl },
       { name: society.area.name, item: getAbsoluteSiteUrl(`/maid-service-in-${society.area.slug}`) },
@@ -382,7 +382,7 @@ export default async function ProgrammaticPage(props: PageProps) {
       ],
       localityLabel: `${society.name}, ${society.area.name}`,
       h1: `Maid Service in ${society.name}`,
-      intro: `Verified and locally matched domestic help for families in ${society.name}, ${society.area.name}, Pune.`,
+      intro: `Verified and locally matched domestic help for families in ${society.name}, ${society.area.name}, South Mumbai.`,
       highlights: [
         `Society-focused support for ${society.name}`,
         `Quick reach from ${society.area.landmark}`,
@@ -423,7 +423,7 @@ export default async function ProgrammaticPage(props: PageProps) {
         url: homeUrl,
         telephone: CONTACT_PHONE_E164,
         address: getBusinessPostalAddressJsonLd(),
-        geo: getBusinessGeoJsonLd(),
+        ...(getBusinessGeoJsonLd() ? { geo: getBusinessGeoJsonLd() } : {}),
         hasMap: GOOGLE_MAPS_DIRECTIONS_URL,
       },
       {

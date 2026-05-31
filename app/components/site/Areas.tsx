@@ -5,14 +5,11 @@ import Sparkles from "./Sparkles";
 const blobBg = "/assets/blobs/063602423687.jpg";
 
 const areas = [
-  { name: "Phase 1", desc: "Rajiv Gandhi Infotech Park core & adjoining societies" },
-  { name: "Phase 2", desc: "Infosys, Wipro & nearby gated societies" },
-  { name: "Phase 3", desc: "Blue Ridge, Life Republic & surroundings" },
-  { name: "Megapolis", desc: "Megapolis Splendour, Sparklet & nearby" },
-  { name: "Wakad", desc: "Highway belt & residential hubs with quick IT Park access" },
-  { name: "Bhumkar Chowk", desc: "Junction area & societies linking Wakad to Hinjewadi" },
-  { name: "Baner", desc: "Residential neighbourhoods a short drive from the IT Park" },
-  { name: "Marunji", desc: "Growing locality near Sus & Hinjewadi corridors" },
+  { name: "Mohammad Ali", desc: "Historic corridor & dense residential pockets near Crawford" },
+  { name: "Nagdevi", desc: "Central South Mumbai — quick access to markets & transit" },
+  { name: "Chakala", desc: "Andheri East junction with strong commuter connectivity" },
+  { name: "Mazgaon", desc: "Established neighbourhood with heritage & newer towers" },
+  { name: "Crawford", desc: "Iconic market hub surrounded by Fort & Marine Lines homes" },
 ];
 
 const Areas = () => {
@@ -38,14 +35,14 @@ const Areas = () => {
             Service Areas
           </span>
           <h2 className="mt-5 md:mt-6 font-display text-3xl sm:text-4xl md:text-6xl font-black text-white text-balance tracking-tight">
-            Serving <span className="text-gradient-brand">Hinjewadi</span> & nearby areas
+            Serving <span className="text-gradient-brand">South Mumbai</span>
           </h2>
           <p className="mt-4 md:mt-5 text-base sm:text-lg md:text-xl text-white/60 leading-relaxed">
-            Hinjewadi IT Park plus Wakad, Baner, Marunji & Bhumkar Chowk -local coverage keeps service fast & reliable.
+            Mohammad Ali, Nagdevi, Chakala, Mazgaon & Crawford — local coverage keeps service fast & reliable.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 max-w-5xl mx-auto">
           {areas.map((a, i) => (
             <div
               key={a.name}
@@ -80,7 +77,7 @@ const Areas = () => {
         </div>
 
         <p className="mt-10 md:mt-14 text-center text-sm md:text-base text-white/55 md:text-white/50">
-          Not sure if we cover your society?{" "}
+          Not sure if we cover your building?{" "}
           <a href={homeSection("cta")} className="text-accent font-semibold underline underline-offset-4 hover:text-white transition-colors duration-300">
             Get a quick answer
           </a>
@@ -91,4 +88,3 @@ const Areas = () => {
 };
 
 export default Areas;
-

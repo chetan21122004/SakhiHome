@@ -22,25 +22,25 @@ function safeMetadataBaseUrl(url: string): URL {
 export const metadata: Metadata = {
   metadataBase: safeMetadataBaseUrl(siteUrl),
   title: {
-    default: "SakhiHome - Trusted Maid Services in Hinjewadi IT Park, Pune",
+    default: "SakhiHome - Trusted Maid Services in South Mumbai",
     template: `%s | SakhiHome`,
   },
   description:
-    "Verified maids & home help in Pune: house cleaning, cooking, babysitting, elder care & full‑ or part‑time placements. SakhiHome -book trusted helpers today.",
+    "Verified maids & home help in South Mumbai: house cleaning, cooking, babysitting, elder care & full‑ or part‑time placements. SakhiHome — book trusted helpers today.",
   openGraph: {
     type: "website",
     locale: "en_IN",
     siteName: "SakhiHome",
-    title: "SakhiHome - Trusted Maid & Home Services in Pune",
+    title: "SakhiHome - Trusted Maid & Home Services in South Mumbai",
     description:
-      "Verified maids & home help in Pune: cleaning, cooking, babysitting & elder care. Book trusted placements with SakhiHome.",
+      "Verified maids & home help in South Mumbai: cleaning, cooking, babysitting & elder care. Book trusted placements with SakhiHome.",
     url: siteUrl,
   },
   twitter: {
     card: "summary_large_image",
-    title: "SakhiHome - Trusted Maid & Home Services in Pune",
+    title: "SakhiHome - Trusted Maid & Home Services in South Mumbai",
     description:
-      "Verified maids & home help in Pune: cleaning, cooking, babysitting & elder care. Book with SakhiHome.",
+      "Verified maids & home help in South Mumbai: cleaning, cooking, babysitting & elder care. Book with SakhiHome.",
   },
   icons: {
     icon: [{ url: "/favicon.ico", type: "image/x-icon" }],

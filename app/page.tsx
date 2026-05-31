@@ -58,7 +58,7 @@ export default function Home() {
         url: canonical,
         telephone: CONTACT_PHONE_E164,
         address: getBusinessPostalAddressJsonLd(),
-        geo: getBusinessGeoJsonLd(),
+        ...(getBusinessGeoJsonLd() ? { geo: getBusinessGeoJsonLd() } : {}),
         hasMap: GOOGLE_MAPS_DIRECTIONS_URL,
         areaServed: {
           "@type": "Place",

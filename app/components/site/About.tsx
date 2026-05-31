@@ -7,7 +7,7 @@ const blobBg = "/assets/blobs/254596558522.jpg";
 
 const stats = [
   { icon: Users, num: "500+", label: "Maids in network" },
-  { icon: MapPin, num: "8", label: "Areas covered" },
+  { icon: MapPin, num: "5", label: "Areas covered" },
   { icon: Heart, num: "24-48h", label: "Replacement time" },
   { icon: CheckCircle2, num: "100%", label: "Local matching" },
 ];
@@ -39,10 +39,10 @@ const About = () => {
               About SakhiHome
             </span>
             <h2 className="mt-6 font-display text-4xl md:text-5xl lg:text-6xl font-black text-primary-deep text-balance leading-[1.05] tracking-tight">
-              Your local maid partner in <span className="text-gradient-brand">Hinjewadi</span>
+              Your local maid partner in <span className="text-gradient-brand">South Mumbai</span>
             </h2>
             <p className="mt-6 text-lg text-foreground/75 leading-relaxed max-w-xl">
-              Built on a strong local network, SakhiHome connects families in Hinjewadi with trusted,
+              Built on a strong local network, SakhiHome connects families in South Mumbai with trusted,
               experienced domestic help -managed with a personal touch, focused on{" "}
               <span className="font-bold text-primary-deep">reliability, quick response, and long-term trust</span>.
             </p>
@@ -81,7 +81,7 @@ const About = () => {
               <div className="pointer-events-none absolute -top-12 -right-12 h-40 w-40 rounded-full bg-accent/20 blur-[80px]" aria-hidden />
               <img
                 src={cleaningDoodle}
-                alt="Illustration of a home cleaning professional for Hinjewadi and Pune households"
+                alt="Illustration of a home cleaning professional for South Mumbai households"
                 className="relative mx-auto w-full max-w-[240px] object-contain drop-shadow-[0_12px_30px_rgba(0,0,0,0.15)]"
               />
             </div>
@@ -119,7 +119,7 @@ const About = () => {
 
             <img
               src={cleaningDoodle}
-              alt="Illustration of a home cleaning professional for Hinjewadi and Pune households"
+              alt="Illustration of a home cleaning professional for South Mumbai households"
               className="relative z-20 w-[450px] drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)] animate-float pointer-events-none"
               style={{ animationDuration: "5s", animationDelay: "0.5s" }}
             />

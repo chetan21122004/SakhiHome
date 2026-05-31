@@ -15,14 +15,11 @@ const logotext = "logo_text.png";
 const blobBg = "blobs/color_grunge_pattern_liquidity_style_background.jpg";
 
 const areas = [
-  "Hinjewadi Phase 1",
-  "Hinjewadi Phase 2",
-  "Hinjewadi Phase 3",
-  "Megapolis",
-  "Wakad",
-  "Bhumkar Chowk",
-  "Baner",
-  "Marunji",
+  "Mohammad Ali",
+  "Nagdevi",
+  "Chakala",
+  "Mazgaon",
+  "Crawford",
 ];
 
 const Footer = () => {
@@ -73,7 +70,7 @@ const Footer = () => {
                 <img src={`/assets/${logotext}`} alt="SakhiHome Services" className="h-16 w-auto object-contain" />
               </a>
               <p className="relative mt-4 text-sm leading-relaxed text-dark-muted">
-                Trusted maid services across <span className="font-semibold text-dark-foreground/90">Hinjewadi IT Park</span> and Pune west.
+                Trusted maid services across <span className="font-semibold text-dark-foreground/90">South Mumbai</span> — Mohammad Ali, Nagdevi, Chakala, Mazgaon & Crawford.
               </p>
               <div className="relative mt-5 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-accent">
                 <span className="relative flex h-2 w-2">
@@ -140,7 +137,7 @@ const Footer = () => {
                       href={`/services/${s.slug}`}
                       className="group flex items-center justify-between rounded-xl px-2 py-2 text-sm text-dark-muted transition-smooth hover:bg-white/[0.04] hover:text-dark-foreground"
                     >
-                      <span>{s.title} in Pune</span>
+                      <span>{s.title} in Mumbai</span>
                       <ArrowUpRight className="h-4 w-4 shrink-0 opacity-70 transition-smooth group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
                     </a>
                   </li>
@@ -205,7 +202,7 @@ const Footer = () => {
               <p>© {new Date().getFullYear()} SakhiHome Services. All rights reserved.</p>
               <p className="mt-2 flex items-center justify-center gap-2">
                 <span className="h-1 w-1 rounded-full bg-accent" />
-                Crafted in Hinjewadi · Pune
+                Crafted in South Mumbai
               </p>
             </div>
           </div>
@@ -230,8 +227,8 @@ const Footer = () => {
                 />
               </a>
               <p className="relative mt-6 max-w-md text-sm leading-relaxed text-dark-muted">
-                Trusted maid services across <span className="font-semibold text-dark-foreground/90">Hinjewadi IT Park</span>{" "}
-                and Pune west -fast matching, verified help, human support.
+                Trusted maid services across <span className="font-semibold text-dark-foreground/90">South Mumbai</span>{" "}
+                — fast matching, verified help, human support.
               </p>
               <div className="relative mt-6 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-accent">
                 <span className="relative flex h-2 w-2">
@@ -264,7 +261,7 @@ const Footer = () => {
                       href={`/services/${s.slug}`}
                       className="group flex items-center justify-between gap-2 rounded-xl py-2 pl-1 pr-2 text-sm text-dark-muted transition-smooth hover:bg-white/[0.04] hover:text-dark-foreground"
                     >
-                      <span>{s.title} in Pune</span>
+                      <span>{s.title} in Mumbai</span>
                       <ArrowUpRight className="h-4 w-4 shrink-0 opacity-0 transition-smooth group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
                     </a>
                   </li>
@@ -369,7 +366,7 @@ const Footer = () => {
             <p>© {new Date().getFullYear()} SakhiHome Services. All rights reserved.</p>
             <p className="flex items-center gap-2">
               <span className="h-1 w-1 rounded-full bg-accent" />
-              Crafted in Hinjewadi · Pune
+              Crafted in South Mumbai
             </p>
           </div>
         </div>

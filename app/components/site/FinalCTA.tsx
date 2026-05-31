@@ -36,7 +36,7 @@ const FinalCTA = () => {
             </div>
 
             <h2 className="mt-4 md:mt-5 font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-dark-foreground text-balance max-w-3xl mx-auto leading-tight">
-              Looking for a maid in <span className="text-gradient-brand">Hinjewadi</span>?
+              Looking for a maid in <span className="text-gradient-brand">South Mumbai</span>?
             </h2>
             <p className="mt-3 md:mt-5 text-sm sm:text-base md:text-xl text-dark-muted max-w-2xl mx-auto leading-relaxed">
               Get connected instantly with verified maids near you. No waiting, no hassle.
@@ -56,7 +56,7 @@ const FinalCTA = () => {
             </div>
 
             <div className="mt-6 md:mt-7">
-              <p className="text-xs md:text-sm text-dark-muted">Popular services in Hinjewadi, Pune:</p>
+              <p className="text-xs md:text-sm text-dark-muted">Popular services in South Mumbai:</p>
               <div className="mt-3 grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-2">
                 {services.slice(0, 4).map((service) => (
                   <a
@@ -64,7 +64,7 @@ const FinalCTA = () => {
                     href={`/services/${service.slug}`}
                     className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] md:text-xs font-semibold text-dark-foreground/90 transition-smooth hover:border-accent/50 hover:text-accent"
                   >
-                    {service.title} in Pune
+                    {service.title} in Mumbai
                   </a>
                 ))}
               </div>
