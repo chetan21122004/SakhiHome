@@ -29,6 +29,7 @@ const About = () => {
       <div className="container relative mx-auto px-4 md:px-6">
         <div className="grid lg:grid-cols-[1fr_1.1fr] gap-16 items-center">
           
+
           {/* Left -content */}
           <div className="relative z-10">
             <span className="inline-flex items-center gap-2 rounded-full bg-white border border-primary/20 shadow-soft px-4 py-1.5 text-xs font-bold text-primary-deep uppercase tracking-wider">
