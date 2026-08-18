@@ -8,16 +8,16 @@ import LocalProgrammaticTemplate, {
 } from "@/app/components/site/LocalProgrammaticTemplate";
 import Navbar from "@/app/components/site/Navbar";
 import StickyWhatsApp from "@/app/components/site/StickyWhatsApp";
-import { AREAS, getAreaBySlug, getAllSocietySlugs, getSocietyBySlug } from "@/lib/areas";
 import {
-  CONTACT_PHONE_E164,
-  GOOGLE_MAPS_DIRECTIONS_URL,
-  getBusinessGeoJsonLd,
-  getBusinessPostalAddressJsonLd,
-} from "@/lib/contact";
+  AREAS,
+  getAreaBySlug,
+  getAllSocietySlugs,
+  getSocietyBySlug,
+  sortSocietiesForService,
+} from "@/lib/areas";
+import { getBranch, getLocalBusinessJsonLd } from "@/lib/contact";
 import {
   AREA_SERVED_CITY,
-  AREA_SERVED_LOCALITY,
   BRAND_NAME,
   getAbsoluteSiteUrl,
   getAllServiceSlugs,
@@ -69,26 +69,28 @@ const serviceVisuals: Record<string, { blob: string; doodle: string }> = {
   },
 };
 
-const trustHighlights = [
-  {
-    icon: ShieldCheck,
-    title: "Verified professionals",
-    description:
-      "Background-verified candidates shortlisted for your household preferences.",
-  },
-  {
-    icon: Clock3,
-    title: "Fast matching support",
-    description:
-      "Most families get relevant options quickly with a guided matching process.",
-  },
-  {
-    icon: MapPin,
-    title: `Local to ${AREA_SERVED_LOCALITY}`,
-    description:
-      "Location-aware matching helps with reliability, timing, and continuity.",
-  },
-];
+function getTrustHighlights(localityLabel: string) {
+  return [
+    {
+      icon: ShieldCheck,
+      title: "Verified professionals",
+      description:
+        "Background-verified candidates shortlisted for your household preferences.",
+    },
+    {
+      icon: Clock3,
+      title: "Fast matching support",
+      description:
+        "Most families get relevant options quickly with a guided matching process.",
+    },
+    {
+      icon: MapPin,
+      title: `Local to ${localityLabel}`,
+      description:
+        "Location-aware matching helps with reliability, timing, and continuity.",
+    },
+  ];
+}
 
 const genericAreaFaq: LocalProgrammaticTemplateData["faqItems"] = [
   {
@@ -237,7 +239,17 @@ export default async function ProgrammaticPage(props: PageProps) {
 
   const canonical = getAbsoluteSiteUrl(`/${programmaticSlug}`);
   const homeUrl = getAbsoluteSiteUrl("/");
-  const businessId = `${homeUrl}#localbusiness`;
+  const resolvedArea =
+    resolved.kind === "society"
+      ? getSocietyBySlug(resolved.societySlug)?.area
+      : getAreaBySlug(resolved.areaSlug);
+  const branch = getBranch(resolvedArea?.region ?? "hinjewadi");
+  const localBusiness = getLocalBusinessJsonLd({ homeUrl, branch });
+  const businessId = localBusiness["@id"];
+  const serviceAreaName = resolvedArea
+    ? `${resolvedArea.name}, ${AREA_SERVED_CITY}`
+    : branch.areaServedLabel;
+  const trustHighlights = getTrustHighlights(resolvedArea?.shortName ?? branch.shortLabel);
 
   let schemaName = "";
   let schemaDescription = "";
@@ -304,7 +316,7 @@ export default async function ProgrammaticPage(props: PageProps) {
           .filter((s) => s.slug !== service.slug)
           .slice(0, 5)
           .map((s) => ({ href: `/${s.slug}-in-${area.slug}`, label: `${s.title} in ${area.name}` })),
-        ...area.societies
+        ...sortSocietiesForService(area.societies, service.slug)
           .slice(0, 4)
           .map((s) => ({ href: `/maid-service-in-${s.slug}`, label: `Maid in ${s.name}` })),
       ],
@@ -416,16 +428,7 @@ export default async function ProgrammaticPage(props: PageProps) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
-      {
-        "@type": "LocalBusiness",
-        "@id": businessId,
-        name: BRAND_NAME,
-        url: homeUrl,
-        telephone: CONTACT_PHONE_E164,
-        address: getBusinessPostalAddressJsonLd(),
-        geo: getBusinessGeoJsonLd(),
-        hasMap: GOOGLE_MAPS_DIRECTIONS_URL,
-      },
+      localBusiness,
       {
         "@type": "Service",
         "@id": `${canonical}#service`,
@@ -439,7 +442,7 @@ export default async function ProgrammaticPage(props: PageProps) {
         },
         serviceArea: {
           "@type": "Place",
-          name: AREA_SERVED_LOCALITY,
+          name: serviceAreaName,
         },
         url: canonical,
       },

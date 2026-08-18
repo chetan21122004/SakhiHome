@@ -13,14 +13,11 @@ import StickyWhatsApp from "@/app/components/site/StickyWhatsApp";
 import Testimonials from "@/app/components/site/Testimonials";
 import TrustSection from "@/app/components/site/TrustSection";
 import {
-  GOOGLE_MAPS_DIRECTIONS_URL,
-  getBusinessGeoJsonLd,
-  getBusinessPostalAddressJsonLd,
   CONTACT_PHONE_E164,
+  getAllBranches,
+  getLocalBusinessJsonLd,
 } from "@/lib/contact";
 import {
-  AREA_SERVED_CITY,
-  AREA_SERVED_LOCALITY,
   BRAND_NAME,
   getAbsoluteSiteUrl,
 } from "@/lib/services";
@@ -34,6 +31,7 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
+  const branches = getAllBranches();
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -43,6 +41,9 @@ export default function Home() {
         name: BRAND_NAME,
         url: canonical,
         telephone: CONTACT_PHONE_E164,
+        location: branches.map((branch) => ({
+          "@id": `${canonical}#${branch.schemaIdSuffix}`,
+        })),
       },
       {
         "@type": "WebSite",
@@ -51,20 +52,12 @@ export default function Home() {
         url: canonical,
         inLanguage: "en-IN",
       },
-      {
-        "@type": "LocalBusiness",
-        "@id": `${canonical}#localbusiness`,
-        name: BRAND_NAME,
-        url: canonical,
-        telephone: CONTACT_PHONE_E164,
-        address: getBusinessPostalAddressJsonLd(),
-        geo: getBusinessGeoJsonLd(),
-        hasMap: GOOGLE_MAPS_DIRECTIONS_URL,
-        areaServed: {
-          "@type": "Place",
-          name: `${AREA_SERVED_LOCALITY}, ${AREA_SERVED_CITY}`,
-        },
-      },
+      ...branches.map((branch) =>
+        getLocalBusinessJsonLd({
+          homeUrl: canonical,
+          branch,
+        }),
+      ),
     ],
   };
 

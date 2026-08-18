@@ -118,6 +118,8 @@ const MobileHero = () => (
         <span className="text-white/70">Areas</span>
         <span className="mx-2 text-white/25">·</span>
         Wakad · Baner · Marunji · Phase 1-3 · Megapolis
+        <span className="mx-2 text-white/25">·</span>
+        Nanded City · Sinhagad Road
       </p>
     </div>
   </div>
@@ -218,7 +220,7 @@ const Hero = () => {
 
       <div className="container relative z-10 mx-auto px-4 md:px-6">
         <h1 className="sr-only">
-          Trusted maids in Hinjewadi, Pune for cleaning, cooking, babysitting, elder care, and full-time domestic help
+          Trusted maids in Hinjewadi and Nanded City, Pune for cleaning, cooking, babysitting, elder care, and full-time domestic help
         </h1>
         {/* Desktop / tablet layout (md+) -preserved exactly */}
         <div className="hidden md:block">
@@ -232,7 +234,7 @@ const Hero = () => {
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
               </span>
               <MapPin className="h-3.5 w-3.5 text-accent" />
-              <span>Serving Hinjewadi IT Park, Pune</span>
+              <span>Serving Hinjewadi IT Park · also Nanded City</span>
               <span className="mx-1 h-3 w-px bg-white/20" />
               <span className="flex items-center gap-1 text-accent">
                 <Star className="h-3 w-3 fill-accent" /> 4.9
@@ -294,7 +296,7 @@ const Hero = () => {
 
             {/* Areas served */}
             <p className="mt-6 text-xs font-medium text-white/50 tracking-wide">
-              <span className="text-white/70">Areas:</span> Wakad · Bhumkar Chowk · Baner · Marunji · Phase 1-3 · Megapolis
+              <span className="text-white/70">Areas:</span> Wakad · Bhumkar Chowk · Baner · Marunji · Phase 1-3 · Megapolis · Nanded City · Sinhagad Road
             </p>
           </div>
 

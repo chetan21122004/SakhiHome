@@ -5,14 +5,14 @@ const blobBg = "/assets/blobs/063602423687.jpg";
 
 
 const items = [
-  { icon: Users, num: "500+", title: "Maid Network", desc: "A strong, growing network exclusively built for Hinjewadi IT Park families." },
+  { icon: Users, num: "500+", title: "Maid Network", desc: "A strong, growing network for Hinjewadi IT Park and Nanded City families." },
   { icon: TrendingUp, num: "Weekly", title: "Growing Supply", desc: "New verified maids added every week, so you're never left waiting." },
   { icon: Repeat, num: "24-48h", title: "Quick Replacement", desc: "Backup maid arranged within 24-48 hours if your maid is unavailable." },
   { icon: Heart, num: "100%", title: "Local Matching", desc: "Maids who live nearby for better reliability and punctuality." },
 ];
 
 const mobileShortDesc: Record<string, string> = {
-  "Maid Network": "Local network built for Hinjewadi families.",
+  "Maid Network": "Local network across Hinjewadi and Nanded City.",
   "Growing Supply": "New verified maids added every week.",
   "Quick Replacement": "Backup arranged within 24-48 hours.",
   "Local Matching": "Maids who live near your home.",
@@ -31,7 +31,7 @@ const MobileTrust = () => (
         <span className="block">run with care</span>
       </p>
       <p className="mt-3 text-[13.5px] leading-relaxed text-white/65">
-        Not a faceless app -your local maid partner in Hinjewadi.
+        Not a faceless app -your local maid partner in Hinjewadi and Nanded City.
       </p>
 
       {/* Hairline */}
@@ -90,7 +90,7 @@ const TrustSection = () => {
         <div className="hidden md:block">
           <div className="grid md:grid-cols-[auto_1fr] gap-8 items-center mb-16 max-w-5xl mx-auto text-center md:text-left">
             <div className="hidden md:flex justify-start">
-              <img src={dementiaDoodle} alt="Illustration representing dependable maid care and family support in Hinjewadi" className="w-64 lg:w-80 object-contain drop-shadow-xl animate-float" />
+              <img src={dementiaDoodle} alt="Illustration representing dependable maid care and family support in Hinjewadi and Nanded City" className="w-64 lg:w-80 object-contain drop-shadow-xl animate-float" />
             </div>
             <div>
               <span className="inline-flex items-center gap-2 rounded-full glass-strong border border-white/15 px-4 py-1.5 text-xs font-bold text-white uppercase tracking-wider">
@@ -102,7 +102,7 @@ const TrustSection = () => {
                 <br className="hidden sm:block" /> run with care
               </h2>
               <p className="mt-5 text-lg text-white/70 max-w-xl mx-auto md:mx-0">
-                {"We're not a faceless app. We're your local maid partner in Hinjewadi."}
+                {"We're not a faceless app. We're your local maid partner in Hinjewadi and Nanded City."}
               </p>
             </div>
           </div>

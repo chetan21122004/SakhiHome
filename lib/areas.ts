@@ -6,10 +6,17 @@
  *   /maid-service-in-[societySlug]
  */
 
+import type { BranchId } from "@/lib/contact";
+
+export type ServiceRegion = BranchId;
+export type CoverageTier = "primary" | "secondary" | "expansion";
+export type SocietyHighlight = "nanny" | "maid";
+
 export type Society = {
   name: string;
   slug: string;
   areaId: string;
+  highlights?: readonly SocietyHighlight[];
 };
 
 export type AreaRecord = {
@@ -24,6 +31,8 @@ export type AreaRecord = {
   seoTitle: string;
   metaDescription: string;
   searchVolumeTier: "high" | "medium" | "low";
+  region: ServiceRegion;
+  coverageTier: CoverageTier;
   societies: Omit<Society, "areaId">[];
 };
 
@@ -42,6 +51,8 @@ export const AREAS: readonly AreaRecord[] = [
     metaDescription:
       "Looking for a maid in Hinjewadi Phase 1? SakhiHome connects you with 500+ background-verified maids for cleaning, cooking, babysitting & more. Match within hours.",
     searchVolumeTier: "high",
+    region: "hinjewadi",
+    coverageTier: "primary",
     societies: [
       { name: "Godrej 24", slug: "godrej-24-hinjewadi" },
       { name: "Shapoorji Joyville Sensorium", slug: "shapoorji-joyville-sensorium" },
@@ -68,6 +79,8 @@ export const AREAS: readonly AreaRecord[] = [
     metaDescription:
       "Find verified maids near Infosys & Wipro IT societies in Hinjewadi Phase 2. SakhiHome matches local, background-checked domestic help within hours.",
     searchVolumeTier: "high",
+    region: "hinjewadi",
+    coverageTier: "primary",
     societies: [
       { name: "Supreme Estia Phase 1", slug: "supreme-estia-hinjewadi-phase-2" },
       { name: "VJ Eternity", slug: "vj-eternity-hinjewadi" },
@@ -91,6 +104,8 @@ export const AREAS: readonly AreaRecord[] = [
     metaDescription:
       "Trusted maid services in Hinjewadi Phase 3 -Blue Ridge, Life Republic & nearby societies. 500+ verified maids matched within hours. SakhiHome.",
     searchVolumeTier: "high",
+    region: "hinjewadi",
+    coverageTier: "primary",
     societies: [
       { name: "Blue Ridge Township", slug: "blue-ridge-township-hinjewadi" },
       { name: "Life Republic Aros", slug: "life-republic-aros-hinjewadi" },
@@ -115,6 +130,8 @@ export const AREAS: readonly AreaRecord[] = [
     metaDescription:
       "Need a maid in Megapolis Splendour or Sparklet? SakhiHome provides background-verified maids for cleaning, cooking, babysitting & more. Fast matching, quick replacement.",
     searchVolumeTier: "medium",
+    region: "hinjewadi",
+    coverageTier: "primary",
     societies: [
       { name: "Megapolis Splendour", slug: "megapolis-splendour-hinjewadi" },
       { name: "Megapolis Sparklet", slug: "megapolis-sparklet-hinjewadi" },
@@ -136,6 +153,8 @@ export const AREAS: readonly AreaRecord[] = [
     metaDescription:
       "Find verified maids in Wakad, Pune. SakhiHome connects you with local, background-checked maids for cleaning, cooking, babysitting & more. Match within hours.",
     searchVolumeTier: "high",
+    region: "hinjewadi",
+    coverageTier: "primary",
     societies: [
       { name: "RGS Forte", slug: "rgs-forte-wakad" },
       { name: "Sanskruti Casa Poli", slug: "sanskruti-casa-poli-wakad" },
@@ -160,6 +179,8 @@ export const AREAS: readonly AreaRecord[] = [
     metaDescription:
       "Looking for a maid near Bhumkar Chowk? SakhiHome has 500+ background-verified maids for all home needs. Fast matching & 24-48 hr replacement guaranteed.",
     searchVolumeTier: "medium",
+    region: "hinjewadi",
+    coverageTier: "primary",
     societies: [
       { name: "Bhumkar Nagar Societies", slug: "bhumkar-nagar-societies" },
       { name: "Sai Nagar Bhumkar Chowk", slug: "sai-nagar-bhumkar-chowk" },
@@ -182,6 +203,8 @@ export const AREAS: readonly AreaRecord[] = [
     metaDescription:
       "Find trusted maids in Baner, Pune. SakhiHome provides background-verified maids for cleaning, cooking, elder care & babysitting. Fast matching near your society.",
     searchVolumeTier: "high",
+    region: "hinjewadi",
+    coverageTier: "primary",
     societies: [
       { name: "VJ Portia Grande", slug: "vj-portia-grande-baner" },
       { name: "Kalpataru Jade Residences", slug: "kalpataru-jade-residences-baner" },
@@ -206,12 +229,176 @@ export const AREAS: readonly AreaRecord[] = [
     metaDescription:
       "Need domestic help in Marunji near Sus or Hinjewadi? SakhiHome matches you with local, verified maids for all home services. Available within hours.",
     searchVolumeTier: "medium",
+    region: "hinjewadi",
+    coverageTier: "primary",
     societies: [
       { name: "Life Republic Marunji", slug: "life-republic-marunji" },
       { name: "Kolte Patil Western Avenue", slug: "kolte-patil-western-avenue-marunji" },
       { name: "Sus Road Societies", slug: "sus-road-societies-marunji" },
       { name: "Kasarsai Road Societies", slug: "kasarsai-road-societies-marunji" },
       { name: "Marunji Village Residences", slug: "marunji-village-residences" },
+    ],
+  },
+
+  // ── Nanded City / Sinhagad Road belt ──────────────────────────────────────
+  {
+    id: "nanded-city",
+    name: "Nanded City",
+    slug: "nanded-city",
+    shortName: "Nanded City",
+    description:
+      "A 700-acre integrated township on Sinhagad Road -7,000+ families across 95 delivered towers. The primary catchment for SakhiHome's Uttam Nagar branch.",
+    landmark: "Nanded City township gate, Sinhagad Road",
+    pincode: "411041",
+    nearbyMicroLocalities: ["Uttam Nagar", "Shivane", "Dhayari", "Dhayari Phata"],
+    seoTitle: "Maid Service in Nanded City Pune | Verified Maids - SakhiHome",
+    metaDescription:
+      "Hire verified maids, cooks, nannies and babysitters in Nanded City, Pune. SakhiHome matches local help for Sargam, Asawari, Pancham, Shubh Kalyan and more.",
+    searchVolumeTier: "high",
+    region: "nanded-city",
+    coverageTier: "primary",
+    societies: [
+      { name: "Asawari", slug: "asawari-nanded-city", highlights: ["nanny"] },
+      { name: "Bageshree", slug: "bageshree-nanded-city" },
+      { name: "Bahaar", slug: "bahaar-nanded-city", highlights: ["nanny"] },
+      { name: "Dhanashree", slug: "dhanashree-nanded-city" },
+      { name: "Janaranjani", slug: "janaranjani-nanded-city" },
+      { name: "Kalashree", slug: "kalashree-nanded-city", highlights: ["nanny"] },
+      { name: "Lalit", slug: "lalit-nanded-city" },
+      { name: "Madhuvanti", slug: "madhuvanti-nanded-city", highlights: ["maid"] },
+      { name: "Mangal Bhairav", slug: "mangal-bhairav-nanded-city", highlights: ["maid"] },
+      { name: "Pancham Nanded City", slug: "pancham-nanded-city", highlights: ["nanny"] },
+      { name: "Sarang", slug: "sarang-nanded-city", highlights: ["maid"] },
+      { name: "Sargam", slug: "sargam-nanded-city", highlights: ["nanny"] },
+      { name: "Shubh Kalyan", slug: "shubh-kalyan-nanded-city", highlights: ["nanny"] },
+      { name: "Sur Nanded City", slug: "sur-nanded-city", highlights: ["nanny"] },
+      { name: "Rhythm", slug: "rhythm-nanded-city" },
+      { name: "Melody", slug: "melody-nanded-city" },
+    ],
+  },
+  {
+    id: "uttam-nagar",
+    name: "Uttam Nagar",
+    slug: "uttam-nagar",
+    shortName: "Uttam Nagar",
+    description:
+      "Residential pocket on Nanded-Shivane Road around SakhiHome's Sinhagad Road office -a short hop from Nanded City and Shivane societies.",
+    landmark: "Nanded-Shivane Road, Uttam Nagar",
+    pincode: "411023",
+    nearbyMicroLocalities: ["Shivane", "Deshmukh Nagar", "Nanded City"],
+    seoTitle: "Maid Service in Uttam Nagar Pune | Local Verified Help - SakhiHome",
+    metaDescription:
+      "Need a maid in Uttam Nagar, Pune? SakhiHome's local branch matches verified maids, cooks and babysitters near Shivane and Nanded City.",
+    searchVolumeTier: "medium",
+    region: "nanded-city",
+    coverageTier: "secondary",
+    societies: [
+      { name: "Venkatesh Puram Housing Society", slug: "venkatesh-puram-uttam-nagar" },
+      { name: "Anant Co-operative Housing Society", slug: "anant-cooperative-uttam-nagar" },
+    ],
+  },
+  {
+    id: "shivane",
+    name: "Shivane",
+    slug: "shivane",
+    shortName: "Shivane",
+    description:
+      "Village-side residential belt next to Uttam Nagar and Nanded City -housing societies with easy access to Sinhagad Road and NDA Khadakwasla.",
+    landmark: "Shivane village / Nanded-Shivane Road",
+    pincode: "411023",
+    nearbyMicroLocalities: ["Uttam Nagar", "Yashwant Nagar", "NDA Khadakwasla"],
+    seoTitle: "Maid Service in Shivane Pune | Verified Maids Near You - SakhiHome",
+    metaDescription:
+      "Find verified maids in Shivane, Pune. SakhiHome covers Yashwant Nagar, Green City and nearby Uttam Nagar homes from our Nanded City branch.",
+    searchVolumeTier: "medium",
+    region: "nanded-city",
+    coverageTier: "secondary",
+    societies: [
+      { name: "Yashwant Nagar Housing Society", slug: "yashwant-nagar-shivane" },
+      { name: "Green City Shivane", slug: "green-city-shivane" },
+    ],
+  },
+  {
+    id: "dhayari",
+    name: "Dhayari",
+    slug: "dhayari",
+    shortName: "Dhayari",
+    description:
+      "Established Sinhagad Road neighbourhood adjoining Nanded City -family apartments and co-operative housing with strong demand for daily maids and cooks.",
+    landmark: "Dhayari Gaon",
+    pincode: "411041",
+    nearbyMicroLocalities: ["Dhayari Phata", "Nanded City", "Vadgaon Budruk"],
+    seoTitle: "Maid Service in Dhayari Pune | Trusted Domestic Help - SakhiHome",
+    metaDescription:
+      "Hire a verified maid in Dhayari, Pune. Cleaning, cooking, babysitting and full-time help matched locally from SakhiHome's Nanded City branch.",
+    searchVolumeTier: "high",
+    region: "nanded-city",
+    coverageTier: "secondary",
+    societies: [
+      { name: "Vitthal Sangam Housing Society", slug: "vitthal-sangam-dhayari" },
+      { name: "Surya Ganga Co-Op Housing Society", slug: "surya-ganga-dhayari" },
+      { name: "Vastushilp Housing Society", slug: "vastushilp-dhayari" },
+    ],
+  },
+  {
+    id: "dhayari-phata",
+    name: "Dhayari Phata",
+    slug: "dhayari-phata",
+    shortName: "Dhayari Phata",
+    description:
+      "Sinhagad Road junction linking Dhayari, Nanded City and Vadgaon Budruk -a practical pickup point for part-time and full-time domestic help.",
+    landmark: "Dhayari Phata junction, Sinhagad Road",
+    pincode: "411041",
+    nearbyMicroLocalities: ["Dhayari", "Nanded City", "Sinhagad Road", "Vadgaon Budruk"],
+    seoTitle: "Maid Service in Dhayari Phata | Sinhagad Road Maids - SakhiHome",
+    metaDescription:
+      "Book verified maid services near Dhayari Phata on Sinhagad Road. SakhiHome matches local maids, cooks and nannies for Dhayari and Nanded City homes.",
+    searchVolumeTier: "medium",
+    region: "nanded-city",
+    coverageTier: "secondary",
+    societies: [],
+  },
+  {
+    id: "kirkatwadi",
+    name: "Kirkatwadi",
+    slug: "kirkatwadi",
+    shortName: "Kirkatwadi",
+    description:
+      "Residential clusters toward Wanjalewadi and UrbanGram -an expansion belt from the Uttam Nagar office for families needing reliable local maids.",
+    landmark: "Kirkatwadi village",
+    pincode: "411024",
+    nearbyMicroLocalities: ["Wanjalewadi", "Kondhawe Dhawade", "Shivane"],
+    seoTitle: "Maid Service in Kirkatwadi Pune | Verified Local Help - SakhiHome",
+    metaDescription:
+      "Need a maid in Kirkatwadi or Wanjalewadi? SakhiHome provides background-verified maids, cooks and babysitters from the nearby Nanded City branch.",
+    searchVolumeTier: "medium",
+    region: "nanded-city",
+    coverageTier: "expansion",
+    societies: [
+      { name: "UrbanGram Society", slug: "urbangram-kirkatwadi" },
+      { name: "Aapla Ghar Kirkatwadi", slug: "aapla-ghar-kirkatwadi" },
+    ],
+  },
+  {
+    id: "narhe",
+    name: "Narhe",
+    slug: "narhe",
+    shortName: "Narhe",
+    description:
+      "Growing housing pocket off Sinhagad Road toward Ambegaon -expansion coverage for co-operative societies that sit a short drive from Nanded City.",
+    landmark: "Narhe gaon",
+    pincode: "411041",
+    nearbyMicroLocalities: ["Ambegaon", "Dhayari", "Sinhagad Road"],
+    seoTitle: "Maid Service in Narhe Pune | Trusted Maids & Nannies - SakhiHome",
+    metaDescription:
+      "Hire verified maids in Narhe, Pune. SakhiHome covers Bhakti Park, Aditya Sanskruti and nearby societies from the Nanded City / Uttam Nagar branch.",
+    searchVolumeTier: "medium",
+    region: "nanded-city",
+    coverageTier: "expansion",
+    societies: [
+      { name: "Bhakti Park Housing Society", slug: "bhakti-park-narhe" },
+      { name: "Aditya Sanskruti Co-Op Housing Society", slug: "aditya-sanskruti-narhe" },
+      { name: "Siddhivinayak Gardenia Co-Op Housing Society", slug: "siddhivinayak-gardenia-narhe" },
     ],
   },
 ] as const;
@@ -249,4 +436,49 @@ export function getSocietyBySlug(
 
 export function getAllSocietySlugs(): string[] {
   return getAllSocieties().map((s) => s.slug);
+}
+
+const coverageTierRank: Record<CoverageTier, number> = {
+  primary: 0,
+  secondary: 1,
+  expansion: 2,
+};
+
+export function getAreasByRegion(region: ServiceRegion): AreaRecord[] {
+  return AREAS.filter((area) => area.region === region).sort(
+    (a, b) => coverageTierRank[a.coverageTier] - coverageTierRank[b.coverageTier],
+  );
+}
+
+export function getRegionLabel(region: ServiceRegion): string {
+  return region === "nanded-city"
+    ? "Nanded City & Sinhagad Road"
+    : "Hinjewadi & Pune west";
+}
+
+const NANNY_SERVICE_SLUGS = new Set(["babysitting", "japa-maid"]);
+const MAID_SERVICE_SLUGS = new Set([
+  "house-cleaning",
+  "cooking-services",
+  "full-time-maid",
+  "part-time-maid",
+]);
+
+export function sortSocietiesForService<T extends { highlights?: readonly SocietyHighlight[] }>(
+  societies: readonly T[],
+  serviceSlug?: string,
+): T[] {
+  if (!serviceSlug) return [...societies];
+
+  const preferNanny = NANNY_SERVICE_SLUGS.has(serviceSlug);
+  const preferMaid = MAID_SERVICE_SLUGS.has(serviceSlug);
+
+  return [...societies].sort((a, b) => {
+    const score = (society: T) => {
+      if (preferNanny && society.highlights?.includes("nanny")) return 0;
+      if (preferMaid && society.highlights?.includes("maid")) return 0;
+      return 1;
+    };
+    return score(a) - score(b);
+  });
 }

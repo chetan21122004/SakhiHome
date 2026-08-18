@@ -20,7 +20,8 @@ import {
   Wand2,
 } from "lucide-react";
 import { toast } from "sonner";
-import { BusinessMap } from "@/app/components/site/BusinessMap";
+import { BranchMaps } from "@/app/components/site/BusinessMap";
+import { getAreasByRegion, getRegionLabel } from "@/lib/areas";
 import {
   CONTACT_PHONE_DISPLAY_IN,
   CONTACT_PHONE_E164,
@@ -35,22 +36,16 @@ const SERVICES = [
   "House Cleaning",
   "Cooking Services",
   "Babysitting",
+  "Japa Maid",
   "Elder Care",
   "Full-Time Maid",
   "Part-Time Maid",
   "Not sure yet",
 ];
 
-const AREAS = [
-  "Hinjewadi Phase 1",
-  "Hinjewadi Phase 2",
-  "Hinjewadi Phase 3",
-  "Megapolis",
-  "Wakad",
-  "Bhumkar Chowk",
-  "Baner",
-  "Marunji",
-  "Other",
+const AREA_GROUPS = [
+  { region: "hinjewadi" as const },
+  { region: "nanded-city" as const },
 ];
 
 const initialState = {
@@ -230,7 +225,7 @@ const EnquirySection = () => {
                 Mon-Sun · 8 AM - 9 PM · Replies within minutes
               </p>
 
-              <BusinessMap className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-white/10" />
+              <BranchMaps className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-white/10" />
             </div>
           </aside>
 
@@ -325,11 +320,16 @@ const EnquirySection = () => {
                         className="flex h-11 md:h-12 w-full rounded-md border border-input bg-background pl-10 pr-3 py-2 text-sm appearance-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                       >
                         <option value="">Select area</option>
-                        {AREAS.map((a) => (
-                          <option key={a} value={a}>
-                            {a}
-                          </option>
+                        {AREA_GROUPS.map((group) => (
+                          <optgroup key={group.region} label={getRegionLabel(group.region)}>
+                            {getAreasByRegion(group.region).map((area) => (
+                              <option key={area.id} value={area.name}>
+                                {area.name}
+                              </option>
+                            ))}
+                          </optgroup>
                         ))}
+                        <option value="Other">Other</option>
                       </select>
                     </div>
                   </div>

@@ -1,10 +1,11 @@
 import { Phone, MessageCircle, MapPin, ArrowUpRight, Mail } from "lucide-react";
-import { BusinessMap } from "@/app/components/site/BusinessMap";
+import Link from "next/link";
+import { BranchMaps } from "@/app/components/site/BusinessMap";
+import { AREAS, getRegionLabel, type ServiceRegion } from "@/lib/areas";
 import {
-  BUSINESS_ADDRESS_DISPLAY,
   CONTACT_PHONE_DISPLAY_IN,
   CONTACT_PHONE_E164,
-  GOOGLE_MAPS_DIRECTIONS_URL,
+  getAllBranches,
   WHATSAPP,
 } from "@/lib/contact";
 import { services } from "@/lib/services";
@@ -14,16 +15,22 @@ const logo = "logo_only.png";
 const logotext = "logo_text.png";
 const blobBg = "blobs/color_grunge_pattern_liquidity_style_background.jpg";
 
-const areas = [
-  "Hinjewadi Phase 1",
-  "Hinjewadi Phase 2",
-  "Hinjewadi Phase 3",
-  "Megapolis",
-  "Wakad",
-  "Bhumkar Chowk",
-  "Baner",
-  "Marunji",
-];
+function AreaChips({ region }: { region: ServiceRegion }) {
+  const areas = AREAS.filter((area) => area.region === region);
+  return (
+    <div className="flex flex-wrap gap-2">
+      {areas.map((area) => (
+        <Link
+          key={area.id}
+          href={`/maid-service-in-${area.slug}`}
+          className="inline-flex rounded-full border border-white/[0.08] bg-white/[0.04] px-3 py-1 text-[11px] font-semibold tracking-wide text-dark-muted shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-smooth hover:border-accent/40 hover:text-accent"
+        >
+          {area.shortName}
+        </Link>
+      ))}
+    </div>
+  );
+}
 
 const Footer = () => {
   return (
@@ -73,7 +80,8 @@ const Footer = () => {
                 <img src={`/assets/${logotext}`} alt="SakhiHome Services" className="h-16 w-auto object-contain" />
               </a>
               <p className="relative mt-4 text-sm leading-relaxed text-dark-muted">
-                Trusted maid services across <span className="font-semibold text-dark-foreground/90">Hinjewadi IT Park</span> and Pune west.
+                Trusted maid services across <span className="font-semibold text-dark-foreground/90">Hinjewadi IT Park</span>{" "}
+                and <span className="font-semibold text-dark-foreground/90">Nanded City / Sinhagad Road</span>.
               </p>
               <div className="relative mt-5 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-accent">
                 <span className="relative flex h-2 w-2">
@@ -82,13 +90,13 @@ const Footer = () => {
                 </span>
                 Open for bookings
               </div>
-              <a
+              <Link
                 href="/blog"
                 className="relative mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-accent transition-smooth hover:text-dark-foreground hover:underline"
               >
                 Tips & guides
                 <ArrowUpRight className="h-3.5 w-3.5" />
-              </a>
+              </Link>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
@@ -150,16 +158,10 @@ const Footer = () => {
 
             <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
               <h4 className="mb-3 font-display text-[11px] font-bold uppercase tracking-[0.18em] text-accent">Service Areas</h4>
-              <div className="flex flex-wrap gap-2">
-                {areas.map((a) => (
-                  <span
-                    key={a}
-                    className="inline-flex rounded-full border border-white/[0.08] bg-white/[0.04] px-3 py-1 text-[11px] font-semibold tracking-wide text-dark-muted"
-                  >
-                    {a}
-                  </span>
-                ))}
-              </div>
+              <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-dark-muted">{getRegionLabel("hinjewadi")}</p>
+              <AreaChips region="hinjewadi" />
+              <p className="mb-2 mt-4 text-[10px] font-bold uppercase tracking-wider text-dark-muted">{getRegionLabel("nanded-city")}</p>
+              <AreaChips region="nanded-city" />
             </div>
 
             <div className="rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/10 to-transparent p-4">
@@ -185,27 +187,33 @@ const Footer = () => {
                   <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white/[0.06] ring-1 ring-white/10">
                     <MapPin className="h-4 w-4 text-accent" />
                   </span>
-                  <address className="not-italic font-medium leading-snug">
-                    <a
-                      href={GOOGLE_MAPS_DIRECTIONS_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-accent transition-smooth"
-                    >
-                      {BUSINESS_ADDRESS_DISPLAY}
-                    </a>
+                  <address className="not-italic font-medium leading-snug space-y-2">
+                    {getAllBranches().map((branch) => (
+                      <a
+                        key={branch.id}
+                        href={branch.mapsDirectionsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block hover:text-accent transition-smooth"
+                      >
+                        <span className="block text-[10px] font-bold uppercase tracking-wider text-dark-muted">
+                          {branch.shortLabel}
+                        </span>
+                        {branch.addressDisplay}
+                      </a>
+                    ))}
                   </address>
                 </li>
               </ul>
             </div>
 
-            <BusinessMap className="rounded-2xl border border-white/10 bg-white/[0.03] p-4" />
+            <BranchMaps className="rounded-2xl border border-white/10 bg-white/[0.03] p-4" />
 
             <div className="border-t border-white/10 pt-5 text-center text-xs text-dark-muted">
               <p>© {new Date().getFullYear()} SakhiHome Services. All rights reserved.</p>
               <p className="mt-2 flex items-center justify-center gap-2">
                 <span className="h-1 w-1 rounded-full bg-accent" />
-                Crafted in Hinjewadi · Pune
+                Crafted in Hinjewadi & Nanded City · Pune
               </p>
             </div>
           </div>
@@ -231,7 +239,7 @@ const Footer = () => {
               </a>
               <p className="relative mt-6 max-w-md text-sm leading-relaxed text-dark-muted">
                 Trusted maid services across <span className="font-semibold text-dark-foreground/90">Hinjewadi IT Park</span>{" "}
-                and Pune west -fast matching, verified help, human support.
+                and <span className="font-semibold text-dark-foreground/90">Nanded City / Sinhagad Road</span> -fast matching, verified help, human support.
               </p>
               <div className="relative mt-6 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-accent">
                 <span className="relative flex h-2 w-2">
@@ -240,13 +248,13 @@ const Footer = () => {
                 </span>
                 Open for bookings
               </div>
-              <a
+              <Link
                 href="/blog"
                 className="relative mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-smooth hover:text-dark-foreground hover:underline underline-offset-4"
               >
                 Tips & guides (blog)
                 <ArrowUpRight className="h-3.5 w-3.5" />
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -278,15 +286,15 @@ const Footer = () => {
                 <span className="h-px w-10 bg-gradient-to-r from-accent to-primary" />
                 <h4 className="font-display text-sm font-bold uppercase tracking-[0.18em] text-accent">Areas</h4>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {areas.map((a) => (
-                  <span
-                    key={a}
-                    className="inline-flex rounded-full border border-white/[0.08] bg-white/[0.04] px-3 py-1 text-[11px] font-semibold tracking-wide text-dark-muted shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
-                  >
-                    {a}
-                  </span>
-                ))}
+              <div className="space-y-4">
+                <div>
+                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-dark-muted">{getRegionLabel("hinjewadi")}</p>
+                  <AreaChips region="hinjewadi" />
+                </div>
+                <div>
+                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-dark-muted">{getRegionLabel("nanded-city")}</p>
+                  <AreaChips region="nanded-city" />
+                </div>
               </div>
             </div>
 
@@ -344,16 +352,22 @@ const Footer = () => {
                       <MapPin className="h-4 w-4 text-accent" />
                     </span>
                     <div>
-                      <p className="text-[10px] font-bold uppercase tracking-wider text-dark-muted">Office</p>
-                      <address className="not-italic font-medium leading-snug">
-                        <a
-                          href={GOOGLE_MAPS_DIRECTIONS_URL}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:text-accent transition-smooth"
-                        >
-                          {BUSINESS_ADDRESS_DISPLAY}
-                        </a>
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-dark-muted">Offices</p>
+                      <address className="not-italic font-medium leading-snug space-y-2">
+                        {getAllBranches().map((branch) => (
+                          <a
+                            key={branch.id}
+                            href={branch.mapsDirectionsUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block hover:text-accent transition-smooth"
+                          >
+                            <span className="block text-[10px] font-bold uppercase tracking-wider text-dark-muted">
+                              {branch.shortLabel}
+                            </span>
+                            {branch.addressDisplay}
+                          </a>
+                        ))}
                       </address>
                     </div>
                   </li>
@@ -363,13 +377,13 @@ const Footer = () => {
           </div>
           </div>
 
-          <BusinessMap className="mt-10 max-w-2xl" />
+          <BranchMaps className="mt-10" />
 
           <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs text-dark-muted sm:flex-row">
             <p>© {new Date().getFullYear()} SakhiHome Services. All rights reserved.</p>
             <p className="flex items-center gap-2">
               <span className="h-1 w-1 rounded-full bg-accent" />
-              Crafted in Hinjewadi · Pune
+              Crafted in Hinjewadi & Nanded City · Pune
             </p>
           </div>
         </div>
