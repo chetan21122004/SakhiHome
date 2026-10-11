@@ -43,6 +43,8 @@ const BottomNav = () => {
     return "Home";
   }, [hash, isHomeRoute]);
 
+  if (pathname.startsWith("/admin") || pathname === "/register") return null;
+
   return (
     <nav
       className="fixed inset-x-0 bottom-0 z-40 border-t border-white/15 bg-dark/96 backdrop-blur-xl md:hidden"
