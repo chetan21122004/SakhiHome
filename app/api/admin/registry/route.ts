@@ -4,6 +4,7 @@ import {
   loadRegistryForAdmin,
   persistRegistryChanges,
 } from "@/lib/admin-registry-server";
+import { filterRegistryChangesForRole } from "@/lib/field-maid-policy";
 
 export async function GET() {
   if (!(await readAdminSession())) {
@@ -20,7 +21,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  if (!(await readAdminSession())) {
+  const session = await readAdminSession();
+  if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {
@@ -28,7 +30,11 @@ export async function POST(request: Request) {
       changes?: { table: string; before: unknown; after: unknown }[];
       messages?: string[];
     };
-    await persistRegistryChanges(body.changes ?? [], body.messages ?? []);
+    const changes = filterRegistryChangesForRole(
+      session.role,
+      body.changes ?? [],
+    );
+    await persistRegistryChanges(changes, body.messages ?? []);
     return NextResponse.json({ ok: true });
   } catch (error) {
     return NextResponse.json(

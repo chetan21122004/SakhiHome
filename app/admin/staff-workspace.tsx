@@ -46,6 +46,7 @@ export default function StaffWorkspace({
       await addStaffAccess(
         String(values.get("email")).trim().toLowerCase(),
         String(values.get("role")),
+        String(values.get("password")),
       );
       form.reset();
       toast.success("Coordinator access added.");
@@ -73,8 +74,8 @@ export default function StaffWorkspace({
     <section className="rg-panel">
       <h2>Team access</h2>
       <p className="rg-settings-copy">
-        Signed in as {email} · {role}. Coordinator emails are kept for your
-        records; admin login uses the single password configured on the server.
+        Signed in as {email} · {role}. Add coordinators with an email and
+        password — they sign in at <strong>/field</strong> to onboard maids.
       </p>
       {error && <p role="alert">{error}</p>}
       <div className="rg-table-wrap">
@@ -114,6 +115,16 @@ export default function StaffWorkspace({
           <label className="rg-field">
             <span>Staff email</span>
             <input name="email" type="email" required />
+          </label>
+          <label className="rg-field">
+            <span>Login password</span>
+            <input
+              name="password"
+              type="password"
+              minLength={6}
+              required
+              placeholder="For /field sign-in"
+            />
           </label>
           <label className="rg-field">
             <span>Role</span>

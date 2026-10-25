@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import BrandLogo from "@/components/brand-logo";
 import Image from "next/image";
 import StaffLogin from "./staff-login";
@@ -131,6 +132,7 @@ function Panel({
 }
 
 export default function RegistryDashboard() {
+  const router = useRouter();
   const {
     data,
     update,
@@ -143,6 +145,11 @@ export default function RegistryDashboard() {
     signOut,
   } = useRegistry();
   const role = staff?.role || "Coordinator";
+  useEffect(() => {
+    if (staff?.role === "Coordinator") {
+      router.replace("/field");
+    }
+  }, [staff?.role, router]);
   const [uploading, setUploading] = useState(false);
   const uploads = useRef<{ bucket: string; path: string }[]>([]);
   const [section, setSection] = useState("Overview");
@@ -594,6 +601,9 @@ export default function RegistryDashboard() {
               <span className="rg-dot" />
               Connected
             </Badge>
+            <Link href="/field" className="rg-registration-link">
+              Field app <ArrowRight size={15} />
+            </Link>
             <Link href="/register" className="rg-registration-link">
               Registration form <ArrowRight size={15} />
             </Link>

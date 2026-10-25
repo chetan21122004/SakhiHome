@@ -44,6 +44,13 @@ export async function fetchRegistry(): Promise<Registry> {
   return parseJson(await fetch("/api/admin/registry", { credentials: "include" }));
 }
 
+export async function fetchMaids(): Promise<Registry["workers"]> {
+  const data = await parseJson<{ workers: Registry["workers"] }>(
+    await fetch("/api/admin/maids", { credentials: "include" }),
+  );
+  return data.workers;
+}
+
 export async function saveRegistryChanges(
   changes: { table: string; before: unknown; after: unknown }[],
   messages: string[],
@@ -125,13 +132,17 @@ export async function fetchStaffAccess() {
   >(await fetch("/api/admin/staff", { credentials: "include" }));
 }
 
-export async function addStaffAccess(email: string, role: string) {
+export async function addStaffAccess(
+  email: string,
+  role: string,
+  password: string,
+) {
   await parseJson(
     await fetch("/api/admin/staff", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, role }),
+      body: JSON.stringify({ email, role, password }),
     }),
   );
 }

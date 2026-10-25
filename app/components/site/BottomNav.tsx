@@ -43,7 +43,12 @@ const BottomNav = () => {
     return "Home";
   }, [hash, isHomeRoute]);
 
-  if (pathname.startsWith("/admin") || pathname === "/register") return null;
+  if (
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/field") ||
+    pathname === "/register"
+  )
+    return null;
 
   return (
     <nav

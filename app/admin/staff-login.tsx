@@ -4,7 +4,13 @@ import BrandLogo from "@/components/brand-logo";
 import { adminLogin } from "@/lib/admin-api";
 import { PRIMARY_ADMIN_EMAIL } from "@/lib/staff-auth";
 
-export default function StaffLogin({ onLoggedIn }: { onLoggedIn: () => void }) {
+export default function StaffLogin({
+  onLoggedIn,
+  title = "Admin sign in",
+}: {
+  onLoggedIn: () => void;
+  title?: string;
+}) {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -27,11 +33,10 @@ export default function StaffLogin({ onLoggedIn }: { onLoggedIn: () => void }) {
     <main className="rg-login">
       <section className="rg-register-card">
         <BrandLogo caption="TEAM WORKSPACE" />
-        <h1>Admin sign in</h1>
+        <h1>{title}</h1>
         <p>
-          Sign in with the email and password from the staff_access table
-          (default admin: chetan44rt@gmail.com / 123456 until you change it in
-          Supabase).
+          Email and password from staff_access (admin creates coordinator
+          accounts in Workspace).
         </p>
         <form onSubmit={submit}>
           <label className="rg-field">

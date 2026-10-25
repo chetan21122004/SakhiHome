@@ -2,7 +2,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Profile registry
 
-- `/admin`: staff login and live profiles, family details, private photos/documents, applications, households, and placements.
+- `/admin`: full team workspace (admin only for coordinators redirect to field).
+- `/field`: mobile-friendly maid browse and onboarding for admin and coordinators (no delete/archive; verification stays admin-side).
 - `/register`: public applications in English, Hindi, and Marathi, saved directly to Supabase.
 - Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` in `.env.local` and your hosting environment. The registry project is `jesfduyyewrxmtoudkyr` (Sakhis-db).
 - Customer enquiries from the homepage form are stored in Supabase (`enquiries` table). Staff review them under **Enquiries** in `/admin`.

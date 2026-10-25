@@ -22,17 +22,30 @@ export async function POST(request: Request) {
   if (!(await readAdminSession())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const body = (await request.json()) as { email?: string; role?: string };
+  const body = (await request.json()) as {
+    email?: string;
+    role?: string;
+    password?: string;
+  };
   const email = body.email?.trim().toLowerCase();
   const role = body.role ?? "Coordinator";
+  const password = body.password ?? "";
   if (!email) {
     return NextResponse.json({ error: "Email required" }, { status: 400 });
   }
   if (role === "Admin" && email !== PRIMARY_ADMIN_EMAIL) {
     return NextResponse.json({ error: "Only the bootstrap admin email may be Admin." }, { status: 400 });
   }
+  if (password.length < 6) {
+    return NextResponse.json(
+      { error: "Set a password (6+ characters) for field login." },
+      { status: 400 },
+    );
+  }
   const sb = getServiceSupabase();
-  const { error } = await sb.from("staff_access").insert({ email, role });
+  const { error } = await sb
+    .from("staff_access")
+    .insert({ email, role, password });
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
