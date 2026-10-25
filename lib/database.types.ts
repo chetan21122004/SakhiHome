@@ -32,6 +32,27 @@ export type Database = {
         };
         Relationships: [];
       };
+      enquiries: {
+        Row: {
+          created_at: string;
+          id: string;
+          payload: Json;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          id: string;
+          payload: Json;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       households: {
         Row: {
           id: string;
@@ -102,6 +123,13 @@ export type Database = {
             foreignKeyName: "placements_worker_id_fkey";
             columns: ["worker_id"];
             isOneToOne: false;
+            referencedRelation: "maid_public_listings";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "placements_worker_id_fkey";
+            columns: ["worker_id"];
+            isOneToOne: false;
             referencedRelation: "maids";
             referencedColumns: ["id"];
           },
@@ -151,7 +179,18 @@ export type Database = {
       };
     };
     Views: {
-      [_ in never]: never;
+      maid_public_listings: {
+        Row: {
+          area: string | null;
+          display_name: string | null;
+          experience: number | null;
+          id: string | null;
+          languages: string | null;
+          schedule: string | null;
+          services: Json | null;
+        };
+        Relationships: [];
+      };
     };
     Functions: {
       save_registry_changes: {

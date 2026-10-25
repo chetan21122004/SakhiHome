@@ -33,6 +33,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
+    {
+      url: getAbsoluteSiteUrl("/maids"),
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.88,
+    },
   ];
 
   const servicePages: MetadataRoute.Sitemap = services.map((s) => ({

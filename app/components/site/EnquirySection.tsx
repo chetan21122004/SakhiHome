@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { BusinessMap } from "@/app/components/site/BusinessMap";
+import { submitEnquiry } from "@/lib/enquiries";
+import { supabaseConfigured } from "@/lib/supabase-client";
 import {
   CONTACT_PHONE_DISPLAY_IN,
   CONTACT_PHONE_E164,
@@ -28,8 +30,6 @@ import {
 } from "@/lib/contact";
 
 const blobBg = "/assets/blobs/color_grunge_pattern_liquidity_style_background.jpg";
-
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/xbdqpevg";
 
 const SERVICES = [
   "House Cleaning",
@@ -90,40 +90,29 @@ const EnquirySection = () => {
       return;
     }
 
+    if (!supabaseConfigured) {
+      toast.error("Enquiry form is temporarily unavailable. Please WhatsApp or call us.");
+      return;
+    }
+
     setSubmitting(true);
     try {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: form.name,
-          phone: form.phone,
-          area: form.area,
-          service: form.service,
-          budget: form.budget,
-          start_time: form.startTime,
-          end_time: form.endTime,
-          maid_daily_window:
-            form.startTime || form.endTime
-              ? [form.startTime || "?", form.endTime || "?"].join(" - ")
-              : "",
-          message: form.message,
-          _subject: `New SakhiHome enquiry from ${form.name}`,
-        }),
+      await submitEnquiry({
+        name: form.name.trim(),
+        phone: form.phone.trim(),
+        area: form.area,
+        service: form.service,
+        budget: form.budget.trim(),
+        startTime: form.startTime,
+        endTime: form.endTime,
+        message: form.message.trim(),
       });
-
-      if (!response.ok) {
-        throw new Error(`Formspree responded with ${response.status}`);
-      }
 
       setSubmitted(true);
       setForm(initialState);
       toast.success("Enquiry sent! We'll reach out shortly.");
     } catch (err) {
-      console.error("Formspree submission failed", err);
+      console.error("Enquiry submission failed", err);
       toast.error("Couldn't send enquiry. Please try WhatsApp or call us.");
     } finally {
       setSubmitting(false);

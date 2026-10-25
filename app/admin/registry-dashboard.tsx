@@ -1,11 +1,13 @@
 "use client";
 
-import { useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import BrandLogo from "@/components/brand-logo";
 import Image from "next/image";
 import StaffLogin from "./staff-login";
 import StaffWorkspace from "./staff-workspace";
+import EnquiriesPanel from "./enquiries-panel";
+import { loadEnquiries } from "@/lib/enquiries";
 import { getSupabase } from "@/lib/supabase-client";
 import {
   ArrowDownToLine,
@@ -21,6 +23,7 @@ import {
   LayoutDashboard,
   Leaf,
   ListFilter,
+  Mail,
   MapPin,
   Plus,
   Search,
@@ -52,6 +55,7 @@ const sections = [
   { name: "Overview", icon: LayoutDashboard },
   { name: "Maid profiles", icon: Users },
   { name: "Applications", icon: ClipboardList },
+  { name: "Enquiries", icon: Mail },
   { name: "Verification", icon: ShieldCheck },
   { name: "Households", icon: House },
   { name: "Placements", icon: BriefcaseBusiness },
@@ -152,6 +156,18 @@ export default function RegistryDashboard() {
   const [household, setHousehold] = useState<Household | null>(null);
   const [placementOpen, setPlacementOpen] = useState(false);
   const [view, setView] = useState("cards");
+  const [newEnquiries, setNewEnquiries] = useState(0);
+  useEffect(() => {
+    if (!staff) {
+      setNewEnquiries(0);
+      return;
+    }
+    void loadEnquiries(getSupabase)
+      .then((rows) =>
+        setNewEnquiries(rows.filter((r) => r.status === "New").length),
+      )
+      .catch(() => setNewEnquiries(0));
+  }, [staff, data.activity]);
   const visible = data.workers.filter(
     (w) =>
       (section === "Verification" ? w.verification === "Pending" : true) &&
@@ -547,6 +563,9 @@ export default function RegistryDashboard() {
               {name === "Applications" && applications.length > 0 && (
                 <b>{applications.length}</b>
               )}
+              {name === "Enquiries" && newEnquiries > 0 && (
+                <b>{newEnquiries}</b>
+              )}
               {section === name && <ChevronRight size={15} />}
             </button>
           ))}
@@ -602,7 +621,9 @@ export default function RegistryDashboard() {
                     ? "Know your people. Find the right fit for every home."
                     : section === "Applications"
                       ? "Welcome new professionals into your network."
-                      : section === "Verification"
+                      : section === "Enquiries"
+                        ? "Follow up on families who reached out from the website."
+                        : section === "Verification"
                         ? "Review documents and build trust, one profile at a time."
                         : section === "Households"
                           ? "The homes and families your network supports."
@@ -968,6 +989,7 @@ export default function RegistryDashboard() {
               </div>
             </Panel>
           )}
+          {section === "Enquiries" && <EnquiriesPanel />}
           {section === "Households" && (
             <div className="rg-households">
               {data.households.map((h) => (

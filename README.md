@@ -4,7 +4,10 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 - `/admin`: staff login and live profiles, family details, private photos/documents, applications, households, and placements.
 - `/register`: public applications in English, Hindi, and Marathi, saved directly to Supabase.
-- Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` in `.env.local` and your hosting environment. The local project is configured for `bhqgmgbhbewsvwgisbwk`.
+- Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` in `.env.local` and your hosting environment. The registry project is `jesfduyyewrxmtoudkyr` (Sakhis-db).
+- Customer enquiries from the homepage form are stored in Supabase (`enquiries` table). Staff review them under **Enquiries** in `/admin`.
+- Public verified availability is listed at `/maids` (no private contact details).
+- For Cursor Supabase MCP, set a personal access token in your environment as `SUPABASE_ACCESS_TOKEN` (do not commit it).
 - The first approved admin email is `chetan44rt@gmail.com`. Open `/admin`, create your account with your own password, confirm your email, and sign in. Configure allowed redirect URLs and production Site URL in Supabase Authentication when deploying.
 - Admins manage staff access in **Workspace**. Staff must register their own authentication account; adding access does not send an invitation.
 - Photos: JPEG, PNG or WebP, up to 5 MB. Documents: those image formats or PDF, up to 10 MB. Upload from the profile editor, then **Save profile** to retain the attachment. Buckets are private; photos use temporary signed viewing URLs.
