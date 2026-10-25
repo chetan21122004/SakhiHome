@@ -7,7 +7,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - `/register`: public applications in English, Hindi, and Marathi, saved directly to Supabase.
 - Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` in `.env.local` and your hosting environment. The registry project is `jesfduyyewrxmtoudkyr` (Sakhis-db).
 - Customer enquiries from the homepage form are stored in Supabase (`enquiries` table). Staff review them under **Enquiries** in `/admin`.
-- Public verified availability is listed at `/maids` (no private contact details).
+- Maid profiles are **not** listed publicly. Staff share **basic** and **full** invitation links (`/s/…` with random tokens) from `/admin` or `/field`. Run [`database/maid_share_links.sql`](database/maid_share_links.sql) in Supabase to create the table and revoke public access to `maid_public_listings`.
 - For Cursor Supabase MCP, set a personal access token in your environment as `SUPABASE_ACCESS_TOKEN` (do not commit it).
 - **Admin login (no Supabase Auth):** `/admin` checks email + password against the `staff_access` table (seed row `chetan44rt@gmail.com` / `123456`). Change password with SQL: `update staff_access set password = '…' where email = '…'`. Run [`database/staff-access-password.sql`](database/staff-access-password.sql) on existing projects.
 - Set `SUPABASE_SERVICE_ROLE_KEY` in `.env.local` (server only) and `ADMIN_SESSION_SECRET` in production. Run [`database/admin-service-role.sql`](database/admin-service-role.sql) once in the SQL editor.

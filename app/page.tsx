@@ -24,8 +24,6 @@ import {
   BRAND_NAME,
   getAbsoluteSiteUrl,
 } from "@/lib/services";
-import { getAvailableMaidCount } from "@/lib/public-maids";
-
 const canonical = getAbsoluteSiteUrl("/");
 
 export const metadata: Metadata = {
@@ -35,7 +33,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const availableMaidCount = await getAvailableMaidCount();
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -77,7 +74,7 @@ export default async function Home() {
         <Navbar />
         <main>
           <Hero />
-          <TrustSection availableMaidCount={availableMaidCount} />
+          <TrustSection />
           <Services />
           <Process />
           <About />

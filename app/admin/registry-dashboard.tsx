@@ -39,6 +39,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import ShareLinksPanel from "@/app/components/share/ShareLinksPanel";
+import {
+  GALLERY_DOC_CATEGORIES,
+  isVerificationDocName,
+} from "@/lib/document-categories";
 import {
   areaOptions,
   blankWorker,
@@ -151,6 +156,10 @@ export default function RegistryDashboard() {
     }
   }, [staff?.role, router]);
   const [uploading, setUploading] = useState(false);
+  const [galleryCategory, setGalleryCategory] = useState<string>(
+    GALLERY_DOC_CATEGORIES[0],
+  );
+  const [galleryNote, setGalleryNote] = useState("");
   const uploads = useRef<{ bucket: string; path: string }[]>([]);
   const [section, setSection] = useState("Overview");
   const [search, setSearch] = useState("");
@@ -445,6 +454,34 @@ export default function RegistryDashboard() {
           ? "Document uploaded. Review it before verification."
           : "Photo uploaded. Save the profile to keep it.",
       );
+    } catch (cause) {
+      toast.error(String((cause as Error).message));
+    } finally {
+      setUploading(false);
+    }
+  }
+  async function attachGalleryFile(file: File) {
+    if (!worker || uploading || saving) return;
+    setUploading(true);
+    try {
+      const uploaded = await uploadFile(worker.id, file, false);
+      uploads.current.push(uploaded);
+      const id = crypto.randomUUID();
+      const note = galleryNote.trim();
+      changeWorker("documents", [
+        ...worker.documents,
+        {
+          id,
+          name: galleryCategory,
+          note: note || undefined,
+          file: file.name,
+          path: uploaded.path,
+          reviewed: false,
+        },
+      ]);
+      changeWorker("verification", "Pending");
+      setGalleryNote("");
+      toast.success("Gallery document uploaded");
     } catch (cause) {
       toast.error(String((cause as Error).message));
     } finally {
@@ -1164,6 +1201,9 @@ export default function RegistryDashboard() {
                   </button>
                 </div>
               )}
+              {!editing && worker && (
+                <ShareLinksPanel maidId={worker.id} variant="admin" />
+              )}
               <div className="rg-detail-tabs">
                 {[
                   "Professional",
@@ -1466,6 +1506,85 @@ export default function RegistryDashboard() {
                         </div>
                       );
                     })}
+                    <h3 className="rg-section-label" style={{ marginTop: "1.5rem" }}>
+                      Additional documents
+                    </h3>
+                    <p className="rg-settings-copy">
+                      Extra files with category and optional note (gallery).
+                    </p>
+                    {worker.documents
+                      .filter((d) => !isVerificationDocName(d.name))
+                      .map((doc) => (
+                        <div className="rg-document" key={doc.id ?? doc.file}>
+                          <FileCheck2 size={22} />
+                          <div>
+                            <strong>{doc.name}</strong>
+                            {doc.note && <small>{doc.note}</small>}
+                            <small>{doc.file}</small>
+                          </div>
+                          {doc?.path && (
+                            <button
+                              type="button"
+                              className="rg-btn small"
+                              onClick={() =>
+                                void openDocument(doc.path!, doc.file).catch(
+                                  (e) => toast.error(e.message),
+                                )
+                              }
+                            >
+                              Download
+                            </button>
+                          )}
+                          {editing && doc.id && (
+                            <button
+                              type="button"
+                              className="rg-btn small"
+                              onClick={() =>
+                                changeWorker(
+                                  "documents",
+                                  worker.documents.filter((d) => d.id !== doc.id),
+                                )
+                              }
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    {editing && (
+                      <div className="rg-form-grid" style={{ marginTop: "1rem" }}>
+                        <Field label="Category">
+                          <select
+                            value={galleryCategory}
+                            onChange={(e) => setGalleryCategory(e.target.value)}
+                          >
+                            {GALLERY_DOC_CATEGORIES.map((c) => (
+                              <option key={c}>{c}</option>
+                            ))}
+                          </select>
+                        </Field>
+                        <Field label="Note (optional)">
+                          <input
+                            value={galleryNote}
+                            onChange={(e) => setGalleryNote(e.target.value)}
+                          />
+                        </Field>
+                        <label className="rg-btn small">
+                          Add gallery file
+                          <input
+                            className="sr-only"
+                            type="file"
+                            accept=".pdf,.jpg,.jpeg,.png,.webp"
+                            disabled={uploading || saving}
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) void attachGalleryFile(file);
+                              e.target.value = "";
+                            }}
+                          />
+                        </label>
+                      </div>
+                    )}
                     <div className="rg-panel-footer">
                       {editing ? (
                         <Field label="Overall verification">

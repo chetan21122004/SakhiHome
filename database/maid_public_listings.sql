@@ -16,4 +16,5 @@ from public.maids m
 where m.payload->>'status' = 'Available'
   and m.payload->>'verification' = 'Verified';
 
-grant select on public.maid_public_listings to anon, authenticated;
+-- Public access revoked; see database/maid_share_links.sql
+-- grant select on public.maid_public_listings to anon, authenticated;

@@ -34,7 +34,15 @@ export type Worker = {
   photoPath?: string;
   applicationId?: string;
   photoUrl?: string;
-  documents: { name: string; file: string; path?: string; reviewed: boolean }[];
+  documents: {
+    id?: string;
+    name: string;
+    note?: string;
+    file: string;
+    path?: string;
+    bucket?: string;
+    reviewed: boolean;
+  }[];
 };
 export type Application = {
   id: string;

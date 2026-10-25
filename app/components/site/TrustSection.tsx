@@ -4,14 +4,10 @@ const dementiaDoodle = "/assets/doodles/Dementia-amico.svg";
 const blobBg = "/assets/blobs/063602423687.jpg";
 
 
-function buildItems(availableMaidCount: number | null | undefined) {
-  const live =
-    availableMaidCount != null && availableMaidCount > 0
-      ? String(availableMaidCount)
-      : null;
+function buildItems() {
   return [
-  { icon: Users, num: live ?? "500+", title: "Maid Network", desc: live ? `${live} verified professionals available for placement right now.` : "A strong, growing network exclusively built for Hinjewadi IT Park families." },
-  { icon: TrendingUp, num: live ? "Live" : "Weekly", title: "Growing Supply", desc: live ? "Browse available profiles by area on our maids page." : "New verified maids added every week, so you're never left waiting." },
+  { icon: Users, num: "500+", title: "Maid Network", desc: "A strong, growing network exclusively built for Hinjewadi IT Park families." },
+  { icon: TrendingUp, num: "Weekly", title: "Growing Supply", desc: "New verified maids added every week, so you're never left waiting." },
   { icon: Repeat, num: "24-48h", title: "Quick Replacement", desc: "Backup maid arranged within 24-48 hours if your maid is unavailable." },
   { icon: Heart, num: "100%", title: "Local Matching", desc: "Maids who live nearby for better reliability and punctuality." },
 ];
@@ -74,12 +70,8 @@ const MobileTrust = ({ items }: { items: ReturnType<typeof buildItems> }) => (
   </div>
 );
 
-type TrustSectionProps = {
-  availableMaidCount?: number | null;
-};
-
-const TrustSection = ({ availableMaidCount }: TrustSectionProps) => {
-  const items = buildItems(availableMaidCount);
+const TrustSection = () => {
+  const items = buildItems();
   return (
     <section className="relative py-12 bg-gradient-dark-radial overflow-hidden">
       {/* Blob background texture */}

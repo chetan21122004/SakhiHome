@@ -156,6 +156,44 @@ export type Database = {
         };
         Relationships: [];
       };
+      maid_share_links: {
+        Row: {
+          created_at: string;
+          created_by: string | null;
+          expires_at: string | null;
+          full_token: string;
+          maid_id: string;
+          revoked_at: string | null;
+          teaser_token: string;
+        };
+        Insert: {
+          created_at?: string;
+          created_by?: string | null;
+          expires_at?: string | null;
+          full_token: string;
+          maid_id: string;
+          revoked_at?: string | null;
+          teaser_token: string;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string | null;
+          expires_at?: string | null;
+          full_token?: string;
+          maid_id?: string;
+          revoked_at?: string | null;
+          teaser_token?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "maid_share_links_maid_id_fkey";
+            columns: ["maid_id"];
+            isOneToOne: true;
+            referencedRelation: "maids";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       staff_access: {
         Row: {
           created_at: string;
