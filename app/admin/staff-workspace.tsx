@@ -1,8 +1,14 @@
 "use client";
 import { useEffect, useState, type FormEvent } from "react";
-import { getSupabase } from "@/lib/supabase-client";
 import { toast } from "sonner";
+import {
+  addStaffAccess,
+  fetchStaffAccess,
+  toggleStaffAccess,
+} from "@/lib/admin-api";
+
 type Staff = { email: string; role: string; enabled: boolean };
+
 export default function StaffWorkspace({
   role,
   email,
@@ -17,67 +23,58 @@ export default function StaffWorkspace({
   const [team, setTeam] = useState<Staff[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+
   async function load() {
-    const result = await getSupabase()
-      .from("staff_access")
-      .select("email,role,enabled")
-      .order("created_at");
-    if (result.error) setError(result.error.message);
-    else setTeam(result.data);
+    try {
+      setTeam(await fetchStaffAccess());
+      setError("");
+    } catch (cause) {
+      setError(String((cause as Error).message));
+    }
   }
+
   useEffect(() => {
-    let alive = true;
-    void getSupabase()
-      .from("staff_access")
-      .select("email,role,enabled")
-      .order("created_at")
-      .then((result) => {
-        if (alive) {
-          if (result.error) setError(result.error.message);
-          else setTeam(result.data);
-        }
-      });
-    return () => {
-      alive = false;
-    };
+    void load();
   }, []);
+
   async function add(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const values = new FormData(event.currentTarget);
     const form = event.currentTarget;
     setBusy(true);
-    const result = await getSupabase()
-      .from("staff_access")
-      .insert({
-        email: String(values.get("email")).trim().toLowerCase(),
-        role: String(values.get("role")),
-      });
-    setBusy(false);
-    if (result.error) toast.error(result.error.message);
-    else {
-      form.reset();
-      toast.success(
-        "Staff access added. They can create their account on the login page.",
+    try {
+      await addStaffAccess(
+        String(values.get("email")).trim().toLowerCase(),
+        String(values.get("role")),
       );
+      form.reset();
+      toast.success("Coordinator access added.");
       await load();
+    } catch (cause) {
+      toast.error(String((cause as Error).message));
+    } finally {
+      setBusy(false);
     }
   }
+
   async function toggle(member: Staff) {
     setBusy(true);
-    const result = await getSupabase()
-      .from("staff_access")
-      .update({ enabled: !member.enabled })
-      .eq("email", member.email);
-    setBusy(false);
-    if (result.error) toast.error(result.error.message);
-    else await load();
+    try {
+      await toggleStaffAccess(member.email, !member.enabled);
+      await load();
+    } catch (cause) {
+      toast.error(String((cause as Error).message));
+    } finally {
+      setBusy(false);
+    }
   }
+
   return (
     <section className="rg-panel">
       <h2>Team access</h2>
       <p className="rg-settings-copy">
-        Signed in as {email} · {role}. Database access is restricted to approved
-        staff. Photos and verification documents are private.
+        Signed in as {email} · {role}. Coordinator emails are kept for your
+        records; admin login uses the single password configured on the server.
       </p>
       {error && <p role="alert">{error}</p>}
       <div className="rg-table-wrap">
@@ -125,7 +122,7 @@ export default function StaffWorkspace({
             </select>
           </label>
           <button className="rg-btn primary" disabled={busy}>
-            Add staff access
+            Add coordinator
           </button>
         </form>
       )}

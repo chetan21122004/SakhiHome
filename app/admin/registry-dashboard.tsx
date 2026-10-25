@@ -7,8 +7,7 @@ import Image from "next/image";
 import StaffLogin from "./staff-login";
 import StaffWorkspace from "./staff-workspace";
 import EnquiriesPanel from "./enquiries-panel";
-import { loadEnquiries } from "@/lib/enquiries";
-import { getSupabase } from "@/lib/supabase-client";
+import { fetchAdminEnquiries, fetchAdminSession } from "@/lib/admin-api";
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -46,6 +45,7 @@ import {
   useRegistry,
   uploadFile,
   openDocument,
+  removeUploadedFiles,
   type Worker,
   type Household,
   type Placement,
@@ -162,7 +162,7 @@ export default function RegistryDashboard() {
       setNewEnquiries(0);
       return;
     }
-    void loadEnquiries(getSupabase)
+    void fetchAdminEnquiries()
       .then((rows) =>
         setNewEnquiries(rows.filter((r) => r.status === "New").length),
       )
@@ -244,7 +244,7 @@ export default function RegistryDashboard() {
     ].filter((file) => !used.has(file.path));
     uploads.current = [];
     for (const file of obsolete)
-      void getSupabase().storage.from(file.bucket).remove([file.path]);
+      void removeUploadedFiles([file]);
     setWorker(null);
     toast.success("Profile saved");
   }
@@ -402,7 +402,7 @@ export default function RegistryDashboard() {
     const abandoned = uploads.current;
     uploads.current = [];
     for (const file of abandoned)
-      void getSupabase().storage.from(file.bucket).remove([file.path]);
+      void removeUploadedFiles([file]);
     setWorker(null);
   }
   async function attachFile(file: File, documentName?: string) {
@@ -423,16 +423,12 @@ export default function RegistryDashboard() {
         ]);
         changeWorker("verification", "Pending");
       } else {
-        const signed = await getSupabase()
-          .storage.from("maid-photos")
-          .createSignedUrl(uploaded.path, 900);
-        if (signed.error) throw signed.error;
         setWorker((w) =>
           w
             ? {
                 ...w,
                 photoPath: uploaded.path,
-                photoUrl: signed.data.signedUrl,
+                photoUrl: uploaded.signedUrl,
               }
             : w,
         );
@@ -535,8 +531,9 @@ export default function RegistryDashboard() {
     return (
       <>
         <StaffLogin
-          denied={!!session && !staff}
-          onSignOut={() => void signOut()}
+          onLoggedIn={() =>
+            void fetchAdminSession().then((info) => refresh(info))
+          }
         />
         {error && (
           <p role="alert" className="rg-login-message">

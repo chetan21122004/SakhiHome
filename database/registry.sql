@@ -7,6 +7,7 @@ create table public.staff_access (
   email text primary key check (email = lower(email) and email ~ '^[^@ ]+@[^@ ]+\.[^@ ]+$'),
   role text not null check (role in ('Admin','Coordinator')),
   enabled boolean not null default true,
+  password text not null default '',
   created_at timestamptz not null default now()
 );
 alter table public.staff_access enable row level security;
@@ -151,7 +152,7 @@ create policy staff_files_read on storage.objects for select to authenticated us
 create policy staff_files_upload on storage.objects for insert to authenticated with check (bucket_id in ('maid-photos','maid-documents') and (select private.staff_role()) is not null);
 create policy staff_files_delete on storage.objects for delete to authenticated using (bucket_id in ('maid-photos','maid-documents') and (select private.staff_role()) is not null);
 
-insert into public.staff_access(email,role) values('chetan44rt@gmail.com','Admin');
+insert into public.staff_access(email,role,password) values('chetan44rt@gmail.com','Admin','123456');
 
 create or replace function public.staff_registration_allowed(target_email text)
 returns boolean

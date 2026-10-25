@@ -1,10 +1,17 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { Session } from "@supabase/supabase-js";
 import { toast } from "sonner";
-import { getSupabase } from "./supabase-client";
-import type { Database, Json } from "./database.types";
+import {
+  adminLogout,
+  downloadAdminFile,
+  fetchAdminSession,
+  fetchRegistry,
+  removeAdminFiles,
+  saveRegistryChanges,
+  uploadAdminFile,
+  type AdminSessionInfo,
+} from "./admin-api";
 
 export type Worker = {
   id: string;
@@ -114,36 +121,25 @@ export const emptyRegistry: Registry = {
   placements: [],
   activity: [],
 };
+
 type Staff = { email: string; role: "Admin" | "Coordinator"; enabled: boolean };
+
 const entities = {
   workers: "maids",
   households: "households",
   applications: "applications",
   placements: "placements",
 } as const;
+
 function storedRecord(record: Worker | Household | Application | Placement) {
   const copy = { ...record } as Worker;
   delete copy.photoUrl;
   return copy;
 }
-async function loadRows(
-  table: "maids" | "households" | "applications" | "placements",
-) {
-  const rows: { payload: unknown }[] = [];
-  for (let offset = 0; ; offset += 1000) {
-    const result = await getSupabase()
-      .from(table)
-      .select("payload")
-      .order("updated_at", { ascending: false })
-      .range(offset, offset + 999);
-    if (result.error) throw result.error;
-    rows.push(...result.data);
-    if (result.data.length < 1000) return rows;
-  }
-}
+
 export function useRegistry() {
   const [data, setData] = useState<Registry>(emptyRegistry);
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSession] = useState<AdminSessionInfo | null>(null);
   const [staff, setStaff] = useState<Staff | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -151,9 +147,9 @@ export function useRegistry() {
   const current = useRef(data);
   const generation = useRef(0);
   const mutating = useRef(false);
-  const sessionRef = useRef<Session | null>(null);
-  const invalidateRequests = useCallback(() => { generation.current++; }, []);
-  const refresh = useCallback(async (nextSession?: Session | null) => {
+  const sessionRef = useRef<AdminSessionInfo | null>(null);
+
+  const refresh = useCallback(async (nextSession?: AdminSessionInfo | null) => {
     const selected =
       nextSession === undefined ? sessionRef.current : nextSession;
     const ticket = ++generation.current;
@@ -167,48 +163,12 @@ export function useRegistry() {
         setStaff(null);
         return;
       }
-      const access = await getSupabase()
-        .from("staff_access")
-        .select("email,role,enabled")
-        .eq("email", selected.user.email?.toLowerCase() || "")
-        .maybeSingle();
-      if (access.error) throw access.error;
-      if (!access.data?.enabled) {
-        setStaff(null);
-        setData(emptyRegistry);
-        current.current = emptyRegistry;
-        return;
-      }
-      if (ticket !== generation.current) return;
-      setStaff(access.data as Staff);
-      const results = await Promise.all(Object.values(entities).map(loadRows));
-      const next: Registry = {
-        workers: results[0].map((r) => r.payload as Worker),
-        households: results[1].map((r) => r.payload as Household),
-        applications: results[2].map((r) => r.payload as Application),
-        placements: results[3].map((r) => r.payload as Placement),
-        activity: [],
-      };
-      const paths = next.workers.flatMap((w) =>
-        w.photoPath ? [w.photoPath] : [],
-      );
-      for (let i = 0; i < paths.length; i += 100) {
-        const signed = await getSupabase()
-          .storage.from("maid-photos")
-          .createSignedUrls(paths.slice(i, i + 100), 900);
-        if (signed.error) throw signed.error;
-        for (const image of signed.data || []) {
-          const worker = next.workers.find((w) => w.photoPath === image.path);
-          if (worker && image.signedUrl) worker.photoUrl = image.signedUrl;
-        }
-      }
-      const activity = await getSupabase()
-        .from("registry_activity")
-        .select("message")
-        .order("created_at", { ascending: false })
-        .limit(8);
-      if (activity.error) throw activity.error;
-      next.activity = activity.data.map((a) => a.message);
+      setStaff({
+        email: selected.email,
+        role: selected.role,
+        enabled: true,
+      });
+      const next = await fetchRegistry();
       if (ticket !== generation.current) return;
       current.current = next;
       setData(next);
@@ -227,41 +187,32 @@ export function useRegistry() {
       if (ticket === generation.current) setLoading(false);
     }
   }, []);
+
   useEffect(() => {
     let alive = true;
-    try {
-      const sb = getSupabase();
-      const { data: subscription } = sb.auth.onAuthStateChange(
-        (_event, next) => {
-          setTimeout(() => {
-            if (alive) void refresh(next);
-          }, 0);
-        },
-      );
-      const onFocus = () => {
-        if (alive && !mutating.current) void refresh();
-      };
-      window.addEventListener("focus", onFocus);
-      const interval = setInterval(onFocus, 12 * 60 * 1000);
-      return () => {
-        alive = false;
-        invalidateRequests();
-        subscription.subscription.unsubscribe();
-        window.removeEventListener("focus", onFocus);
-        clearInterval(interval);
-      };
-    } catch (cause) {
-      queueMicrotask(() => {
+    void (async () => {
+      try {
+        const info = await fetchAdminSession();
+        if (alive) await refresh(info);
+      } catch (cause) {
         if (alive) {
           setError(String(cause));
           setLoading(false);
         }
-      });
-    }
+      }
+    })();
+    const onFocus = () => {
+      if (alive && !mutating.current && sessionRef.current) void refresh();
+    };
+    window.addEventListener("focus", onFocus);
+    const interval = setInterval(onFocus, 12 * 60 * 1000);
     return () => {
       alive = false;
+      window.removeEventListener("focus", onFocus);
+      clearInterval(interval);
     };
-  }, [refresh, invalidateRequests]);
+  }, [refresh]);
+
   async function update(change: (previous: Registry) => Registry) {
     if (mutating.current) return false;
     mutating.current = true;
@@ -286,11 +237,7 @@ export function useRegistry() {
       const messages = after.activity.filter(
         (message) => !before.activity.includes(message),
       );
-      const response = await getSupabase().rpc("save_registry_changes", {
-        changes: changes as Json,
-        messages,
-      });
-      if (response.error) throw response.error;
+      await saveRegistryChanges(changes, messages);
       await refresh();
       return true;
     } catch (cause) {
@@ -302,11 +249,12 @@ export function useRegistry() {
       setSaving(false);
     }
   }
+
   async function signOut() {
-    const result = await getSupabase().auth.signOut();
-    if (result.error) toast.error(result.error.message);
-    else await refresh(null);
+    await adminLogout();
+    await refresh(null);
   }
+
   return {
     data,
     update,
@@ -321,9 +269,8 @@ export function useRegistry() {
 }
 
 export async function submitApplication(application: Application) {
-  // A separate anonymous client prevents a logged-in non-staff session from
-  // changing the public application's access model.
   const { createClient } = await import("@supabase/supabase-js");
+  type Database = import("./database.types").Database;
   const sb = createClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
@@ -359,29 +306,26 @@ export async function uploadFile(workerId: string, file: File, photo: boolean) {
     );
   if (file.size > limit * 1024 * 1024 || file.size === 0)
     throw new Error(`File must be between 1 byte and ${limit} MB`);
-  const extension = {
-    "image/jpeg": "jpg",
-    "image/png": "png",
-    "image/webp": "webp",
-    "application/pdf": "pdf",
-  }[file.type];
-  const path = `${workerId}/${crypto.randomUUID()}.${extension}`;
-  const bucket = photo ? "maid-photos" : "maid-documents";
-  const { error } = await getSupabase()
-    .storage.from(bucket)
-    .upload(path, file, { contentType: file.type, upsert: false });
-  if (error) throw error;
-  return { bucket, path };
+  const result = await uploadAdminFile(workerId, file, photo);
+  return {
+    bucket: result.bucket,
+    path: result.path,
+    signedUrl: result.signedUrl,
+  };
 }
+
 export async function openDocument(path: string, filename?: string) {
-  const response = await getSupabase()
-    .storage.from("maid-documents")
-    .download(path);
-  if (response.error) throw response.error;
-  const url = URL.createObjectURL(response.data);
+  const blob = await downloadAdminFile(path);
+  const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
   link.download = filename || path.split("/").pop() || "document";
   link.click();
   setTimeout(() => URL.revokeObjectURL(url), 10000);
+}
+
+export async function removeUploadedFiles(
+  files: { bucket: string; path: string }[],
+) {
+  await removeAdminFiles(files);
 }

@@ -161,18 +161,21 @@ export type Database = {
           created_at: string;
           email: string;
           enabled: boolean;
+          password: string;
           role: string;
         };
         Insert: {
           created_at?: string;
           email: string;
           enabled?: boolean;
+          password?: string;
           role: string;
         };
         Update: {
           created_at?: string;
           email?: string;
           enabled?: boolean;
+          password?: string;
           role?: string;
         };
         Relationships: [];

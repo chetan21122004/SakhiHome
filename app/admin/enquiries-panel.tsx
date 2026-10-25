@@ -2,12 +2,8 @@
 
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { toast } from "sonner";
-import {
-  loadEnquiries,
-  updateEnquiryStatus,
-  type Enquiry,
-} from "@/lib/enquiries";
-import { getSupabase } from "@/lib/supabase-client";
+import { fetchAdminEnquiries, patchAdminEnquiry } from "@/lib/admin-api";
+import type { Enquiry } from "@/lib/enquiries";
 
 function Badge({
   tone,
@@ -27,7 +23,7 @@ export default function EnquiriesPanel() {
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
-      setRows(await loadEnquiries(getSupabase));
+      setRows(await fetchAdminEnquiries());
     } catch (cause) {
       toast.error(String((cause as Error).message || cause));
     } finally {
@@ -43,7 +39,7 @@ export default function EnquiriesPanel() {
 
   async function setStatus(row: Enquiry, status: Enquiry["status"]) {
     try {
-      await updateEnquiryStatus(getSupabase, row.id, status, row);
+      await patchAdminEnquiry(row.id, { ...row, status });
       await refresh();
       toast.success(`Marked as ${status.toLowerCase()}`);
     } catch (cause) {
