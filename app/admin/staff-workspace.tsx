@@ -120,9 +120,8 @@ export default function StaffWorkspace({
           </label>
           <label className="rg-field">
             <span>Role</span>
-            <select name="role">
-              <option>Coordinator</option>
-              <option>Admin</option>
+            <select name="role" defaultValue="Coordinator">
+              <option value="Coordinator">Coordinator</option>
             </select>
           </label>
           <button className="rg-btn primary" disabled={busy}>

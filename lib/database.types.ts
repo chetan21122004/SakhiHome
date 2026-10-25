@@ -197,6 +197,10 @@ export type Database = {
         Args: { changes: Json; messages?: Json };
         Returns: undefined;
       };
+      staff_registration_allowed: {
+        Args: { target_email: string };
+        Returns: boolean;
+      };
     };
     Enums: {
       [_ in never]: never;

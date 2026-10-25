@@ -8,7 +8,9 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - Customer enquiries from the homepage form are stored in Supabase (`enquiries` table). Staff review them under **Enquiries** in `/admin`.
 - Public verified availability is listed at `/maids` (no private contact details).
 - For Cursor Supabase MCP, set a personal access token in your environment as `SUPABASE_ACCESS_TOKEN` (do not commit it).
-- The first approved admin email is `chetan44rt@gmail.com`. Open `/admin`, create your account with your own password, confirm your email, and sign in. Configure allowed redirect URLs and production Site URL in Supabase Authentication when deploying.
+- Bootstrap admin: `chetan44rt@gmail.com` only (initial password `123456` — change after login). In Supabase **Authentication → Providers → Email**, turn **off** “Confirm email”. Add `SUPABASE_SERVICE_ROLE_KEY` to `.env.local` and run `node scripts/bootstrap-admin.mjs` once to create the auth user without verification.
+- Staff self-registration is allowed only for emails already listed in `staff_access` (Workspace). Additional **Admin** roles cannot be created from the UI — only Coordinators.
+- Configure allowed redirect URLs and production Site URL in Supabase Authentication when deploying.
 - Admins manage staff access in **Workspace**. Staff must register their own authentication account; adding access does not send an invitation.
 - Photos: JPEG, PNG or WebP, up to 5 MB. Documents: those image formats or PDF, up to 10 MB. Upload from the profile editor, then **Save profile** to retain the attachment. Buckets are private; photos use temporary signed viewing URLs.
 - Records persist across tabs and refresh. There is no demo data or browser-session record storage. Conflicting edits and overlapping placements are rejected by the database. Applications are approved with a single atomic database operation.

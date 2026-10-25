@@ -2,6 +2,7 @@
 import { useState, type FormEvent } from "react";
 import BrandLogo from "@/components/brand-logo";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase-client";
+import { normalizeStaffEmail } from "@/lib/staff-auth";
 
 export default function StaffLogin({
   denied,
@@ -23,17 +24,34 @@ export default function StaffLogin({
       password: String(values.get("password")),
     };
     try {
+      const email = normalizeStaffEmail(credentials.email);
+      if (signup) {
+        const allowed = await getSupabase().rpc("staff_registration_allowed", {
+          target_email: email,
+        });
+        if (allowed.error) throw allowed.error;
+        if (!allowed.data) {
+          throw new Error(
+            "This email is not approved for registration. Ask your SakhiHome admin to add you in Workspace first.",
+          );
+        }
+      }
       const response = signup
         ? await getSupabase().auth.signUp({
-            ...credentials,
+            email,
+            password: credentials.password,
             options: { emailRedirectTo: `${window.location.origin}/admin` },
           })
-        : await getSupabase().auth.signInWithPassword(credentials);
+        : await getSupabase().auth.signInWithPassword({
+            email,
+            password: credentials.password,
+          });
       if (response.error) throw response.error;
-      if (signup && !response.data.session)
+      if (signup && !response.data.session) {
         setMessage(
-          "Check your email to confirm your account, then return here to sign in.",
+          "Account created. If sign-in fails, ask your admin to disable email confirmation in Supabase Auth settings, or run scripts/bootstrap-admin.mjs.",
         );
+      }
     } catch (error) {
       setMessage(String((error as Error).message));
     } finally {
@@ -54,7 +72,9 @@ export default function StaffLogin({
         <p>
           {denied
             ? "This account has no active staff access. Ask your SakhiHome admin to add your email."
-            : "Sign in to manage SakhiHome profiles and placements. Only approved staff emails can access records."}
+            : signup
+              ? "Create your account only if your email was added in Workspace. The admin account uses chetan44rt@gmail.com."
+              : "Sign in to manage SakhiHome profiles and placements. Only approved staff emails can access records."}
         </p>
         {!supabaseConfigured ? (
           <p role="alert">Supabase configuration is missing.</p>
@@ -73,7 +93,7 @@ export default function StaffLogin({
               <input
                 name="password"
                 type="password"
-                minLength={8}
+                minLength={6}
                 autoComplete={signup ? "new-password" : "current-password"}
                 required
               />

@@ -152,3 +152,20 @@ create policy staff_files_upload on storage.objects for insert to authenticated 
 create policy staff_files_delete on storage.objects for delete to authenticated using (bucket_id in ('maid-photos','maid-documents') and (select private.staff_role()) is not null);
 
 insert into public.staff_access(email,role) values('chetan44rt@gmail.com','Admin');
+
+create or replace function public.staff_registration_allowed(target_email text)
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select exists (
+    select 1
+    from public.staff_access
+    where email = lower(trim(target_email))
+      and enabled
+  );
+$$;
+revoke all on function public.staff_registration_allowed(text) from public;
+grant execute on function public.staff_registration_allowed(text) to anon, authenticated;
