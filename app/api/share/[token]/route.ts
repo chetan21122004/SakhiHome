@@ -1,19 +1,18 @@
 import { NextResponse } from "next/server";
+import { readAdminSession } from "@/lib/admin-session";
 import { resolveShareByToken } from "@/lib/maid-share";
-import { checkShareRateLimit } from "@/lib/share-rate-limit";
 
+/** Legacy maid share tokens — staff only. Clients use /api/client/grants. */
 export async function GET(
-  request: Request,
+  _request: Request,
   context: { params: Promise<{ token: string }> },
 ) {
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    request.headers.get("x-real-ip") ??
-    "";
-  if (!checkShareRateLimit(ip)) {
-    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  if (!(await readAdminSession())) {
+    return NextResponse.json(
+      { error: "Profiles require login. Use your client portal link." },
+      { status: 401 },
+    );
   }
-
   const { token } = await context.params;
   const result = await resolveShareByToken(token);
   if ("error" in result) {

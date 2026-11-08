@@ -12,16 +12,25 @@ import {
   type AdminSessionInfo,
 } from "@/lib/admin-api";
 import StaffLogin from "@/app/admin/staff-login";
-import ShareLinksPanel from "@/app/components/share/ShareLinksPanel";
+import GrantToClientModal from "@/app/components/admin/GrantToClientModal";
 import {
   GALLERY_DOC_CATEGORIES,
   VERIFICATION_DOC_TYPES,
   isVerificationDocName,
 } from "@/lib/document-categories";
+import IndianMobileInput from "@/components/indian-mobile-input";
+import {
+  digitsOnlyField,
+  indianMobileValidationMessage,
+  isValidIndianMobile,
+} from "@/lib/india-contact";
 import {
   areaOptions,
   blankWorker,
+  formatWorkerAreas,
+  normalizeWorker,
   serviceOptions,
+  workerAreas,
   type Worker,
 } from "@/lib/registry";
 import "./field.css";
@@ -60,6 +69,9 @@ export default function FieldApp() {
     GALLERY_DOC_CATEGORIES[0],
   );
   const [galleryNote, setGalleryNote] = useState("");
+  const [selectMode, setSelectMode] = useState(false);
+  const [selectedMaidIds, setSelectedMaidIds] = useState<string[]>([]);
+  const [grantModalOpen, setGrantModalOpen] = useState(false);
 
   const refreshSession = useCallback(async () => {
     setLoading(true);
@@ -88,14 +100,16 @@ export default function FieldApp() {
     return workers.filter(
       (w) =>
         !q ||
-        `${w.name} ${w.phone} ${w.area} ${w.id}`.toLowerCase().includes(q),
+        `${w.name} ${w.phone} ${formatWorkerAreas(workerAreas(w))} ${w.id}`
+          .toLowerCase()
+          .includes(q),
     );
   }, [workers, search]);
 
   function openNew() {
     setViewing(null);
     setBeforeSave(null);
-    setEditing(blankWorker());
+    setEditing(normalizeWorker(blankWorker()));
     setStep(0);
   }
 
@@ -107,8 +121,30 @@ export default function FieldApp() {
   function openEdit(w: Worker) {
     setViewing(null);
     setBeforeSave(w);
-    setEditing({ ...w, documents: w.documents.map((d) => ({ ...d })) });
+    setEditing(
+      normalizeWorker({
+        ...w,
+        documents: w.documents.map((d) => ({ ...d })),
+      }),
+    );
     setStep(0);
+  }
+
+  function toggleArea(areaName: string, checked: boolean) {
+    if (!editing) return;
+    const current = workerAreas(editing);
+    const next = checked
+      ? [...new Set([...current, areaName])]
+      : current.filter((a) => a !== areaName);
+    if (!next.length) {
+      toast.error("Select at least one operating area");
+      return;
+    }
+    setEditing({
+      ...editing,
+      areas: next,
+      area: formatWorkerAreas(next),
+    });
   }
 
   function closeEditor() {
@@ -124,14 +160,20 @@ export default function FieldApp() {
         toast.error("Enter full name.");
         return;
       }
-      if (editing.phone.replace(/\D/g, "").length < 10) {
-        toast.error("Enter a valid 10-digit phone number.");
+      if (!isValidIndianMobile(editing.phone)) {
+        toast.error(indianMobileValidationMessage());
         return;
       }
     }
-    if (step === 1 && !editing.services.length) {
-      toast.error("Select at least one service.");
-      return;
+    if (step === 1) {
+      if (!workerAreas(editing).length) {
+        toast.error("Select at least one operating area.");
+        return;
+      }
+      if (!editing.services.length) {
+        toast.error("Select at least one service.");
+        return;
+      }
     }
     setStep((s) => s + 1);
   }
@@ -232,17 +274,25 @@ export default function FieldApp() {
 
   async function saveMaid() {
     if (!editing) return;
-    if (!editing.name.trim() || editing.phone.replace(/\D/g, "").length < 10) {
-      toast.error("Name and valid phone are required.");
+    const copy = normalizeWorker({
+      ...editing,
+      schedule: "",
+      salary: editing.salary || "",
+    });
+    if (!copy.name.trim() || !isValidIndianMobile(copy.phone)) {
+      toast.error("Name and valid 10-digit mobile are required.");
       return;
     }
-    if (!editing.services.length) {
+    if (!workerAreas(copy).length) {
+      toast.error("Select at least one operating area.");
+      return;
+    }
+    if (!copy.services.length) {
       toast.error("Select at least one service.");
       return;
     }
     setSaving(true);
     try {
-      const copy = { ...editing, schedule: "", salary: editing.salary || "" };
       delete copy.photoUrl;
       const storedBefore = beforeSave
         ? { ...beforeSave, photoUrl: undefined }
@@ -325,7 +375,7 @@ export default function FieldApp() {
             </div>
             <dl className="field-dl">
               <dt>Area</dt>
-              <dd>{viewing.area}</dd>
+              <dd>{formatWorkerAreas(workerAreas(viewing))}</dd>
               <dt>Services</dt>
               <dd>{viewing.services.join(" · ") || "—"}</dd>
               <dt>Experience</dt>
@@ -363,7 +413,6 @@ export default function FieldApp() {
                 </ul>
               </>
             )}
-            <ShareLinksPanel maidId={viewing.id} className="field-share-block" />
             <button
               type="button"
               className="field-btn primary field-full"
@@ -413,33 +462,31 @@ export default function FieldApp() {
                     setEditing({ ...editing, name: e.target.value })
                   }
                 />
-                <label className="field-label">Phone *</label>
-                <input
+                <label className="field-label">Mobile (10 digits) *</label>
+                <IndianMobileInput
                   className="field-input"
-                  type="tel"
-                  inputMode="tel"
-                  placeholder="10-digit mobile"
                   value={editing.phone}
-                  onChange={(e) =>
-                    setEditing({ ...editing, phone: e.target.value })
+                  onChange={(digits) =>
+                    setEditing({ ...editing, phone: digits })
                   }
                 />
               </>
             )}
             {step === 1 && (
               <>
-                <label className="field-label">Work area</label>
-                <select
-                  className="field-input"
-                  value={editing.area}
-                  onChange={(e) =>
-                    setEditing({ ...editing, area: e.target.value })
-                  }
-                >
+                <span className="field-label">Operating areas *</span>
+                <div className="field-checks">
                   {areaOptions.map((a) => (
-                    <option key={a}>{a}</option>
+                    <label key={a}>
+                      <input
+                        type="checkbox"
+                        checked={workerAreas(editing).includes(a)}
+                        onChange={(e) => toggleArea(a, e.target.checked)}
+                      />
+                      {a}
+                    </label>
                   ))}
-                </select>
+                </div>
                 <label className="field-label">Services *</label>
                 <div className="field-checks">
                   {serviceOptions.map((s) => (
@@ -463,16 +510,20 @@ export default function FieldApp() {
                 <label className="field-label">Experience (years)</label>
                 <input
                   className="field-input"
-                  type="number"
-                  min={0}
-                  max={60}
-                  value={editing.experience}
-                  onChange={(e) =>
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="e.g. 5"
+                  value={
+                    editing.experience > 0 ? String(editing.experience) : ""
+                  }
+                  onChange={(e) => {
+                    const raw = digitsOnlyField(e.target.value, 2);
                     setEditing({
                       ...editing,
-                      experience: Number(e.target.value),
-                    })
-                  }
+                      experience:
+                        raw === "" ? 0 : Math.min(60, parseInt(raw, 10)),
+                    });
+                  }}
                 />
                 <label className="field-label">Languages</label>
                 <input
@@ -722,15 +773,37 @@ export default function FieldApp() {
           <h1>Maid profiles</h1>
           <small>Tap a name to view · {session.email}</small>
         </div>
-        <button
-          type="button"
-          className="field-btn"
-          onClick={() => void adminLogout().then(refreshSession)}
-        >
-          Sign out
-        </button>
+        <div style={{ display: "flex", gap: "0.5rem" }}>
+          <button
+            type="button"
+            className="field-btn"
+            onClick={() => {
+              setSelectMode((m) => !m);
+              setSelectedMaidIds([]);
+            }}
+          >
+            {selectMode ? "Cancel" : "Select"}
+          </button>
+          <button
+            type="button"
+            className="field-btn"
+            onClick={() => void adminLogout().then(refreshSession)}
+          >
+            Sign out
+          </button>
+        </div>
       </header>
       <main className="field-main">
+        {selectMode && selectedMaidIds.length > 0 && (
+          <button
+            type="button"
+            className="field-btn primary field-full"
+            style={{ marginBottom: "0.75rem" }}
+            onClick={() => setGrantModalOpen(true)}
+          >
+            Grant to client ({selectedMaidIds.length})
+          </button>
+        )}
         <input
           className="field-search"
           placeholder="Search name or phone…"
@@ -745,8 +818,26 @@ export default function FieldApp() {
               type="button"
               key={w.id}
               className="field-card"
-              onClick={() => openView(w)}
+              onClick={() => {
+                if (selectMode) {
+                  setSelectedMaidIds((ids) =>
+                    ids.includes(w.id)
+                      ? ids.filter((x) => x !== w.id)
+                      : [...ids, w.id],
+                  );
+                  return;
+                }
+                openView(w);
+              }}
             >
+              {selectMode && (
+                <input
+                  type="checkbox"
+                  readOnly
+                  checked={selectedMaidIds.includes(w.id)}
+                  style={{ marginRight: "0.5rem" }}
+                />
+              )}
               <div className="field-avatar">
                 {w.photoUrl ? (
                   <Image
@@ -764,7 +855,9 @@ export default function FieldApp() {
                 <strong>{w.name}</strong>
                 <div style={{ fontSize: "0.85rem", color: "#64748b" }}>
                   {w.phone}
-                  {w.area ? ` · ${w.area}` : ""}
+                  {workerAreas(w).length
+                    ? ` · ${formatWorkerAreas(workerAreas(w))}`
+                    : ""}
                 </div>
                 <span className="field-badge">{w.status}</span>
               </div>
@@ -772,9 +865,20 @@ export default function FieldApp() {
           ))
         )}
       </main>
-      <button type="button" className="field-fab" onClick={openNew}>
-        + Add maid
-      </button>
+      {!selectMode && (
+        <button type="button" className="field-fab" onClick={openNew}>
+          + Add maid
+        </button>
+      )}
+      <GrantToClientModal
+        maidIds={selectedMaidIds}
+        open={grantModalOpen}
+        onClose={() => setGrantModalOpen(false)}
+        onDone={() => {
+          setSelectedMaidIds([]);
+          setSelectMode(false);
+        }}
+      />
     </div>
   );
 }

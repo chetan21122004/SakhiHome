@@ -1,5 +1,6 @@
 import { randomBytes } from "node:crypto";
-import type { Worker } from "./registry";
+import type { Worker } from "./registry-data";
+import { formatWorkerAreas, workerAreas } from "./registry-data";
 import { isVerificationDocName } from "./document-categories";
 import { getServiceSupabase } from "./supabase-service";
 import { getAbsoluteSiteUrl } from "./services";
@@ -83,9 +84,64 @@ async function signedDocImageUrl(
   return signed.data.signedUrl;
 }
 
-function workerFromPayload(payload: unknown): Worker | null {
+export function workerFromPayload(payload: unknown): Worker | null {
   if (!payload || typeof payload !== "object") return null;
   return payload as Worker;
+}
+
+export async function buildMaidSharePayload(
+  worker: Worker,
+  tier: ShareTier,
+): Promise<MaidSharePayload> {
+  const sb = getServiceSupabase();
+  const photoViewUrl = await signedPhotoUrl(sb, worker.photoPath);
+
+  const base: MaidSharePayload = {
+    tier,
+    displayName: maskDisplayName(worker.name),
+    area: formatWorkerAreas(workerAreas(worker)),
+    services: worker.services ?? [],
+    experience: worker.experience ?? 0,
+    languages: worker.languages ?? "",
+    schedule: worker.schedule ?? "",
+    status: worker.status,
+    photoViewUrl,
+  };
+
+  if (tier === "teaser") {
+    return base;
+  }
+
+  const documents: SharedDocument[] = [];
+  for (const doc of worker.documents ?? []) {
+    if (!doc.path) continue;
+    const mimeKind = mimeKindFromFileName(doc.file);
+    let viewUrl: string | undefined;
+    if (mimeKind === "image") {
+      viewUrl = await signedDocImageUrl(sb, doc.path, doc.file);
+    }
+    documents.push({
+      category: doc.name,
+      note: doc.note,
+      fileName: doc.file,
+      mimeKind,
+      viewUrl,
+    });
+  }
+
+  return {
+    ...base,
+    displayName: worker.name,
+    name: worker.name,
+    phone: worker.phone,
+    address: worker.address,
+    maritalStatus: worker.maritalStatus,
+    guardian: worker.guardian,
+    dependants: worker.dependants,
+    emergency: worker.emergency,
+    salary: worker.salary,
+    documents,
+  };
 }
 
 export async function resolveShareByToken(
@@ -141,54 +197,7 @@ export async function resolveShareByToken(
     return { error: "Profile not found", status: 404 };
   }
 
-  const photoViewUrl = await signedPhotoUrl(sb, worker.photoPath);
-
-  const base: MaidSharePayload = {
-    tier,
-    displayName: maskDisplayName(worker.name),
-    area: worker.area,
-    services: worker.services ?? [],
-    experience: worker.experience ?? 0,
-    languages: worker.languages ?? "",
-    schedule: worker.schedule ?? "",
-    status: worker.status,
-    photoViewUrl,
-  };
-
-  if (tier === "teaser") {
-    return base;
-  }
-
-  const documents: SharedDocument[] = [];
-  for (const doc of worker.documents ?? []) {
-    if (!doc.path) continue;
-    const mimeKind = mimeKindFromFileName(doc.file);
-    let viewUrl: string | undefined;
-    if (mimeKind === "image") {
-      viewUrl = await signedDocImageUrl(sb, doc.path, doc.file);
-    }
-    documents.push({
-      category: doc.name,
-      note: doc.note,
-      fileName: doc.file,
-      mimeKind,
-      viewUrl,
-    });
-  }
-
-  return {
-    ...base,
-    displayName: worker.name,
-    name: worker.name,
-    phone: worker.phone,
-    address: worker.address,
-    maritalStatus: worker.maritalStatus,
-    guardian: worker.guardian,
-    dependants: worker.dependants,
-    emergency: worker.emergency,
-    salary: worker.salary,
-    documents,
-  };
+  return buildMaidSharePayload(worker, tier);
 }
 
 export type ShareLinkInfo = {

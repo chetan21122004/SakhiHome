@@ -31,6 +31,7 @@ import {
   ShieldCheck,
   Sparkles,
   Users,
+  UserRound,
 } from "lucide-react";
 import {
   Dialog,
@@ -39,14 +40,26 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import ShareLinksPanel from "@/app/components/share/ShareLinksPanel";
+import ClientsPanel from "./clients-panel";
+import GrantToClientModal from "@/app/components/admin/GrantToClientModal";
 import {
   GALLERY_DOC_CATEGORIES,
   isVerificationDocName,
 } from "@/lib/document-categories";
+import IndianMobileInput from "@/components/indian-mobile-input";
+import {
+  digitsOnlyField,
+  indianMobileValidationMessage,
+  isValidIndianMobile,
+} from "@/lib/india-contact";
+import { workerProfileCompletion } from "@/lib/worker-profile-completion";
 import {
   areaOptions,
   blankWorker,
+  formatWorkerAreas,
+  normalizeWorker,
+  workerAreas,
+  workerDisplayRef,
   serviceOptions,
   useRegistry,
   uploadFile,
@@ -62,12 +75,20 @@ const sections = [
   { name: "Maid profiles", icon: Users },
   { name: "Applications", icon: ClipboardList },
   { name: "Enquiries", icon: Mail },
+  { name: "Clients", icon: UserRound },
   { name: "Verification", icon: ShieldCheck },
   { name: "Households", icon: House },
   { name: "Placements", icon: BriefcaseBusiness },
   { name: "Workspace", icon: Settings2 },
 ];
 const colors = ["peach", "sage", "lilac", "sand"];
+const profileTabs = [
+  "Professional",
+  "Personal & family",
+  "Documents",
+  "History",
+] as const;
+type ProfileTab = (typeof profileTabs)[number];
 function initials(name: string) {
   return name
     .split(" ")
@@ -75,22 +96,51 @@ function initials(name: string) {
     .map((n) => n[0])
     .join("");
 }
-function WorkerAvatar({ worker, color }: { worker: Worker; color: string }) {
+function WorkerAvatar({
+  worker,
+  color,
+  size = "md",
+}: {
+  worker: Worker;
+  color: string;
+  size?: "md" | "lg";
+}) {
   const [failed, setFailed] = useState("");
+  const dim = size === "lg" ? 96 : 72;
   return (
-    <div className={`rg-avatar ${color}`}>
+    <div className={`rg-avatar ${color}${size === "lg" ? " lg" : ""}`}>
       {worker.photoUrl && failed !== worker.photoUrl ? (
         <Image
           src={worker.photoUrl}
           unoptimized
-          width={72}
-          height={72}
+          width={dim}
+          height={dim}
           alt={`Photo of ${worker.name}`}
           onError={() => setFailed(worker.photoUrl!)}
         />
       ) : (
         initials(worker.name)
       )}
+    </div>
+  );
+}
+function ProfileStat({
+  label,
+  value,
+  icon,
+}: {
+  label: string;
+  value: string;
+  icon?: ReactNode;
+}) {
+  const text = value?.trim() ? value : "—";
+  return (
+    <div className="rg-profile-stat">
+      {icon ? <span className="rg-profile-stat-icon">{icon}</span> : null}
+      <div>
+        <span className="rg-profile-stat-label">{label}</span>
+        <strong className="rg-profile-stat-value">{text}</strong>
+      </div>
     </div>
   );
 }
@@ -110,6 +160,43 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
       {children}
     </label>
   );
+}
+function ProfileCompletionBar({ worker }: { worker: Worker }) {
+  const { percent, missing } = workerProfileCompletion(worker);
+  return (
+    <div className="rg-profile-complete">
+      <div className="rg-profile-complete-head">
+        <span>Profile completeness</span>
+        <strong>{percent}%</strong>
+      </div>
+      <div
+        className="rg-profile-complete-track"
+        role="progressbar"
+        aria-valuenow={percent}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={`Profile ${percent}% complete`}
+      >
+        <div
+          className="rg-profile-complete-fill"
+          style={{ width: `${percent}%` }}
+        />
+      </div>
+      {percent < 100 && missing.length > 0 && (
+        <p className="rg-profile-complete-missing">
+          Still needed: {missing.slice(0, 4).join(", ")}
+          {missing.length > 4 ? ` +${missing.length - 4} more` : ""}
+        </p>
+      )}
+    </div>
+  );
+}
+function applyAdminWorkerDefaults(
+  snapshot: Worker,
+  adminRole: "Admin" | "Coordinator",
+): Worker {
+  if (adminRole !== "Admin") return snapshot;
+  return { ...snapshot, verification: "Verified" };
 }
 function Panel({
   title,
@@ -168,11 +255,14 @@ export default function RegistryDashboard() {
   const [service, setService] = useState("All services");
   const [worker, setWorker] = useState<Worker | null>(null);
   const [editing, setEditing] = useState(false);
-  const [profileTab, setProfileTab] = useState("Professional");
+  const [profileTab, setProfileTab] = useState<ProfileTab>("Professional");
   const [household, setHousehold] = useState<Household | null>(null);
   const [placementOpen, setPlacementOpen] = useState(false);
   const [view, setView] = useState("cards");
   const [newEnquiries, setNewEnquiries] = useState(0);
+  const [maidSelectMode, setMaidSelectMode] = useState(false);
+  const [selectedMaidIds, setSelectedMaidIds] = useState<string[]>([]);
+  const [grantModalOpen, setGrantModalOpen] = useState(false);
   useEffect(() => {
     if (!staff) {
       setNewEnquiries(0);
@@ -190,9 +280,9 @@ export default function RegistryDashboard() {
       (status === "All statuses"
         ? w.status !== "Archived"
         : w.status === status) &&
-      (area === "All areas" || w.area === area) &&
+      (area === "All areas" || workerAreas(w).includes(area)) &&
       (service === "All services" || w.services.includes(service)) &&
-      `${w.name} ${w.id} ${w.phone} ${w.area}`
+      `${w.name} ${w.id} ${w.phone} ${formatWorkerAreas(workerAreas(w))}`
         .toLowerCase()
         .includes(search.toLowerCase()),
   );
@@ -207,48 +297,103 @@ export default function RegistryDashboard() {
     setService("All services");
   }
   function openProfile(value: Worker, edit = false) {
-    setWorker({ ...value, documents: value.documents.map((d) => ({ ...d })) });
+    const copy = normalizeWorker({
+      ...value,
+      documents: value.documents.map((d) => ({ ...d })),
+    });
+    setWorker(copy);
     setEditing(edit);
     setProfileTab("Professional");
   }
-  async function saveWorker(event: FormEvent) {
-    event.preventDefault();
-    if (!worker || uploading || saving) return;
-    if (
-      !worker.name.trim() ||
-      worker.phone.replace(/\D/g, "").length < 10 ||
-      !worker.services.length
-    ) {
-      toast.error("Enter a name, valid phone number, and at least one service");
-      return;
+  function toggleWorkerArea(areaName: string, checked: boolean) {
+    setWorker((w) => {
+      if (!w) return w;
+      const current = workerAreas(w);
+      const next = checked
+        ? [...new Set([...current, areaName])]
+        : current.filter((a) => a !== areaName);
+      if (!next.length) {
+        toast.error("Select at least one operating area");
+        return w;
+      }
+      return {
+        ...w,
+        areas: next,
+        area: formatWorkerAreas(next),
+      };
+    });
+  }
+  function validateWorkerForSave(current: Worker): string | null {
+    if (!current.name.trim() || !current.services.length) {
+      return "Enter a name and at least one service";
+    }
+    if (!isValidIndianMobile(current.phone)) {
+      return indianMobileValidationMessage();
+    }
+    if (!workerAreas(current).length) {
+      return "Select at least one operating area";
     }
     if (
-      worker.verification === "Verified" &&
+      role !== "Admin" &&
+      current.verification === "Verified" &&
       !["Identity proof", "Address proof", "Police verification"].every(
-        (name) => worker.documents.some((d) => d.name === name && d.reviewed),
+        (name) => current.documents.some((d) => d.name === name && d.reviewed),
       )
     ) {
-      toast.error(
-        "Review all three documents before marking the profile verified",
-      );
-      return;
+      return "Review all three documents before marking the profile verified";
     }
+    return null;
+  }
+
+  async function restoreArchivedWorker() {
+    if (!worker || worker.status !== "Archived") return;
+    const restored = applyAdminWorkerDefaults(
+      normalizeWorker({ ...worker, status: "Available" }),
+      role,
+    );
     if (
       !(await update((d) => ({
         ...d,
-        workers: d.workers.some((w) => w.id === worker.id)
-          ? d.workers.map((w) => (w.id === worker.id ? worker : w))
-          : [worker, ...d.workers],
-        activity: [`${worker.name}’s profile saved`, ...d.activity].slice(0, 8),
+        workers: d.workers.map((w) =>
+          w.id === restored.id ? restored : w,
+        ),
+        activity: [
+          `${restored.name} restored from archive`,
+          ...d.activity,
+        ].slice(0, 8),
       })))
     )
       return;
+    setWorker(restored);
+    toast.success("Profile restored — now Available");
+  }
+
+  async function persistWorker(options?: { close?: boolean; goNext?: boolean }) {
+    if (!worker || uploading || saving) return false;
+    let snapshot = normalizeWorker(worker);
+    snapshot = applyAdminWorkerDefaults(snapshot, role);
+    const validationError = validateWorkerForSave(snapshot);
+    if (validationError) {
+      toast.error(validationError);
+      return false;
+    }
+    setWorker(snapshot);
+    if (
+      !(await update((d) => ({
+        ...d,
+        workers: d.workers.some((w) => w.id === snapshot.id)
+          ? d.workers.map((w) => (w.id === snapshot.id ? snapshot : w))
+          : [snapshot, ...d.workers],
+        activity: [`${snapshot.name}’s profile saved`, ...d.activity].slice(0, 8),
+      })))
+    )
+      return false;
     const used = new Set(
-      [worker.photoPath, ...worker.documents.map((d) => d.path)].filter(
+      [snapshot.photoPath, ...snapshot.documents.map((d) => d.path)].filter(
         Boolean,
       ),
     );
-    const original = data.workers.find((w) => w.id === worker.id);
+    const original = data.workers.find((w) => w.id === snapshot.id);
     const obsolete = [
       ...uploads.current,
       ...(original?.photoPath
@@ -259,10 +404,26 @@ export default function RegistryDashboard() {
       ) || []),
     ].filter((file) => !used.has(file.path));
     uploads.current = [];
-    for (const file of obsolete)
-      void removeUploadedFiles([file]);
-    setWorker(null);
-    toast.success("Profile saved");
+    for (const file of obsolete) void removeUploadedFiles([file]);
+
+    if (options?.goNext) {
+      const index = profileTabs.indexOf(profileTab);
+      if (index >= 0 && index < profileTabs.length - 1) {
+        setProfileTab(profileTabs[index + 1]);
+      }
+      toast.success("Saved — continue on the next section");
+    } else if (options?.close) {
+      setWorker(null);
+      toast.success("Profile saved");
+    } else {
+      toast.success("Saved");
+    }
+    return true;
+  }
+
+  async function saveWorker(event: FormEvent) {
+    event.preventDefault();
+    await persistWorker();
   }
   function changeWorker<K extends keyof Worker>(field: K, value: Worker[K]) {
     setWorker((w) => (w ? { ...w, [field]: value } : w));
@@ -278,16 +439,20 @@ export default function RegistryDashboard() {
         ),
         workers: approve
           ? [
-              {
-                ...blankWorker(),
-                applicationId: application.id,
-                name: application.name,
-                phone: application.phone,
-                area: application.area,
-                services: application.services,
-                schedule: application.schedule || "",
-                languages: application.language,
-              },
+              applyAdminWorkerDefaults(
+                {
+                  ...blankWorker(),
+                  applicationId: application.id,
+                  name: application.name,
+                  phone: application.phone,
+                  area: application.area,
+                  areas: application.area ? [application.area] : [],
+                  services: application.services,
+                  schedule: application.schedule || "",
+                  languages: application.language,
+                },
+                role,
+              ),
               ...d.workers,
             ]
           : d.workers,
@@ -300,7 +465,9 @@ export default function RegistryDashboard() {
       return;
     toast.success(
       approve
-        ? "Profile created · verification pending"
+        ? role === "Admin"
+          ? "Profile created and marked verified"
+          : "Profile created · verification pending"
         : "Application declined",
     );
   }
@@ -308,7 +475,14 @@ export default function RegistryDashboard() {
     const text = [
       "ID,Name,Area,Services,Status,Verification",
       ...visible.map((w) =>
-        [w.id, w.name, w.area, w.services.join(" / "), w.status, w.verification]
+        [
+          w.id,
+          w.name,
+          formatWorkerAreas(workerAreas(w)),
+          w.services.join(" / "),
+          w.status,
+          w.verification,
+        ]
           .map((v) => `"${v.replaceAll('"', '""')}"`)
           .join(","),
       ),
@@ -325,6 +499,10 @@ export default function RegistryDashboard() {
   async function saveHousehold(e: FormEvent) {
     e.preventDefault();
     if (!household) return;
+    if (!isValidIndianMobile(household.phone)) {
+      toast.error(indianMobileValidationMessage());
+      return;
+    }
     if (
       !(await update((d) => ({
         ...d,
@@ -437,7 +615,7 @@ export default function RegistryDashboard() {
             reviewed: false,
           },
         ]);
-        changeWorker("verification", "Pending");
+        if (role !== "Admin") changeWorker("verification", "Pending");
       } else {
         setWorker((w) =>
           w
@@ -451,7 +629,9 @@ export default function RegistryDashboard() {
       }
       toast.success(
         documentName
-          ? "Document uploaded. Review it before verification."
+          ? role === "Admin"
+            ? "Document uploaded. Save the profile to keep it."
+            : "Document uploaded. Review it before verification."
           : "Photo uploaded. Save the profile to keep it.",
       );
     } catch (cause) {
@@ -479,7 +659,7 @@ export default function RegistryDashboard() {
           reviewed: false,
         },
       ]);
-      changeWorker("verification", "Pending");
+      if (role !== "Admin") changeWorker("verification", "Pending");
       setGalleryNote("");
       toast.success("Gallery document uploaded");
     } catch (cause) {
@@ -492,12 +672,32 @@ export default function RegistryDashboard() {
     <>
       {visible.length ? (
         <div className={`rg-profiles ${view === "list" ? "rg-list" : ""}`}>
-          {visible.map((w, i) => (
+          {visible.map((w, i) => {
+            const completion = workerProfileCompletion(w);
+            return (
             <button
               className="rg-profile"
               key={w.id}
-              onClick={() => openProfile(w)}
+              onClick={() => {
+                if (maidSelectMode && section === "Maid profiles") {
+                  setSelectedMaidIds((ids) =>
+                    ids.includes(w.id)
+                      ? ids.filter((x) => x !== w.id)
+                      : [...ids, w.id],
+                  );
+                  return;
+                }
+                openProfile(w);
+              }}
             >
+              {maidSelectMode && section === "Maid profiles" && (
+                <input
+                  type="checkbox"
+                  checked={selectedMaidIds.includes(w.id)}
+                  readOnly
+                  style={{ position: "absolute", top: 8, right: 8 }}
+                />
+              )}
               <div className="rg-profile-top">
                 <WorkerAvatar worker={w} color={colors[i % 4]} />
                 <Badge
@@ -516,17 +716,30 @@ export default function RegistryDashboard() {
               <div>
                 <h3>{w.name}</h3>
                 <p className="rg-id">
-                  {w.id} <span>·</span> {w.experience} years experience
+                  {workerDisplayRef(w.id)} <span>·</span> {w.experience} years
+                  experience
                 </p>
               </div>
               <p className="rg-location">
                 <MapPin size={14} />
-                {w.area}
+                {formatWorkerAreas(workerAreas(w))}
               </p>
               <div className="rg-tags">
                 {w.services.map((s) => (
                   <span key={s}>{s}</span>
                 ))}
+              </div>
+              <div className="rg-profile-card-complete">
+                <span>
+                  <span>Profile</span>
+                  <strong>{completion.percent}%</strong>
+                </span>
+                <div className="rg-profile-complete-track">
+                  <div
+                    className="rg-profile-complete-fill"
+                    style={{ width: `${completion.percent}%` }}
+                  />
+                </div>
               </div>
               <div className="rg-profile-bottom">
                 <span
@@ -542,7 +755,8 @@ export default function RegistryDashboard() {
                 <ChevronRight size={17} />
               </div>
             </button>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <div className="rg-empty">
@@ -589,7 +803,7 @@ export default function RegistryDashboard() {
   return (
     <div className="rg-app">
       <aside className="rg-sidebar">
-        <BrandLogo caption="TEAM WORKSPACE" />
+        <BrandLogo />
         <div className="rg-side-label">MANAGE YOUR NETWORK</div>
         <nav aria-label="Workspace navigation">
           {sections.map(({ name, icon: Icon }) => (
@@ -667,7 +881,9 @@ export default function RegistryDashboard() {
                       ? "Welcome new professionals into your network."
                       : section === "Enquiries"
                         ? "Follow up on families who reached out from the website."
-                        : section === "Verification"
+                        : section === "Clients"
+                          ? "Manage families, portal access, and profile grants. Records are never deleted."
+                          : section === "Verification"
                         ? "Review documents and build trust, one profile at a time."
                         : section === "Households"
                           ? "The homes and families your network supports."
@@ -676,30 +892,35 @@ export default function RegistryDashboard() {
                             : "Manage staff access and your workspace."}
               </p>
             </div>
-            <button
-              className="rg-btn primary"
-              onClick={() =>
-                section === "Households"
-                  ? setHousehold({
-                      id: `HH-${Date.now()}`,
-                      name: "",
-                      phone: "",
-                      area: "Wakad",
-                      address: "",
-                      service: "Cleaning",
-                    })
+            {section !== "Clients" && (
+              <button
+                className="rg-btn primary"
+                onClick={() =>
+                  section === "Households"
+                    ? setHousehold({
+                        id: `HH-${Date.now()}`,
+                        name: "",
+                        phone: "",
+                        area: "Wakad",
+                        address: "",
+                        service: "Cleaning",
+                      })
+                    : section === "Placements"
+                      ? setPlacementOpen(true)
+                      : openProfile(
+                          applyAdminWorkerDefaults(blankWorker(), role),
+                          true,
+                        )
+                }
+              >
+                <Plus size={17} />
+                {section === "Households"
+                  ? "Add household"
                   : section === "Placements"
-                    ? setPlacementOpen(true)
-                    : openProfile(blankWorker(), true)
-              }
-            >
-              <Plus size={17} />
-              {section === "Households"
-                ? "Add household"
-                : section === "Placements"
-                  ? "New placement"
-                  : "Add maid profile"}
-            </button>
+                    ? "New placement"
+                    : "Add maid profile"}
+              </button>
+            )}
           </div>
           {error && (
             <div className="rg-error" role="alert">
@@ -858,7 +1079,7 @@ export default function RegistryDashboard() {
                     <p>{w.services.join(" · ")}</p>
                     <span>
                       <MapPin size={13} />
-                      {w.area}
+                      {formatWorkerAreas(workerAreas(w))}
                     </span>
                     <Badge tone={w.status === "Available" ? "green" : "blue"}>
                       {w.status}
@@ -938,6 +1159,29 @@ export default function RegistryDashboard() {
                     <option key={s}>{s}</option>
                   ))}
                 </select>
+                {section === "Maid profiles" && (
+                  <>
+                    <button
+                      type="button"
+                      className="rg-btn"
+                      onClick={() => {
+                        setMaidSelectMode((m) => !m);
+                        setSelectedMaidIds([]);
+                      }}
+                    >
+                      {maidSelectMode ? "Cancel select" : "Select maids"}
+                    </button>
+                    {maidSelectMode && selectedMaidIds.length > 0 && (
+                      <button
+                        type="button"
+                        className="rg-btn primary"
+                        onClick={() => setGrantModalOpen(true)}
+                      >
+                        Grant to client ({selectedMaidIds.length})
+                      </button>
+                    )}
+                  </>
+                )}
                 <button className="rg-btn" onClick={exportProfiles}>
                   <ArrowDownToLine size={16} />
                   Export
@@ -1034,6 +1278,9 @@ export default function RegistryDashboard() {
             </Panel>
           )}
           {section === "Enquiries" && <EnquiriesPanel />}
+          {section === "Clients" && (
+            <ClientsPanel role={role === "Admin" ? "Admin" : "Coordinator"} />
+          )}
           {section === "Households" && (
             <div className="rg-households">
               {data.households.map((h) => (
@@ -1162,31 +1409,60 @@ export default function RegistryDashboard() {
         }}
       >
         <DialogContent className="rg-modal rg-profile-modal">
-          <DialogTitle>
+          <DialogTitle className={editing ? undefined : "sr-only"}>
             {editing
               ? data.workers.some((w) => w.id === worker?.id)
                 ? "Edit maid profile"
                 : "Register a professional"
-              : worker?.name}
+              : worker?.name || "Professional profile"}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className={editing ? undefined : "sr-only"}>
             {editing
               ? "Build a complete private staff record. Changes are saved to SakhiHome’s database."
-              : `${worker?.id} · Professional profile`}
+              : `Staff profile for ${worker?.name || "professional"}`}
           </DialogDescription>
           {worker && (
             <>
-              {!editing && (
-                <div className="rg-detail-header">
-                  <WorkerAvatar worker={worker} color="sage" />
-                  <div>
-                    <h2>{worker.name}</h2>
-                    <p>
-                      {worker.area} · {worker.experience} years experience
-                    </p>
-                    <p>{worker.phone}</p>
-                    <div className="rg-tags">
-                      <Badge tone="green">{worker.status}</Badge>
+              {!editing ? (
+                <header className="rg-profile-hero">
+                  <WorkerAvatar worker={worker} color="sage" size="lg" />
+                  <div className="rg-profile-hero-main">
+                    <div className="rg-profile-hero-row">
+                      <div>
+                        <h2 className="rg-profile-title">
+                          {worker.name || "Unnamed professional"}
+                        </h2>
+                        <p className="rg-profile-meta">
+                          <MapPin size={14} aria-hidden />
+                          {formatWorkerAreas(workerAreas(worker))}
+                          {worker.experience > 0
+                            ? ` · ${worker.experience} years experience`
+                            : ""}
+                        </p>
+                        {worker.phone ? (
+                          <p className="rg-profile-phone">{worker.phone}</p>
+                        ) : null}
+                      </div>
+                      <button
+                        type="button"
+                        className="rg-btn primary"
+                        onClick={() => setEditing(true)}
+                      >
+                        Edit profile
+                      </button>
+                    </div>
+                    <div className="rg-profile-badges">
+                      <Badge
+                        tone={
+                          worker.status === "Available"
+                            ? "green"
+                            : worker.status === "Placed"
+                              ? "blue"
+                              : "neutral"
+                        }
+                      >
+                        {worker.status}
+                      </Badge>
                       <Badge
                         tone={
                           worker.verification === "Verified" ? "green" : "amber"
@@ -1195,23 +1471,34 @@ export default function RegistryDashboard() {
                         {worker.verification}
                       </Badge>
                     </div>
+                    <p className="rg-profile-ref" title={worker.id}>
+                      Ref {workerDisplayRef(worker.id)}
+                      <span>Internal record · used for uploads</span>
+                    </p>
+                    <ProfileCompletionBar worker={worker} />
                   </div>
-                  <button className="rg-btn" onClick={() => setEditing(true)}>
-                    Edit profile
-                  </button>
-                </div>
+                </header>
+              ) : (
+                <header className="rg-profile-edit-banner">
+                  <WorkerAvatar worker={worker} color="sage" />
+                  <div className="rg-profile-edit-banner-body">
+                    <h2 className="rg-profile-title">
+                      {data.workers.some((w) => w.id === worker.id)
+                        ? "Edit profile"
+                        : "New professional"}
+                    </h2>
+                    <p className="rg-profile-meta">
+                      Ref {workerDisplayRef(worker.id)}
+                      {role === "Admin" ? " · Saves as verified" : ""}
+                    </p>
+                    <ProfileCompletionBar worker={worker} />
+                  </div>
+                </header>
               )}
-              {!editing && worker && (
-                <ShareLinksPanel maidId={worker.id} variant="admin" />
-              )}
-              <div className="rg-detail-tabs">
-                {[
-                  "Professional",
-                  "Personal & family",
-                  "Documents",
-                  "History",
-                ].map((t) => (
+              <div className="rg-detail-tabs rg-profile-tabs">
+                {profileTabs.map((t) => (
                   <button
+                    type="button"
                     className={profileTab === t ? "active" : ""}
                     key={t}
                     onClick={() => setProfileTab(t)}
@@ -1254,49 +1541,112 @@ export default function RegistryDashboard() {
                         onChange={(e) => changeWorker("name", e.target.value)}
                       />
                     </Field>
-                    <Field label="Phone *">
-                      <input
+                    <Field label="Mobile (10 digits) *">
+                      <IndianMobileInput
                         required
-                        type="tel"
-                        pattern="[0-9+ ()-]{10,16}"
                         value={worker.phone}
-                        onChange={(e) => changeWorker("phone", e.target.value)}
+                        onChange={(digits) => changeWorker("phone", digits)}
                       />
                     </Field>
                   </div>
                 )}
-                {profileTab === "Professional" && (
+                {profileTab === "Professional" && !editing && (
+                  <div className="rg-profile-view">
+                    <div className="rg-profile-stat-grid">
+                      <ProfileStat
+                        label="Operating areas"
+                        value={formatWorkerAreas(workerAreas(worker))}
+                      />
+                      <ProfileStat
+                        label="Experience"
+                        value={
+                          worker.experience
+                            ? `${worker.experience} years`
+                            : "Not set"
+                        }
+                      />
+                      <ProfileStat
+                        label="Expected pay"
+                        value={
+                          worker.salary
+                            ? /^\d+$/.test(worker.salary.trim())
+                              ? `₹${Number(worker.salary).toLocaleString("en-IN")}/mo`
+                              : worker.salary
+                            : ""
+                        }
+                      />
+                      <ProfileStat label="Languages" value={worker.languages} />
+                      <ProfileStat label="Work timings" value={worker.schedule} />
+                      <ProfileStat label="Availability" value={worker.status} />
+                    </div>
+                    <section className="rg-profile-section">
+                      <h3>Services</h3>
+                      <div className="rg-profile-pills">
+                        {worker.services.length
+                          ? worker.services.map((s) => (
+                              <span key={s}>{s}</span>
+                            ))
+                          : <span className="rg-profile-muted">None listed</span>}
+                      </div>
+                    </section>
+                    {worker.notes.trim() ? (
+                      <section className="rg-profile-section">
+                        <h3>Staff notes</h3>
+                        <p className="rg-profile-notes">{worker.notes}</p>
+                      </section>
+                    ) : null}
+                  </div>
+                )}
+                {profileTab === "Professional" && editing && (
                   <div className="rg-form-grid">
-                    <Field label="Service area">
-                      <select
-                        disabled={!editing}
-                        value={worker.area}
-                        onChange={(e) => changeWorker("area", e.target.value)}
-                      >
+                    <div className="rg-full">
+                      <span className="rg-field-label">Operating areas *</span>
+                      <div className="rg-checks">
                         {areaOptions.map((a) => (
-                          <option key={a}>{a}</option>
+                          <label key={a}>
+                            <input
+                              type="checkbox"
+                              checked={workerAreas(worker).includes(a)}
+                              onChange={(e) =>
+                                toggleWorkerArea(a, e.target.checked)
+                              }
+                            />
+                            {a}
+                          </label>
                         ))}
-                      </select>
-                    </Field>
+                      </div>
+                    </div>
                     <Field label="Experience (years)">
                       <input
-                        type="number"
-                        min="0"
-                        max="60"
-                        readOnly={!editing}
-                        value={worker.experience}
-                        onChange={(e) =>
-                          changeWorker("experience", Number(e.target.value))
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="e.g. 5"
+                        value={
+                          worker.experience > 0
+                            ? String(worker.experience)
+                            : ""
                         }
+                        onChange={(e) => {
+                          const raw = digitsOnlyField(e.target.value, 2);
+                          changeWorker(
+                            "experience",
+                            raw === "" ? 0 : Math.min(60, parseInt(raw, 10)),
+                          );
+                        }}
                       />
                     </Field>
                     <Field label="Expected monthly pay (₹)">
                       <input
-                        type="number"
-                        min="0"
-                        readOnly={!editing}
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="e.g. 15000"
                         value={worker.salary}
-                        onChange={(e) => changeWorker("salary", e.target.value)}
+                        onChange={(e) =>
+                          changeWorker(
+                            "salary",
+                            digitsOnlyField(e.target.value, 7),
+                          )
+                        }
                       />
                     </Field>
                     <Field label="Languages">
@@ -1329,12 +1679,10 @@ export default function RegistryDashboard() {
                           )
                         }
                       >
-                        <option>Available</option>
-                        <option>Placed</option>
-                        <option>On leave</option>
-                        {worker.status === "Archived" && (
-                          <option>Archived</option>
-                        )}
+                        <option value="Available">Available</option>
+                        <option value="Placed">Placed</option>
+                        <option value="On leave">On leave</option>
+                        <option value="Archived">Archived</option>
                       </select>
                     </Field>
                     <div className="rg-full">
@@ -1369,7 +1717,34 @@ export default function RegistryDashboard() {
                     </Field>
                   </div>
                 )}
-                {profileTab === "Personal & family" && (
+                {profileTab === "Personal & family" && !editing && (
+                  <div className="rg-profile-view">
+                    <div className="rg-profile-stat-grid rg-profile-stat-grid--single">
+                      <ProfileStat label="Current address" value={worker.address} />
+                      <ProfileStat
+                        label="Marital status"
+                        value={worker.maritalStatus || "Not provided"}
+                      />
+                      <ProfileStat
+                        label="Spouse / guardian"
+                        value={worker.guardian}
+                      />
+                      <ProfileStat
+                        label="Dependants"
+                        value={worker.dependants}
+                      />
+                      <ProfileStat
+                        label="Emergency contact"
+                        value={worker.emergency}
+                      />
+                    </div>
+                    <div className="rg-private-note">
+                      <ShieldCheck size={18} />
+                      Private staff record — not shown on client basic previews.
+                    </div>
+                  </div>
+                )}
+                {profileTab === "Personal & family" && editing && (
                   <div className="rg-form-grid">
                     <Field label="Current address">
                       <textarea
@@ -1406,12 +1781,16 @@ export default function RegistryDashboard() {
                     </Field>
                     <Field label="Number of dependants (optional)">
                       <input
-                        type="number"
-                        min="0"
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="0"
                         readOnly={!editing}
                         value={worker.dependants}
                         onChange={(e) =>
-                          changeWorker("dependants", e.target.value)
+                          changeWorker(
+                            "dependants",
+                            digitsOnlyField(e.target.value, 2),
+                          )
                         }
                       />
                     </Field>
@@ -1432,7 +1811,7 @@ export default function RegistryDashboard() {
                   </div>
                 )}
                 {profileTab === "Documents" && (
-                  <div>
+                  <div className="rg-profile-docs">
                     <p className="rg-settings-copy">
                       Upload private verification documents. JPEG, PNG, WebP or
                       PDF, up to 10 MB each. Download and review before marking
@@ -1587,38 +1966,47 @@ export default function RegistryDashboard() {
                     )}
                     <div className="rg-panel-footer">
                       {editing ? (
-                        <Field label="Overall verification">
-                          <select
-                            value={worker.verification}
-                            onChange={(e) =>
-                              changeWorker(
-                                "verification",
-                                e.target.value as Worker["verification"],
-                              )
-                            }
-                          >
-                            <option>Pending</option>
-                            <option
-                              disabled={
-                                !worker.documents.some(
-                                  (d) =>
-                                    d.name === "Identity proof" && d.reviewed,
-                                ) ||
-                                !worker.documents.some(
-                                  (d) =>
-                                    d.name === "Address proof" && d.reviewed,
-                                ) ||
-                                !worker.documents.some(
-                                  (d) =>
-                                    d.name === "Police verification" &&
-                                    d.reviewed,
+                        role === "Admin" ? (
+                          <p className="rg-settings-copy">
+                            Admin profiles are saved as{" "}
+                            <strong>Verified</strong> without a separate
+                            verification step. Upload documents when you have
+                            them.
+                          </p>
+                        ) : (
+                          <Field label="Overall verification">
+                            <select
+                              value={worker.verification}
+                              onChange={(e) =>
+                                changeWorker(
+                                  "verification",
+                                  e.target.value as Worker["verification"],
                                 )
                               }
                             >
-                              Verified
-                            </option>
-                          </select>
-                        </Field>
+                              <option>Pending</option>
+                              <option
+                                disabled={
+                                  !worker.documents.some(
+                                    (d) =>
+                                      d.name === "Identity proof" && d.reviewed,
+                                  ) ||
+                                  !worker.documents.some(
+                                    (d) =>
+                                      d.name === "Address proof" && d.reviewed,
+                                  ) ||
+                                  !worker.documents.some(
+                                    (d) =>
+                                      d.name === "Police verification" &&
+                                      d.reviewed,
+                                  )
+                                }
+                              >
+                                Verified
+                              </option>
+                            </select>
+                          </Field>
+                        )
                       ) : (
                         <Badge
                           tone={
@@ -1634,7 +2022,7 @@ export default function RegistryDashboard() {
                   </div>
                 )}
                 {profileTab === "History" && (
-                  <div>
+                  <div className="rg-profile-history">
                     {data.placements
                       .filter((p) => p.workerId === worker.id)
                       .map((p) => (
@@ -1664,7 +2052,16 @@ export default function RegistryDashboard() {
                     )}
                   </div>
                 )}
-                <div className="rg-modal-footer">
+                <div className="rg-modal-footer rg-profile-footer">
+                  {!editing && role === "Admin" && worker.status === "Archived" && (
+                    <button
+                      type="button"
+                      className="rg-btn primary"
+                      onClick={() => void restoreArchivedWorker()}
+                    >
+                      Restore to Available
+                    </button>
+                  )}
                   {!editing &&
                     role === "Admin" &&
                     worker.status !== "Archived" && (
@@ -1694,23 +2091,48 @@ export default function RegistryDashboard() {
                         Archive profile
                       </button>
                     )}
-                  <button
-                    type="button"
-                    className="rg-btn"
-                    onClick={closeProfile}
-                    disabled={saving || uploading}
-                  >
-                    Close
-                  </button>
-                  {editing && (
+                  <div className="rg-profile-footer-actions">
                     <button
-                      type="submit"
-                      className="rg-btn primary"
+                      type="button"
+                      className="rg-btn"
+                      onClick={closeProfile}
                       disabled={saving || uploading}
                     >
-                      Save profile <Check size={16} />
+                      Close
                     </button>
-                  )}
+                    {editing && (
+                      <>
+                        <button
+                          type="submit"
+                          className="rg-btn"
+                          disabled={saving || uploading}
+                        >
+                          {saving ? "Saving…" : "Save"}
+                        </button>
+                        {profileTab !== "History" ? (
+                          <button
+                            type="button"
+                            className="rg-btn primary"
+                            disabled={saving || uploading}
+                            onClick={() => void persistWorker({ goNext: true })}
+                          >
+                            {saving ? "Saving…" : "Save & next"}
+                            <ChevronRight size={16} />
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="rg-btn primary"
+                            disabled={saving || uploading}
+                            onClick={() => void persistWorker({ close: true })}
+                          >
+                            Save & close
+                            <Check size={16} />
+                          </button>
+                        )}
+                      </>
+                    )}
+                  </div>
                 </div>
               </form>
             </>
@@ -1739,14 +2161,24 @@ export default function RegistryDashboard() {
                   ] as const
                 ).map(([key, label]) => (
                   <Field key={key} label={label}>
-                    <input
-                      required={key !== "address"}
-                      type={key === "phone" ? "tel" : "text"}
-                      value={household[key]}
-                      onChange={(e) =>
-                        setHousehold({ ...household, [key]: e.target.value })
-                      }
-                    />
+                    {key === "phone" ? (
+                      <IndianMobileInput
+                        required
+                        value={household.phone}
+                        onChange={(digits) =>
+                          setHousehold({ ...household, phone: digits })
+                        }
+                      />
+                    ) : (
+                      <input
+                        required={key !== "address"}
+                        type="text"
+                        value={household[key]}
+                        onChange={(e) =>
+                          setHousehold({ ...household, [key]: e.target.value })
+                        }
+                      />
+                    )}
                   </Field>
                 ))}
                 <Field label="Area">
@@ -1807,7 +2239,7 @@ export default function RegistryDashboard() {
                     )
                     .map((w) => (
                       <option key={w.id} value={w.id}>
-                        {w.name} · {w.area}
+                        {w.name} · {formatWorkerAreas(workerAreas(w))}
                       </option>
                     ))}
                 </select>
@@ -1862,6 +2294,15 @@ export default function RegistryDashboard() {
           </form>
         </DialogContent>
       </Dialog>
+      <GrantToClientModal
+        maidIds={selectedMaidIds}
+        open={grantModalOpen}
+        onClose={() => setGrantModalOpen(false)}
+        onDone={() => {
+          setSelectedMaidIds([]);
+          setMaidSelectMode(false);
+        }}
+      />
     </div>
   );
 }

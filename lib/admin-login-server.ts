@@ -17,7 +17,13 @@ export async function verifyStaffTableLogin(
     .select("email,role,enabled,password")
     .eq("email", normalizeStaffEmail(email))
     .maybeSingle();
-  if (error || !data?.enabled) return null;
+  if (error) {
+    console.error("staff_access lookup failed:", error.message);
+    throw new Error(
+      "Staff login database error. Use the Supabase service_role key (not Brevo) in SUPABASE_SERVICE_ROLE_KEY.",
+    );
+  }
+  if (!data?.enabled) return null;
   const row = data as StaffLoginRow & { password: string };
   if (!row.password || row.password !== password) return null;
   return {

@@ -5,18 +5,24 @@ import { enquiryFromRow } from "@/lib/enquiries";
 import type { Json } from "@/lib/database.types";
 
 export async function GET() {
-  if (!(await readAdminSession())) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  try {
+    if (!(await readAdminSession())) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const sb = getServiceSupabase();
+    const { data, error } = await sb
+      .from("enquiries")
+      .select("id,payload,created_at")
+      .order("created_at", { ascending: false });
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json((data ?? []).map(enquiryFromRow));
+  } catch (e) {
+    const message =
+      e instanceof Error ? e.message : "Could not load enquiries.";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
-  const sb = getServiceSupabase();
-  const { data, error } = await sb
-    .from("enquiries")
-    .select("id,payload,created_at")
-    .order("created_at", { ascending: false });
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-  return NextResponse.json((data ?? []).map(enquiryFromRow));
 }
 
 export async function PATCH(request: Request) {

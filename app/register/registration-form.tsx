@@ -12,6 +12,12 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
+import IndianMobileInput from "@/components/indian-mobile-input";
+import {
+  formatIndianMobileForStorage,
+  indianMobileValidationMessage,
+  isValidIndianMobile,
+} from "@/lib/india-contact";
 import { areaOptions, serviceOptions, submitApplication } from "@/lib/registry";
 
 const translations = {
@@ -185,6 +191,14 @@ export default function RegistrationForm() {
     e.preventDefault();
     setError("");
     if (step === 1) {
+      if (!form.name.trim()) {
+        setError("Please enter your name.");
+        return;
+      }
+      if (!isValidIndianMobile(form.phone)) {
+        setError(indianMobileValidationMessage());
+        return;
+      }
       setStep(2);
       return;
     }
@@ -202,7 +216,7 @@ export default function RegistrationForm() {
       await submitApplication({
         id: `AP-${crypto.randomUUID()}`,
         name: form.name.trim(),
-        phone: form.phone,
+        phone: formatIndianMobileForStorage(form.phone),
         area: form.area,
         services: form.services,
         schedule: form.schedule,
@@ -330,15 +344,11 @@ export default function RegistrationForm() {
                     </label>
                     <label className="rg-field">
                       <span>{t.phone} *</span>
-                      <input
-                        autoComplete="tel"
-                        inputMode="tel"
-                        type="tel"
+                      <IndianMobileInput
                         required
-                        pattern="[0-9+ ()-]{10,16}"
                         value={form.phone}
-                        onChange={(e) =>
-                          setForm({ ...form, phone: e.target.value })
+                        onChange={(digits) =>
+                          setForm({ ...form, phone: digits })
                         }
                       />
                     </label>

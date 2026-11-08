@@ -173,7 +173,9 @@ body:has(.rg-login) {
   gap: 5px;
 }
 .rg-sidebar .rg-logo-mark {
-  width: 28%;
+  width: 42%;
+  min-width: 80px;
+  max-width: 96px;
 }
 .rg-sidebar .rg-logo-lockup {
   flex: 1;
@@ -187,7 +189,7 @@ body:has(.rg-login) {
     padding: 5px 8px;
   }
   .rg-sidebar .rg-logo-mark {
-    width: 47px;
+    width: 70px;
   }
   .rg-register-top .rg-logo-mark {
     width: 52px;
@@ -1044,7 +1046,244 @@ body:has(.rg-login) {
   color: #244834;
 }
 .rg-profile-modal {
-  max-width: 760px !important;
+  max-width: 720px !important;
+  padding: 0 !important;
+  gap: 0 !important;
+}
+.rg-profile-modal .rg-profile-tabs {
+  padding: 4px 28px 0;
+}
+.rg-profile-modal form {
+  padding: 0 28px 24px;
+}
+.rg-profile-modal > button.absolute {
+  right: 16px;
+  top: 16px;
+  z-index: 2;
+}
+.rg-avatar.lg {
+  width: 88px;
+  height: 88px;
+  border-radius: 22px;
+  font-size: 28px;
+  flex-shrink: 0;
+}
+.rg-profile-hero,
+.rg-profile-edit-banner {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 24px 28px 20px;
+  background: linear-gradient(165deg, #eef4e8 0%, #fafcf7 55%, #fff 100%);
+  border-bottom: 1px solid #e4ebe0;
+}
+.rg-profile-hero-main {
+  flex: 1;
+  min-width: 0;
+}
+.rg-profile-hero-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.rg-profile-title {
+  font-size: 22px;
+  font-weight: 650;
+  letter-spacing: -0.4px;
+  color: #1f3d2c;
+  line-height: 1.25;
+  margin: 0;
+}
+.rg-profile-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 13px;
+  color: #6d7f62;
+  margin: 8px 0 0;
+}
+.rg-profile-phone {
+  font-size: 14px;
+  font-weight: 550;
+  color: #2a523c;
+  margin: 6px 0 0;
+  letter-spacing: 0.02em;
+}
+.rg-profile-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.rg-profile-ref {
+  margin: 14px 0 0;
+  font-size: 11px;
+  color: #8a9a7c;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.rg-profile-ref span {
+  font-size: 10px;
+  color: #a8b39a;
+}
+.rg-profile-edit-banner-body {
+  flex: 1;
+  min-width: 0;
+}
+.rg-profile-complete {
+  margin-top: 14px;
+}
+.rg-profile-complete-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 11px;
+  color: #6d7f62;
+  margin-bottom: 6px;
+}
+.rg-profile-complete-head strong {
+  font-size: 13px;
+  color: #2a523c;
+}
+.rg-profile-complete-track {
+  height: 8px;
+  border-radius: 999px;
+  background: #e4ebe0;
+  overflow: hidden;
+}
+.rg-profile-complete-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #3d8f5c, #2e6549);
+  transition: width 0.25s ease;
+}
+.rg-profile-complete-missing {
+  margin: 8px 0 0;
+  font-size: 10px;
+  line-height: 1.5;
+  color: #8a9a7c;
+}
+.rg-profile-card-complete {
+  margin-top: 10px;
+}
+.rg-profile-card-complete span {
+  font-size: 9px;
+  color: #8a9789;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.rg-profile-card-complete .rg-profile-complete-track {
+  height: 5px;
+}
+.rg-profile-tabs {
+  margin-bottom: 20px !important;
+  padding-top: 4px;
+}
+.rg-profile-view {
+  margin-top: 4px;
+}
+.rg-profile-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.rg-profile-stat-grid--single {
+  grid-template-columns: 1fr;
+}
+.rg-profile-stat {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  background: #f7faf4;
+  border: 1px solid #e6ede0;
+  border-radius: 12px;
+}
+.rg-profile-stat-icon {
+  color: #4a7358;
+  margin-top: 2px;
+}
+.rg-profile-stat-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8a9a7c;
+  margin-bottom: 4px;
+}
+.rg-profile-stat-value {
+  display: block;
+  font-size: 14px;
+  font-weight: 550;
+  color: #2a4534;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+.rg-profile-section {
+  margin-top: 20px;
+}
+.rg-profile-section h3 {
+  font-size: 11px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #7a8c6e;
+  margin: 0 0 10px;
+}
+.rg-profile-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.rg-profile-pills > span {
+  font-size: 12px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #dce6d4;
+  color: #35583f;
+  font-weight: 500;
+}
+.rg-profile-muted {
+  font-size: 13px;
+  color: #95a389;
+}
+.rg-profile-notes {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #3d5345;
+  padding: 14px 16px;
+  background: #f7faf4;
+  border-radius: 12px;
+  border: 1px solid #e6ede0;
+  margin: 0;
+}
+.rg-profile-docs .rg-document {
+  border: 1px solid #e8efe0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e8efe0;
+  background: #fcfdfb;
+}
+.rg-profile-history .rg-document {
+  border-radius: 12px;
+  border: 1px solid #e8efe0;
+  padding: 16px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e8efe0;
+  background: #fcfdfb;
+}
+.rg-profile-history .rg-empty {
+  border-radius: 12px;
+  border: 1px dashed #d5e0cc;
+  padding: 28px;
+  text-align: center;
 }
 .rg-modal h2 {
   color: #2c4d36;
@@ -1169,6 +1408,18 @@ body:has(.rg-login) {
   margin-top: 24px;
   padding-top: 18px;
   border-top: 1px solid #eaf0e2;
+}
+.rg-profile-footer {
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.rg-profile-footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
 }
 .rg-register {
   min-height: 100vh;
@@ -1635,6 +1886,20 @@ body:has(.rg-login) {
   }
   .rg-modal {
     padding: 23px !important;
+  }
+  .rg-profile-modal {
+    padding: 0 !important;
+  }
+  .rg-profile-stat-grid {
+    grid-template-columns: 1fr;
+  }
+  .rg-profile-hero-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .rg-profile-hero-row .rg-btn {
+    width: 100%;
+    justify-content: center;
   }
   .rg-document {
     flex-wrap: wrap;

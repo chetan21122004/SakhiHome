@@ -1,7 +1,3 @@
-"use client";
-
-import type { Database } from "./database.types";
-
 export type Enquiry = {
   id: string;
   name: string;
@@ -19,27 +15,19 @@ export type Enquiry = {
 export type EnquiryInput = Omit<Enquiry, "id" | "status" | "createdAt">;
 
 export async function submitEnquiry(input: EnquiryInput) {
-  const { createClient } = await import("@supabase/supabase-js");
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-  if (!url || !key) {
-    throw new Error("Supabase is not configured.");
-  }
-  const sb = createClient<Database>(url, key, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-      detectSessionInUrl: false,
-    },
+  const response = await fetch("/api/enquiries", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
   });
-  const id = `ENQ-${crypto.randomUUID()}`;
-  const payload: Enquiry = {
-    id,
-    ...input,
-    status: "New",
-  };
-  const { error } = await sb.from("enquiries").insert({ id, payload });
-  if (error) throw new Error("Could not send your enquiry. Please try again.");
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(
+      typeof data?.error === "string"
+        ? data.error
+        : "Could not send your enquiry. Please try again.",
+    );
+  }
 }
 
 export function enquiryFromRow(row: {
@@ -52,7 +40,7 @@ export function enquiryFromRow(row: {
 }
 
 export async function loadEnquiries(
-  getSupabase: () => import("@supabase/supabase-js").SupabaseClient<Database>,
+  getSupabase: () => import("@supabase/supabase-js").SupabaseClient,
 ) {
   const { data, error } = await getSupabase()
     .from("enquiries")
@@ -63,7 +51,7 @@ export async function loadEnquiries(
 }
 
 export async function updateEnquiryStatus(
-  getSupabase: () => import("@supabase/supabase-js").SupabaseClient<Database>,
+  getSupabase: () => import("@supabase/supabase-js").SupabaseClient,
   id: string,
   status: Enquiry["status"],
   current: Enquiry,

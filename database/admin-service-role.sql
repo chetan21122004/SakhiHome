@@ -66,7 +66,8 @@ begin
         raise exception 'End active placements before archiving';
       end if;
     end if;
-    if new.payload->>'verification' = 'Verified' then
+    if new.payload->>'verification' = 'Verified'
+      and not private.backend_request() then
       foreach kind in array array['Identity proof', 'Address proof', 'Police verification'] loop
         if not exists (
           select 1 from jsonb_array_elements(new.payload->'documents') d
@@ -123,3 +124,13 @@ begin
   return new;
 end;
 $$;
+
+grant usage on schema private to service_role;
+grant execute on function private.backend_request() to service_role;
+grant execute on function private.staff_role() to service_role;
+grant execute on function public.save_registry_changes(jsonb, jsonb) to service_role;
+grant select, insert, update on public.maids to service_role;
+grant select, insert, update on public.households to service_role;
+grant select, insert, update on public.applications to service_role;
+grant select, insert, update on public.placements to service_role;
+grant select, insert on public.registry_activity to service_role;

@@ -14,6 +14,125 @@ export type Database = {
   };
   public: {
     Tables: {
+      client_profile_grants: {
+        Row: {
+          access_level: string;
+          client_id: string;
+          granted_at: string;
+          granted_by: string | null;
+          id: string;
+          maid_id: string;
+          revoked_at: string | null;
+        };
+        Insert: {
+          access_level?: string;
+          client_id: string;
+          granted_at?: string;
+          granted_by?: string | null;
+          id?: string;
+          maid_id: string;
+          revoked_at?: string | null;
+        };
+        Update: {
+          access_level?: string;
+          client_id?: string;
+          granted_at?: string;
+          granted_by?: string | null;
+          id?: string;
+          maid_id?: string;
+          revoked_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "client_profile_grants_client_id_fkey";
+            columns: ["client_id"];
+            isOneToOne: false;
+            referencedRelation: "clients";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "client_profile_grants_maid_id_fkey";
+            columns: ["maid_id"];
+            isOneToOne: false;
+            referencedRelation: "maids";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      clients: {
+        Row: {
+          access_pin_hash: string;
+          area: string;
+          created_at: string;
+          enquiry_id: string | null;
+          id: string;
+          message: string;
+          name: string;
+          notes: string;
+          phone: string;
+          phone_normalized: string;
+          pin_rotated_at: string | null;
+          portal_enabled: boolean;
+          portal_token: string;
+          serious_client: boolean;
+          service: string;
+          source: string;
+          staff_last_touched_at: string | null;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          access_pin_hash?: string;
+          area?: string;
+          created_at?: string;
+          enquiry_id?: string | null;
+          id: string;
+          message?: string;
+          name: string;
+          notes?: string;
+          phone: string;
+          phone_normalized: string;
+          pin_rotated_at?: string | null;
+          portal_enabled?: boolean;
+          portal_token: string;
+          serious_client?: boolean;
+          service?: string;
+          source: string;
+          staff_last_touched_at?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          access_pin_hash?: string;
+          area?: string;
+          created_at?: string;
+          enquiry_id?: string | null;
+          id?: string;
+          message?: string;
+          name?: string;
+          notes?: string;
+          phone?: string;
+          phone_normalized?: string;
+          pin_rotated_at?: string | null;
+          portal_enabled?: boolean;
+          portal_token?: string;
+          serious_client?: boolean;
+          service?: string;
+          source?: string;
+          staff_last_touched_at?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "clients_enquiry_id_fkey";
+            columns: ["enquiry_id"];
+            isOneToOne: false;
+            referencedRelation: "enquiries";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       applications: {
         Row: {
           id: string;

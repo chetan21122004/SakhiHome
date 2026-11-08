@@ -32,7 +32,7 @@ export default function StaffLogin({
   return (
     <main className="rg-login">
       <section className="rg-register-card">
-        <BrandLogo caption="TEAM WORKSPACE" />
+        <BrandLogo />
         <h1>{title}</h1>
         <p>
           Email and password from staff_access (admin creates coordinator

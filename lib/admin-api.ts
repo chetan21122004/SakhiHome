@@ -2,7 +2,7 @@
 
 import type { Json } from "./database.types";
 import type { Enquiry } from "./enquiries";
-import type { Registry } from "./registry";
+import type { Registry } from "./registry-data";
 
 export type AdminSessionInfo = { email: string; role: "Admin" | "Coordinator" };
 

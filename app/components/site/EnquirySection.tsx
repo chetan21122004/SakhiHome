@@ -21,6 +21,12 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { BusinessMap } from "@/app/components/site/BusinessMap";
+import IndianMobileInput from "@/components/indian-mobile-input";
+import {
+  formatIndianMobileForStorage,
+  indianMobileValidationMessage,
+  isValidIndianMobile,
+} from "@/lib/india-contact";
 import { submitEnquiry } from "@/lib/enquiries";
 import { supabaseConfigured } from "@/lib/supabase-client";
 import {
@@ -76,9 +82,11 @@ const EnquirySection = () => {
 
   const validate = () => {
     if (!form.name.trim()) return "Please enter your name.";
-    const phoneDigits = form.phone.replace(/\D/g, "");
-    if (phoneDigits.length < 10) return "Please enter a valid phone number.";
+    if (!isValidIndianMobile(form.phone)) {
+      return indianMobileValidationMessage();
+    }
     if (!form.service) return "Please choose the service you need.";
+    if (!form.area) return "Please select your area.";
     return null;
   };
 
@@ -99,7 +107,7 @@ const EnquirySection = () => {
     try {
       await submitEnquiry({
         name: form.name.trim(),
-        phone: form.phone.trim(),
+        phone: formatIndianMobileForStorage(form.phone),
         area: form.area,
         service: form.service,
         budget: form.budget.trim(),
@@ -113,7 +121,11 @@ const EnquirySection = () => {
       toast.success("Enquiry sent! We'll reach out shortly.");
     } catch (err) {
       console.error("Enquiry submission failed", err);
-      toast.error("Couldn't send enquiry. Please try WhatsApp or call us.");
+      const msg =
+        err instanceof Error && err.message
+          ? err.message
+          : "Couldn't send enquiry. Please try WhatsApp or call us.";
+      toast.error(msg);
     } finally {
       setSubmitting(false);
     }
@@ -283,17 +295,15 @@ const EnquirySection = () => {
                     </Label>
                     <div className="relative">
                       <Phone className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input
+                      <IndianMobileInput
                         id="enq-phone"
                         name="phone"
-                        type="tel"
-                        inputMode="tel"
-                        autoComplete="tel"
                         required
-                        placeholder="10-digit mobile number"
                         value={form.phone}
-                        onChange={handleChange("phone")}
-                        className="h-11 md:h-12 pl-10"
+                        onChange={(digits) =>
+                          setForm((prev) => ({ ...prev, phone: digits }))
+                        }
+                        className="flex h-11 md:h-12 w-full rounded-md border border-input bg-background pl-10 pr-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                       />
                     </div>
                   </div>

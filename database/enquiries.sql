@@ -17,5 +17,6 @@ create policy public_enquiry_insert on public.enquiries for insert to anon with 
   and (payload - array['id', 'name', 'phone', 'area', 'service', 'budget', 'startTime', 'endTime', 'message', 'status']) = '{}'::jsonb
 );
 grant select, update on public.enquiries to authenticated;
+grant select, insert, update on public.enquiries to service_role;
 create policy staff_enquiries_select on public.enquiries for select to authenticated using ((select private.staff_role()) is not null);
 create policy staff_enquiries_update on public.enquiries for update to authenticated using ((select private.staff_role()) is not null) with check ((select private.staff_role()) is not null);

@@ -9,7 +9,7 @@ const logo = "logo_both.png";
 const  bg1 = "assets/bg_vdos/1.mp4";
 const bg2 = "assets/bg_vdos/2.mp4";
 const bg3 = "assets/bg_vdos/3.mp4";
-const blobBg = "blobs/color_grunge_pattern_liquidity_style_background.jpg";
+const blobBg = "/assets/blobs/color_grunge_pattern_liquidity_style_background.jpg";
 
 const VIDEOS = [bg1, bg2, bg3];
 const MobileHero = () => (

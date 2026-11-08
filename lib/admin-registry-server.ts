@@ -6,7 +6,7 @@ import type {
   Placement,
   Registry,
   Worker,
-} from "./registry";
+} from "./registry-data";
 
 const tables = ["maids", "households", "applications", "placements"] as const;
 

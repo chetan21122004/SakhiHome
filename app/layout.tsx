@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { GoogleAnalytics } from "@/app/components/GoogleAnalytics";
 import { getAbsoluteSiteUrl } from "@/lib/services";
@@ -7,7 +7,12 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import BottomNav from "@/app/components/site/BottomNav";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const display = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["500", "600", "700", "800"],
+});
 
 const siteUrl = getAbsoluteSiteUrl("/");
 
@@ -55,7 +60,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", "font-sans", inter.variable)}
+      className={cn(
+        "h-full",
+        "antialiased",
+        "font-sans",
+        inter.variable,
+        display.variable,
+      )}
     >
       <body className="min-h-full flex flex-col pb-[calc(env(safe-area-inset-bottom)+4.5rem)] md:pb-0">
         <GoogleAnalytics />

@@ -1,4 +1,4 @@
-import type { Worker } from "./registry";
+import type { Worker } from "./registry-data";
 
 type Change = { table: string; before: unknown; after: unknown };
 
