@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import Image from "next/image";
 import { toast } from "sonner";
 import {
@@ -13,6 +19,7 @@ import {
 } from "@/lib/admin-api";
 import StaffLogin from "@/app/admin/staff-login";
 import GrantToClientModal from "@/app/components/admin/GrantToClientModal";
+import ShareLinksPanel from "@/app/components/share/ShareLinksPanel";
 import {
   GALLERY_DOC_CATEGORIES,
   VERIFICATION_DOC_TYPES,
@@ -33,11 +40,107 @@ import {
   workerAreas,
   type Worker,
 } from "@/lib/registry";
+import logoMark from "@/public/assets/logo_only.png";
 import "./field.css";
 
 const DOC_TYPES = [...VERIFICATION_DOC_TYPES];
 const STATUS_OPTIONS: Worker["status"][] = ["Available", "Placed", "On leave"];
 const STEP_LABELS = ["Contact", "Work", "Family", "Photo & docs"];
+
+function statusBadgeClass(status: Worker["status"]) {
+  if (status === "Available") return "field-badge field-badge--available";
+  if (status === "Placed") return "field-badge field-badge--placed";
+  if (status === "On leave") return "field-badge field-badge--leave";
+  return "field-badge";
+}
+
+function verificationBadgeClass(verification: string) {
+  if (verification === "Verified") return "field-badge field-badge--verified";
+  if (verification === "Pending") return "field-badge field-badge--pending";
+  return "field-badge";
+}
+
+function SearchIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+      />
+      <path
+        d="M16.5 16.5 21 21"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function ChevronIcon() {
+  return (
+    <svg
+      className="field-card-chevron"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden
+    >
+      <path
+        d="m9 6 6 6-6 6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function FieldTopbar({
+  pageTitle,
+  pageSubtitle,
+  userEmail,
+  actions,
+  showPageTitle = false,
+}: {
+  pageTitle?: string;
+  pageSubtitle?: string;
+  userEmail?: string;
+  actions?: ReactNode;
+  showPageTitle?: boolean;
+}) {
+  return (
+    <header className="field-topbar">
+      <div className="field-topbar-inner">
+        <div className="field-brand">
+          <Image
+            src={logoMark}
+            alt=""
+            width={32}
+            height={32}
+            className="field-brand-mark"
+          />
+          <div className="field-brand-text">
+            <strong>Field workspace</strong>
+            <span>{userEmail ?? "SakhiHome coordinator"}</span>
+          </div>
+        </div>
+        {actions ? <div className="field-toolbar">{actions}</div> : null}
+      </div>
+      {showPageTitle && pageTitle ? (
+        <div className="field-topbar-sub">
+          <div className="field-title-block">
+            <h1>{pageTitle}</h1>
+            {pageSubtitle ? <p>{pageSubtitle}</p> : null}
+          </div>
+        </div>
+      ) : null}
+    </header>
+  );
+}
 
 function initials(name: string) {
   return name
@@ -315,17 +418,24 @@ export default function FieldApp() {
     }
   }
 
+  const availableCount = workers.filter((w) => w.status === "Available").length;
+
   if (loading) {
     return (
-      <div className="field-root field-main">
-        <p>Loading…</p>
+      <div className="field-root">
+        <main className="field-main field-main--centered">
+          <div className="field-loading" role="status">
+            <div className="field-spinner" aria-hidden />
+            <p>Loading workspace…</p>
+          </div>
+        </main>
       </div>
     );
   }
 
   if (!session) {
     return (
-      <div className="field-root">
+      <div className="field-root field-login-shell">
         <StaffLogin
           title="Field sign in"
           onLoggedIn={() => void refreshSession()}
@@ -337,19 +447,21 @@ export default function FieldApp() {
   if (viewing) {
     return (
       <div className="field-root">
-        <header className="field-header">
-          <div>
-            <h1>Profile</h1>
-            <small>{viewing.id}</small>
-          </div>
-          <button
-            type="button"
-            className="field-btn"
-            onClick={() => setViewing(null)}
-          >
-            Back
-          </button>
-        </header>
+        <FieldTopbar
+          showPageTitle
+          pageTitle="Profile"
+          pageSubtitle={`ID ${viewing.id}`}
+          userEmail={session.email}
+          actions={
+            <button
+              type="button"
+              className="field-btn field-btn--ghost"
+              onClick={() => setViewing(null)}
+            >
+              Back
+            </button>
+          }
+        />
         <main className="field-main">
           <div className="field-panel field-profile-view">
             <div className="field-profile-hero">
@@ -358,8 +470,8 @@ export default function FieldApp() {
                   <Image
                     src={viewing.photoUrl}
                     alt=""
-                    width={72}
-                    height={72}
+                    width={80}
+                    height={80}
                     unoptimized
                   />
                 ) : (
@@ -369,28 +481,55 @@ export default function FieldApp() {
               <h2 className="field-profile-name">{viewing.name}</h2>
               <p className="field-profile-phone">{viewing.phone}</p>
               <div className="field-profile-badges">
-                <span className="field-badge">{viewing.status}</span>
-                <span className="field-badge">{viewing.verification}</span>
+                <span className={statusBadgeClass(viewing.status)}>
+                  {viewing.status}
+                </span>
+                <span className={verificationBadgeClass(viewing.verification)}>
+                  {viewing.verification}
+                </span>
               </div>
             </div>
             <dl className="field-dl">
-              <dt>Area</dt>
-              <dd>{formatWorkerAreas(workerAreas(viewing))}</dd>
-              <dt>Services</dt>
-              <dd>{viewing.services.join(" · ") || "—"}</dd>
-              <dt>Experience</dt>
-              <dd>{viewing.experience} years</dd>
-              <dt>Languages</dt>
-              <dd>{viewing.languages || "—"}</dd>
-              <dt>Address</dt>
-              <dd>{viewing.address || "—"}</dd>
-              <dt>Emergency</dt>
-              <dd>{viewing.emergency || "—"}</dd>
+              <div>
+                <dt>Operating areas</dt>
+                <dd>{formatWorkerAreas(workerAreas(viewing))}</dd>
+              </div>
+              <div>
+                <dt>Services</dt>
+                <dd>{viewing.services.join(" · ") || "—"}</dd>
+              </div>
+              <div>
+                <dt>Experience</dt>
+                <dd>
+                  {viewing.experience > 0 ? `${viewing.experience} years` : "—"}
+                </dd>
+              </div>
+              <div>
+                <dt>Languages</dt>
+                <dd>{viewing.languages || "—"}</dd>
+              </div>
+              <div>
+                <dt>Address</dt>
+                <dd>{viewing.address || "—"}</dd>
+              </div>
+              <div>
+                <dt>Emergency contact</dt>
+                <dd>{viewing.emergency || "—"}</dd>
+              </div>
             </dl>
-            <h3 className="field-section-title">Documents</h3>
+          </div>
+          <div className="field-panel">
+            <ShareLinksPanel
+              maidId={viewing.id}
+              maidName={viewing.name}
+              variant="field"
+            />
+            <h3 className="field-section-title">Verification documents</h3>
             <ul className="field-doc-list">
               {DOC_TYPES.map((name) => {
-                const ok = viewing.documents.some((d) => d.name === name && d.path);
+                const ok = viewing.documents.some(
+                  (d) => d.name === name && d.path,
+                );
                 return (
                   <li key={name} className={ok ? "done" : ""}>
                     {name}
@@ -401,7 +540,7 @@ export default function FieldApp() {
             </ul>
             {galleryDocs(viewing).length > 0 && (
               <>
-                <h3 className="field-section-title">More documents</h3>
+                <h3 className="field-section-title">Additional documents</h3>
                 <ul className="field-doc-list">
                   {galleryDocs(viewing).map((d) => (
                     <li key={d.id ?? d.file} className="done">
@@ -429,24 +568,34 @@ export default function FieldApp() {
   if (editing) {
     return (
       <div className="field-root">
-        <header className="field-header">
-          <div>
-            <h1>{beforeSave ? "Edit maid" : "New maid"}</h1>
-            <small>
-              {STEP_LABELS[step]} · Step {step + 1} of {STEP_LABELS.length}
-            </small>
-          </div>
-          <button type="button" className="field-btn" onClick={closeEditor}>
-            Cancel
-          </button>
-        </header>
+        <FieldTopbar
+          showPageTitle
+          pageTitle={beforeSave ? "Edit profile" : "New maid"}
+          pageSubtitle={`Step ${step + 1} of ${STEP_LABELS.length} — ${STEP_LABELS[step]}`}
+          userEmail={session.email}
+          actions={
+            <button
+              type="button"
+              className="field-btn field-btn--ghost"
+              onClick={closeEditor}
+            >
+              Cancel
+            </button>
+          }
+        />
         <main className="field-main">
-          <div className="field-steps" aria-hidden>
-            {STEP_LABELS.map((_, i) => (
-              <div
-                key={i}
-                className={`field-step-dot ${i <= step ? "active" : ""}`}
-              />
+          <div className="field-steps" aria-label="Onboarding progress">
+            {STEP_LABELS.map((label, i) => (
+              <div key={label} className="field-step">
+                <div
+                  className={`field-step-bar ${i < step ? "done" : ""} ${i === step ? "active" : ""}`}
+                />
+                <span
+                  className={`field-step-label ${i === step ? "active" : ""}`}
+                >
+                  {label}
+                </span>
+              </div>
             ))}
           </div>
           <div className="field-panel">
@@ -768,106 +917,139 @@ export default function FieldApp() {
 
   return (
     <div className="field-root">
-      <header className="field-header">
-        <div>
-          <h1>Maid profiles</h1>
-          <small>Tap a name to view · {session.email}</small>
-        </div>
-        <div style={{ display: "flex", gap: "0.5rem" }}>
-          <button
-            type="button"
-            className="field-btn"
-            onClick={() => {
-              setSelectMode((m) => !m);
-              setSelectedMaidIds([]);
-            }}
-          >
-            {selectMode ? "Cancel" : "Select"}
-          </button>
-          <button
-            type="button"
-            className="field-btn"
-            onClick={() => void adminLogout().then(refreshSession)}
-          >
-            Sign out
-          </button>
-        </div>
-      </header>
-      <main className="field-main">
-        {selectMode && selectedMaidIds.length > 0 && (
-          <button
-            type="button"
-            className="field-btn primary field-full"
-            style={{ marginBottom: "0.75rem" }}
-            onClick={() => setGrantModalOpen(true)}
-          >
-            Grant to client ({selectedMaidIds.length})
-          </button>
-        )}
-        <input
-          className="field-search"
-          placeholder="Search name or phone…"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        {visible.length === 0 ? (
-          <div className="field-empty">No maids yet. Tap Add maid below.</div>
-        ) : (
-          visible.map((w) => (
+      <FieldTopbar
+        userEmail={session.email}
+        actions={
+          <>
             <button
               type="button"
-              key={w.id}
-              className="field-card"
+              className={`field-btn field-btn--sm ${selectMode ? "primary" : ""}`}
               onClick={() => {
-                if (selectMode) {
-                  setSelectedMaidIds((ids) =>
-                    ids.includes(w.id)
-                      ? ids.filter((x) => x !== w.id)
-                      : [...ids, w.id],
-                  );
-                  return;
-                }
-                openView(w);
+                setSelectMode((m) => !m);
+                setSelectedMaidIds([]);
               }}
             >
-              {selectMode && (
-                <input
-                  type="checkbox"
-                  readOnly
-                  checked={selectedMaidIds.includes(w.id)}
-                  style={{ marginRight: "0.5rem" }}
-                />
-              )}
-              <div className="field-avatar">
-                {w.photoUrl ? (
-                  <Image
-                    src={w.photoUrl}
-                    alt=""
-                    width={48}
-                    height={48}
-                    unoptimized
-                  />
-                ) : (
-                  initials(w.name)
-                )}
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <strong>{w.name}</strong>
-                <div style={{ fontSize: "0.85rem", color: "#64748b" }}>
-                  {w.phone}
-                  {workerAreas(w).length
-                    ? ` · ${formatWorkerAreas(workerAreas(w))}`
-                    : ""}
-                </div>
-                <span className="field-badge">{w.status}</span>
-              </div>
+              {selectMode ? "Done" : "Select"}
             </button>
-          ))
+            <button
+              type="button"
+              className="field-btn field-btn--sm"
+              onClick={() => void adminLogout().then(refreshSession)}
+            >
+              Sign out
+            </button>
+          </>
+        }
+      />
+      <main className="field-main">
+        <div className="field-stats">
+          <div className="field-stat">
+            <strong>{workers.length}</strong>
+            <span>Active profiles</span>
+          </div>
+          <div className="field-stat">
+            <strong>{availableCount}</strong>
+            <span>Available</span>
+          </div>
+        </div>
+        {selectMode && selectedMaidIds.length > 0 && (
+          <div className="field-grant-bar">
+            <p>{selectedMaidIds.length} selected</p>
+            <button
+              type="button"
+              className="field-btn primary field-btn--sm"
+              onClick={() => setGrantModalOpen(true)}
+            >
+              Grant to client
+            </button>
+          </div>
+        )}
+        <div className="field-search-wrap">
+          <SearchIcon />
+          <input
+            className="field-search"
+            type="search"
+            placeholder="Search by name, phone, or area…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            aria-label="Search maid profiles"
+          />
+        </div>
+        {visible.length === 0 ? (
+          <div className="field-empty">
+            <strong>No profiles found</strong>
+            {workers.length === 0
+              ? "Add your first maid profile using the button below."
+              : "Try a different search term."}
+          </div>
+        ) : (
+          <div className="field-list">
+            {visible.map((w) => {
+              const selected = selectedMaidIds.includes(w.id);
+              return (
+                <button
+                  type="button"
+                  key={w.id}
+                  className={`field-card ${selectMode && selected ? "field-card--selected" : ""}`}
+                  onClick={() => {
+                    if (selectMode) {
+                      setSelectedMaidIds((ids) =>
+                        ids.includes(w.id)
+                          ? ids.filter((x) => x !== w.id)
+                          : [...ids, w.id],
+                      );
+                      return;
+                    }
+                    openView(w);
+                  }}
+                >
+                  {selectMode ? (
+                    <input
+                      type="checkbox"
+                      className="field-check"
+                      readOnly
+                      tabIndex={-1}
+                      checked={selected}
+                      aria-label={`Select ${w.name}`}
+                    />
+                  ) : null}
+                  <div className="field-avatar">
+                    {w.photoUrl ? (
+                      <Image
+                        src={w.photoUrl}
+                        alt=""
+                        width={48}
+                        height={48}
+                        unoptimized
+                      />
+                    ) : (
+                      initials(w.name)
+                    )}
+                  </div>
+                  <div className="field-card-body">
+                    <span className="field-card-name">{w.name}</span>
+                    <div className="field-card-meta">
+                      {w.phone}
+                      {workerAreas(w).length
+                        ? ` · ${formatWorkerAreas(workerAreas(w))}`
+                        : ""}
+                    </div>
+                    <div className="field-card-footer">
+                      <span className={statusBadgeClass(w.status)}>
+                        {w.status}
+                      </span>
+                    </div>
+                  </div>
+                  {!selectMode ? <ChevronIcon /> : null}
+                </button>
+              );
+            })}
+          </div>
         )}
       </main>
       {!selectMode && (
         <button type="button" className="field-fab" onClick={openNew}>
-          + Add maid
+          <span aria-hidden>+</span> Add maid
         </button>
       )}
       <GrantToClientModal

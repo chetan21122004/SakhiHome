@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { Link2, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import {
   createOrFetchShareLinks,
@@ -9,12 +10,14 @@ import {
 
 type Props = {
   maidId: string;
+  maidName?: string;
   className?: string;
   variant?: "field" | "admin";
 };
 
 export default function ShareLinksPanel({
   maidId,
+  maidName,
   className,
   variant = "field",
 }: Props) {
@@ -23,6 +26,7 @@ export default function ShareLinksPanel({
     variant === "admin" ? "rg-btn small primary" : "field-btn primary";
   const [links, setLinks] = useState<ShareLinkInfo | null>(null);
   const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -47,90 +51,108 @@ export default function ShareLinksPanel({
   }
 
   async function copyTeaser() {
+    setBusy(true);
     try {
-      const info = links ?? await ensureLinks();
+      const info = links ?? (await ensureLinks());
       await navigator.clipboard.writeText(info.teaserUrl);
-      toast.success("Basic link copied");
+      toast.success("Profile link copied");
     } catch (e) {
       toast.error(String((e as Error).message));
+    } finally {
+      setBusy(false);
     }
   }
 
   async function copyFull() {
+    setBusy(true);
     try {
-      const info = links ?? await ensureLinks();
+      const info = links ?? (await ensureLinks());
       await navigator.clipboard.writeText(info.fullUrl);
-      toast.success("Full link copied — share only with committed clients");
+      toast.success("Full profile link copied");
     } catch (e) {
       toast.error(String((e as Error).message));
+    } finally {
+      setBusy(false);
     }
   }
 
-  async function regenerate() {
-    if (
-      !window.confirm(
-        "Regenerate links? Old URLs will stop working immediately.",
-      )
-    ) {
-      return;
-    }
+  async function nativeShare() {
+    setBusy(true);
     try {
-      const info = await createOrFetchShareLinks(maidId, true);
-      setLinks(info);
-      toast.success("New share links created");
+      const info = links ?? (await ensureLinks());
+      const title = maidName
+        ? `${maidName} — SakhiHome profile`
+        : "SakhiHome profile";
+      if (navigator.share) {
+        await navigator.share({
+          title,
+          text: "Preview this professional’s profile",
+          url: info.teaserUrl,
+        });
+      } else {
+        await navigator.clipboard.writeText(info.teaserUrl);
+        toast.success("Link copied (sharing not supported on this device)");
+      }
     } catch (e) {
-      toast.error(String((e as Error).message));
+      if ((e as Error).name !== "AbortError") {
+        toast.error(String((e as Error).message));
+      }
+    } finally {
+      setBusy(false);
     }
   }
 
   return (
-    <div className={className}>
-      <h3 className={variant === "admin" ? "rg-section-label" : "field-section-title"}>
-        Share with client
-      </h3>
-      <p
-        className={variant === "admin" ? "rg-settings-copy" : "field-hint"}
-        style={{ marginBottom: "0.75rem" }}
+    <div className={className ?? (variant === "admin" ? "rg-profile-share" : "")}>
+      <h3
+        className={
+          variant === "admin" ? "rg-section-label" : "field-section-title"
+        }
       >
-        Basic link hides phone and address. Full link unlocks all details (no
-        document downloads).
-      </p>
+        Share profile
+      </h3>
       {loading ? (
-        <p className="text-sm text-muted-foreground">Loading links…</p>
+        <p className={variant === "admin" ? "rg-settings-copy" : "field-hint"}>
+          Preparing share link…
+        </p>
       ) : (
         <>
-          {links?.expiresAt && (
-            <p className="text-xs text-muted-foreground">
-              Expires {new Date(links.expiresAt).toLocaleDateString()}
-            </p>
-          )}
           <div
-            className={variant === "admin" ? "rg-share-actions" : "field-actions"}
-            style={{ marginTop: "0.5rem", display: "flex", flexWrap: "wrap", gap: "0.5rem" }}
+            className={
+              variant === "admin" ? "rg-share-actions" : "field-actions"
+            }
           >
             <button
               type="button"
               className={btnPrimary}
+              disabled={busy}
               onClick={() => void copyTeaser()}
             >
-              Copy basic link
+              <Link2 size={15} aria-hidden />
+              Copy link
             </button>
             <button
               type="button"
               className={btn}
+              disabled={busy}
+              onClick={() => void nativeShare()}
+            >
+              <Share2 size={15} aria-hidden />
+              Share
+            </button>
+            <button
+              type="button"
+              className={btn}
+              disabled={busy}
               onClick={() => void copyFull()}
             >
-              Copy full link
+              Full link
             </button>
           </div>
-          <button
-            type="button"
-            className={btn}
-            style={{ marginTop: "0.5rem", width: variant === "field" ? "100%" : undefined }}
-            onClick={() => void regenerate()}
-          >
-            Regenerate links
-          </button>
+          <p className={variant === "admin" ? "rg-settings-copy" : "field-hint"}>
+            Basic link is safe for first client review. Full link shows contact
+            details (still view-only).
+          </p>
         </>
       )}
     </div>

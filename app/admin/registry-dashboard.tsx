@@ -42,6 +42,7 @@ import {
 import { toast } from "sonner";
 import ClientsPanel from "./clients-panel";
 import GrantToClientModal from "@/app/components/admin/GrantToClientModal";
+import ShareLinksPanel from "@/app/components/share/ShareLinksPanel";
 import {
   GALLERY_DOC_CATEGORIES,
   isVerificationDocName,
@@ -1476,6 +1477,13 @@ export default function RegistryDashboard() {
                       <span>Internal record · used for uploads</span>
                     </p>
                     <ProfileCompletionBar worker={worker} />
+                    {worker.status !== "Archived" && (
+                      <ShareLinksPanel
+                        maidId={worker.id}
+                        maidName={worker.name}
+                        variant="admin"
+                      />
+                    )}
                   </div>
                 </header>
               ) : (
